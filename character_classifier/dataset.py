@@ -21,7 +21,7 @@ def get_dataloaders(data_dir, batch_size=64, img_size=64):
 
     # Define a series of image transformations to apply to each image
     transform = transforms.Compose([
-        # transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
+        transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
         transforms.Resize((img_size, img_size)),      # Resize to a consistent size
         transforms.ToTensor(),                        # Convert image to PyTorch tensor
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5

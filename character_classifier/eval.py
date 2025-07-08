@@ -6,8 +6,7 @@ from model import ChineseCharacterCNN
 import os
 from datetime import datetime
 
-data_dir = "data/filtered"  # Adjust based on script location
-## if we want to use only top character data, use this, otherwise, use 'data/processed' for full dataset
+data_dir = "data/filtered"  # Adjust based on location
 
 batch_size = 64
 img_size = 64
@@ -37,7 +36,7 @@ def test_model():
 
 def main():
     # Initialize model
-    model.load_state_dict(torch.load('checkpoints/chinese_char_cnn.pth', map_location=device))
+    model.load_state_dict(torch.load('checkpoints/model-500-GoogLeNet.pth', map_location=device))
     print(f"[{datetime.now()}] Finished model initialization")
     test_model()
 

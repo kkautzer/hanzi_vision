@@ -5,3 +5,5 @@ data/processed
 data/raw
 
 checkpoints/*
+logs/*
+custom_test_images

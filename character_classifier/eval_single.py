@@ -19,7 +19,7 @@ train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, b
 num_classes = len(class_names)
 
 model = ChineseCharacterCNN(num_classes=num_classes).to(device)
-model.load_state_dict(torch.load('checkpoints/chinese_char_cnn.pth', map_location=device))
+model.load_state_dict(torch.load('checkpoints/model-500-GoogLeNet.pth', map_location=device))
 print(f"[{datetime.now()}] Finished model initialization")
 
 # Series of transformations to apply to normalize each input image

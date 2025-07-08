@@ -12,12 +12,13 @@ class ChineseCharacterCNN(nn.Module):
             num_classes (int): Number of unique Chinese characters (classes) to classify.
         """
         super(ChineseCharacterCNN, self).__init__()
-        
+    
         ## base this model off of GoogLeNet
         self.googlenet = models.googlenet()
+        
+        # modify to take grayscale image input, and output based on dynamic # classes
+        self.googlenet.conv1.conv = nn.Conv2d(in_channels=1, out_channels=64, kernel_size=7, stride=2, padding=3, bias=False)
         self.googlenet.fc = nn.Linear(self.googlenet.fc.in_features, out_features=num_classes, bias=True)
-        # modify # of output classes (from 1000 to num_classes)
-        print(self.googlenet.fc)
         
     def forward(self, x):
         """

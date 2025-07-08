@@ -55,7 +55,7 @@ print(f"[{datetime.now()}] Successfully initialized whitelist")
  
 # Initialize filtered directories
 print(f"[{datetime.now()}] Initializing filtered directories...")
-# create_filtered_set('data/whitelist.txt')
+create_filtered_set('data/whitelist.txt')
 print(f"[{datetime.now()}] Successfully initialized filtered directories")
 
 # Detect device (GPU if available)
@@ -77,6 +77,10 @@ print(f"[{datetime.now()}] Finished model initialization")
 # Define loss function and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+
+# Track the highest validation accuracy for storing weights
+highest_val_accuracy = -1
+
 if initial_epoch <= 1:
     print(f"[{datetime.now()}] Beginning training...")
 else:
@@ -115,17 +119,23 @@ for epoch in range(initial_epoch, num_epochs+1):
             correct += (predicted == labels).sum().item()
 
     val_accuracy = 100 * correct / total
+    
     print(f"[{datetime.now()}] Validation Accuracy: {val_accuracy:.2f}%")
     
     # Save training data after each epoch model checkpoint
     os.makedirs(f"./checkpoints/training/{model_name}", exist_ok=True)
-    torch.save(model.state_dict(), f"./checkpoints/training/{model_name}/tr_epoch{epoch}_{model_name}.pth")
-    print(f"[{datetime.now()}] Model saved to ./checkpoints/training/{model_name}/tr_epoch{epoch}_{model_name}.pth")
+    torch.save(model.state_dict(), f"./checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
+    print(f"[{datetime.now()}] Model saved to ./checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
+    if (val_accuracy > highest_val_accuracy):
+        highest_val_accuracy = val_accuracy
+        os.makedirs(f"./checkpoints/best", exist_ok=True)
+        torch.save(model.state_dict(), f"./checkpoints/best/{model_name}_best.pth")
+        print(f"[{datetime.now()}] Model saved to ./checkpoints/best/{model_name}_best.pth")
 
 # Save trained model checkpoint
-os.makedirs("./checkpoints", exist_ok=True)
-torch.save(model.state_dict(), f"./checkpoints/{model_name}.pth")
-print(f"[{datetime.now()}] Model saved to ./checkpoints/{model_name}.pth")
+# os.makedirs("./checkpoints", exist_ok=True)
+# torch.save(model.state_dict(), f"./checkpoints/{model_name}_.pth")
+# print(f"[{datetime.now()}] Model saved to ./checkpoints/{model_name}.pth")
 
 
 ### TODO Add main method, allowing to specify model name, number of epochs, initial epoch & path to existing weights to continue from

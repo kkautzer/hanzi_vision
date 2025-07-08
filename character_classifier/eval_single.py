@@ -24,7 +24,7 @@ print(f"[{datetime.now()}] Finished model initialization")
 
 # Series of transformations to apply to normalize each input image
 transform = transforms.Compose([
-    # transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
+    transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
     transforms.ToPILImage(),
     transforms.Resize((img_size, img_size)),      # Resize to a consistent size
     transforms.ToTensor(),                        # Convert image to PyTorch tensor

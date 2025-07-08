@@ -7,20 +7,44 @@ from scripts.generate_whitelist import generate_whitelist
 from model import ChineseCharacterCNN
 import os
 from datetime import datetime
+import argparse
+import json
 
-# Configuration parameters
-num_characters = 500
-data_dir = "data/filtered"  # Adjust based on script location
+# Configuration Parameters
+with open("character_classifier/default_train_params.json", 'r') as file:
+    defaults = json.load(file)
 
-batch_size = 64
-img_size = 64
-learning_rate = 0.0110
-num_epochs = 20
+print(defaults)
+parser = argparse.ArgumentParser(description="Parameters for Training a Model on Chinese Hanzi Characters")
+parser.add_argument('--nchars', type=int, default=defaults['num_characters'], help="Number of characters to include in the training for this model.")
+parser.add_argument('--lr', type=float, default=defaults['learning_rate'], help="Learning rate to use throughout the training process.")
+parser.add_argument('--epochs', type=int, default=defaults['num_epochs'], help='The epoch number at which this training will end at [inclusive]')
+parser.add_argument('--name', type=str, default=defaults['model_name'], help='The name under which data revolving around this model will be stored.')
+parser.add_argument('--initial', type=int, default=defaults['initial_epoch'], help="The epoch value with which to start this model with [inclusive]")
+parser.add_argument('--pretrained', type=str, default=defaults['saved_pretrained_model_path'], help='The path to a `.pth` file containing the weights of a compatible pretrained model.')
 
-model_name = f"model-{num_characters}-GoogLeNet"
-initial_epoch = 1
-saved_pretrained_model_path = ''
+args = parser.parse_args()
 
+data_dir = defaults['data_dir']
+batch_size = defaults['batch_size']
+img_size = defaults['img_size']
+
+num_characters = args.nchars
+learning_rate = args.lr
+num_epochs = args.epochs
+
+model_name = args.name
+initial_epoch = args.initial
+saved_pretrained_model_path = args.pretrained
+
+# # # # # if (initial_epoch > 1): ## start from a specified epoch
+# # # # #     saved_pretrained_model_path = f"checkpoints/training/{model_name}/tr_epoch{initial_epoch-1}-{model_name}.pth"
+# # # # # elif (initial_epoch == -1): ## start from the best model
+# # # # #     saved_pretrained_model_path = f"checkpoints/{model_name}.pth"
+# # # # # else: ## do not load a pretrained model
+# # # # #     saved_pretrained_model_path = ""
+
+# End of Configuration Parameters
 
  
 # Generate the whitelist for the n most common characters
@@ -31,7 +55,7 @@ print(f"[{datetime.now()}] Successfully initialized whitelist")
  
 # Initialize filtered directories
 print(f"[{datetime.now()}] Initializing filtered directories...")
-create_filtered_set('data/whitelist.txt')
+# create_filtered_set('data/whitelist.txt')
 print(f"[{datetime.now()}] Successfully initialized filtered directories")
 
 # Detect device (GPU if available)
@@ -58,8 +82,8 @@ if initial_epoch <= 1:
 else:
     print(f"[{datetime.now()}] Resuming training from epoch {initial_epoch}...")
 # Training loop
-for epoch in range(num_epochs):
-    print(f"[{datetime.now()}] -- Beginning epoch {epoch+initial_epoch} of {num_epochs+initial_epoch-1} --")
+for epoch in range(initial_epoch, num_epochs+1):
+    print(f"[{datetime.now()}] -- Beginning epoch {epoch} of {num_epochs} --")
     model.train()  # Set model to training mode
     running_loss = 0.0
 
@@ -75,7 +99,7 @@ for epoch in range(num_epochs):
         running_loss += loss.item()
         
     avg_loss = running_loss / len(train_loader)
-    print(f"[{datetime.now()}] Epoch [{initial_epoch+epoch}/{initial_epoch+num_epochs-1}], Loss: {avg_loss:.4f}")
+    print(f"[{datetime.now()}] Epoch [{epoch}/{num_epochs}], Loss: {avg_loss:.4f}")
 
     # Validation phase
     model.eval()  # Set model to evaluation mode
@@ -95,8 +119,8 @@ for epoch in range(num_epochs):
     
     # Save training data after each epoch model checkpoint
     os.makedirs(f"./checkpoints/training/{model_name}", exist_ok=True)
-    torch.save(model.state_dict(), f"./checkpoints/training/{model_name}/tr_epoch{epoch+initial_epoch}_{model_name}.pth")
-    print(f"[{datetime.now()}] Model saved to ./checkpoints/training/{model_name}/tr_epoch{epoch+initial_epoch}_{model_name}.pth")
+    torch.save(model.state_dict(), f"./checkpoints/training/{model_name}/tr_epoch{epoch}_{model_name}.pth")
+    print(f"[{datetime.now()}] Model saved to ./checkpoints/training/{model_name}/tr_epoch{epoch}_{model_name}.pth")
 
 # Save trained model checkpoint
 os.makedirs("./checkpoints", exist_ok=True)

@@ -1,0 +1,11 @@
+{
+    "batch_size": 64,
+    "img_size": 64,
+    "data_dir": "data/filtered",
+    "num_characters": 500,
+    "learning_rate": 0.0125,
+    "num_epochs": 25,
+    "model_name": "model",
+    "initial_epoch": 1,
+    "saved_pretrained_model_path": ""
+}

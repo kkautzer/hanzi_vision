@@ -1,3 +1,4 @@
+import cv2
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -19,13 +20,13 @@ train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, b
 num_classes = len(class_names)
 
 model = ChineseCharacterCNN(num_classes=num_classes).to(device)
-model.load_state_dict(torch.load('checkpoints/model-500-GoogLeNet.pth', map_location=device))
+model.load_state_dict(torch.load('checkpoints/best/model-GoogLeNet-500_best.pth', map_location=device))
 print(f"[{datetime.now()}] Finished model initialization")
 
 # Series of transformations to apply to normalize each input image
 transform = transforms.Compose([
-    transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
     transforms.ToPILImage(),
+    transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
     transforms.Resize((img_size, img_size)),      # Resize to a consistent size
     transforms.ToTensor(),                        # Convert image to PyTorch tensor
     transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
@@ -47,3 +48,11 @@ def evaluate(image):
         output = model(transform(image).unsqueeze(0)) ## unsqueeze to add batch dimension (=1)
         predicted = torch.argmax(output, 1).item()
     return (predicted, class_names[predicted])
+
+
+if __name__ == "__main__":
+    
+    # replace with path to any image file
+    image = cv2.imread('./character_classifier/custom_test_images/IMG_2009.jpg')
+        
+    print(evaluate(image))

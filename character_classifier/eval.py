@@ -36,7 +36,7 @@ def test_model():
 
 def main():
     # Initialize model
-    model.load_state_dict(torch.load('checkpoints/model-500-GoogLeNet.pth', map_location=device))
+    model.load_state_dict(torch.load('checkpoints/best/model-GoogLeNet-500_best.pth', map_location=device))
     print(f"[{datetime.now()}] Finished model initialization")
     test_model()
 

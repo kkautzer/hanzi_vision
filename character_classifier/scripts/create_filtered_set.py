@@ -29,12 +29,18 @@ def filter_dataset(src, dst, whitelist):
     
     
 def create_filtered_set(whitelist_file):
-    source_dir = 'data/processed'
-    target_dir = 'data/filtered'
-
     whitelist = load_whitelist(whitelist_file)
-    # print(whitelist)
-    filter_dataset(source_dir, target_dir, whitelist)
+        
+    source_dir = 'data/processed'
+    target_dir = f"data/filtered/top-{len(whitelist)}"
+
+    # if a directory already exists for this set of top-x chars, then return immediately,
+    # since there no need to waste 5-10 minutes overwriting data with exact copies of it
+    if os.path.isdir(target_dir):
+        print("\tData directories for this charset already exist!")
+        return
+    else:
+        filter_dataset(source_dir, target_dir, whitelist)
     
 if __name__=="__main__":
-    create_filtered_set(whitelist_file="data/char_whitelist.txt")
+    create_filtered_set(whitelist_file="data/whitelist.txt")

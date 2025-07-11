@@ -6,4 +6,4 @@ data/raw
 
 checkpoints/*
 logs/*
-custom_test_images
+character_classifier/custom_test_images/*

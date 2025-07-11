@@ -6,7 +6,7 @@ from model import ChineseCharacterCNN
 import os
 from datetime import datetime
 
-data_dir = "data/filtered"  # Adjust based on location
+data_dir = "data/filtered/top-500"  # Adjust based on location
 
 batch_size = 64
 img_size = 64

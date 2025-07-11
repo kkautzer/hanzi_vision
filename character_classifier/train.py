@@ -34,13 +34,13 @@ parser.add_argument('--pretrained', type=str, default=defaults['saved_pretrained
 
 args = parser.parse_args()
 
-data_dir = defaults['data_dir']
-batch_size = defaults['batch_size']
-img_size = defaults['img_size']
-
 num_characters = args.nchars
 learning_rate = args.lr
 num_epochs = args.epochs
+
+data_dir = f"{defaults['data_dir']}{num_characters}"
+batch_size = defaults['batch_size']
+img_size = defaults['img_size']
 
 model_name = args.name
 initial_epoch = args.initial
@@ -94,6 +94,7 @@ printLogAndConsole(f"[{datetime.now()}] Using device: {device}")
 printLogAndConsole(f"[{datetime.now()}] Loading data loaders...")
 train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
 num_classes = len(class_names)
+printLogAndConsole(f"[{datetime.now()}] Finished loading data loaders")
 
 # Initialize model
 printLogAndConsole(f"[{datetime.now()}] Initializing model...")
@@ -164,7 +165,3 @@ for epoch in range(initial_epoch, num_epochs+1):
 # os.makedirs("./checkpoints", exist_ok=True)
 # torch.save(model.state_dict(), f"./checkpoints/{model_name}_.pth")
 # printLogAndConsole(f"[{datetime.now()}] Model saved to ./checkpoints/{model_name}.pth")
-
-
-### TODO Add main method, allowing to specify model name, number of epochs, initial epoch & path to existing weights to continue from
-### TODO Put this in a separate main.py file, and call each component from there (whitelist generation & change detection, this training script, ...)

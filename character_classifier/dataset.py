@@ -1,7 +1,8 @@
 from datetime import datetime
 import os
 import torch
-from torchvision import datasets, transforms
+from torchvision import datasets
+import torchvision.transforms.v2 as transforms
 from torch.utils.data import DataLoader
 
 # Function to create data loaders for train, validation, and test sets
@@ -19,18 +20,29 @@ def get_dataloaders(data_dir, batch_size=64, img_size=64):
         class_names (list): List of class (character) names.
     """
 
-    # Define a series of image transformations to apply to each image
-    transform = transforms.Compose([
+    # Transformations for TRAINING SET ONLY (includes brightness / contrast augmentation)
+    train_transform = transforms.Compose([
         transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
         transforms.Resize((img_size, img_size)),      # Resize to a consistent size
+        transforms.ColorJitter(brightness=[0.4,1.3], contrast=[0.75,1.05], 
+                                saturation=None, hue=None), # Brightness / contrast manipulations
+        transforms.RandomRotation(15), # Rotate images by up to 15 degrees in either direction
         transforms.ToTensor(),                        # Convert image to PyTorch tensor
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
+    ])
+    
+    # Standard transformations for all images (no augmentations)
+    transform = transforms.Compose([
+        transforms.Grayscale(num_output_channels=1), # Ensure single grayscale channel
+        transforms.Resize((img_size, img_size)), # Resize to consistent size
+        transforms.ToTensor(), # Convert to Tensor
+        transforms.Normalize((0.5,), (0.5,)) # Normalize pixel values
     ])
     
 
     print(f"[{datetime.now()}] Loading TRAIN set...")
     # Load the training dataset using ImageFolder
-    train_set = datasets.ImageFolder(root=f"{data_dir}/train", transform=transform)
+    train_set = datasets.ImageFolder(root=f"{data_dir}/train", transform=train_transform)
     print(f"[{datetime.now()}] Successfully loaded TRAIN set. Now loading EVAL set...")
     val_set = datasets.ImageFolder(root=f"{data_dir}/val", transform=transform)
     print(f"[{datetime.now()}] Successfully loaded EVAL set. Now loading TEST set...")

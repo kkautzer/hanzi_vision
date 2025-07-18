@@ -8,10 +8,10 @@ import random
 
 # === CONFIGURATION ===
 # Path to the folder containing raw .gnt files extracted from CASIA dataset
-GNT_FOLDER = "data/raw"
+GNT_FOLDER = "character_classifier/data/raw"
 
 # Output base directory where processed images will be saved
-OUTPUT_FOLDER = "data/processed"
+OUTPUT_FOLDER = "character_classifier/data/processed"
 
 # Ratios for splitting data into train, val, and test sets
 SPLIT_RATIOS = {

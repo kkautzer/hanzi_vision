@@ -31,8 +31,8 @@ def filter_dataset(src, dst, whitelist):
 def create_filtered_set(whitelist_file):
     whitelist = load_whitelist(whitelist_file)
         
-    source_dir = 'data/processed'
-    target_dir = f"data/filtered/top-{len(whitelist)}"
+    source_dir = 'character_classifier/data/processed'
+    target_dir = f"character_classifier/data/filtered/top-{len(whitelist)}"
 
     # if a directory already exists for this set of top-x chars, then return immediately,
     # since there no need to waste 5-10 minutes overwriting data with exact copies of it
@@ -43,4 +43,4 @@ def create_filtered_set(whitelist_file):
         filter_dataset(source_dir, target_dir, whitelist)
     
 if __name__=="__main__":
-    create_filtered_set(whitelist_file="data/whitelist.txt")
+    create_filtered_set(whitelist_file="character_classifier/data/whitelist.txt")

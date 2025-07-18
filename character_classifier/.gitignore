@@ -1,0 +1,10 @@
+__pycache__
+
+checkpoints/*
+custom_test_images/*
+
+data/filtered
+data/processed
+data/raw
+
+logs/*

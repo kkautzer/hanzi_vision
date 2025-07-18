@@ -13,7 +13,7 @@ import json
 def printLogAndConsole(content):
     print(content)
     try:
-        with open(f"./logs/{log_file_name}.txt", 'a') as f:
+        with open(f"./character_classifier/logs/{log_file_name}.txt", 'a') as f:
             print(content, file=f)
     except Exception: ## if the `log_file_name` has not been defined, we cannot write to file
         print(f" {'\033[31m'} Failed to write previous statement to the log! {'\033[0m'}")
@@ -21,7 +21,7 @@ def printLogAndConsole(content):
     
 # Configuration Parameters
 print("Loading Configuration Data...")
-with open("character_classifier/default_train_params.json", 'r') as file:
+with open(f"./character_classifier/default_train_params.json", 'r') as file:
     defaults = json.load(file)
 
 parser = argparse.ArgumentParser(description="Parameters for Training a Model on Chinese Hanzi Characters")
@@ -49,7 +49,7 @@ saved_pretrained_model_path = args.pretrained
 ## anything printed before this line will not be logged on file ##
 ## use the standard `print()` function, else an indicator message will be printed to the console ##
 
-log_file_name = f"log-{model_name}"##-[{datetime.now().strftime("%Y%m%d-%H%M%S")}]"
+log_file_name = f"log-{model_name}" # save log files by name of the model
 printLogAndConsole("------------------")
 printLogAndConsole("Successfully loaded configuration data!")
 # printLogAndConsole(f"Defaults: {defaults}")
@@ -65,13 +65,6 @@ printLogAndConsole(f"Model Configuration: { {
     "saved_pretrained_model_path": saved_pretrained_model_path
 } }")
 
-# # # # # if (initial_epoch > 1): ## start from a specified epoch
-# # # # #     saved_pretrained_model_path = f"checkpoints/training/{model_name}/tr_epoch{initial_epoch-1}-{model_name}.pth"
-# # # # # elif (initial_epoch == -1): ## start from the best model
-# # # # #     saved_pretrained_model_path = f"checkpoints/{model_name}.pth"
-# # # # # else: ## do not load a pretrained model
-# # # # #     saved_pretrained_model_path = ""
-
 # End of Configuration Parameters
 
  
@@ -83,7 +76,7 @@ printLogAndConsole(f"[{datetime.now()}] Successfully initialized whitelist")
  
 # Initialize filtered directories
 printLogAndConsole(f"[{datetime.now()}] Initializing filtered directories...")
-create_filtered_set('data/whitelist.txt')
+create_filtered_set('./character_classifier/data/whitelist.txt')
 printLogAndConsole(f"[{datetime.now()}] Successfully initialized filtered directories")
 
 # Detect device (GPU if available)
@@ -152,16 +145,13 @@ for epoch in range(initial_epoch, num_epochs+1):
     printLogAndConsole(f"[{datetime.now()}] Validation Accuracy: {val_accuracy:.2f}%")
     
     # Save training data after each epoch model checkpoint
-    os.makedirs(f"./checkpoints/training/{model_name}", exist_ok=True)
-    torch.save(model.state_dict(), f"./checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
-    printLogAndConsole(f"[{datetime.now()}] Model saved to ./checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
+    os.makedirs(f"./character_classifier/checkpoints/training/{model_name}", exist_ok=True)
+    torch.save(model.state_dict(), f"./character_classifier/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
+    printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
     if (val_accuracy > highest_val_accuracy):
         highest_val_accuracy = val_accuracy
-        os.makedirs(f"./checkpoints/best", exist_ok=True)
-        torch.save(model.state_dict(), f"./checkpoints/best/{model_name}_best.pth")
-        printLogAndConsole(f"[{datetime.now()}] Model saved to ./checkpoints/best/{model_name}_best.pth")
+        os.makedirs(f"./character_classifier/checkpoints/best", exist_ok=True)
+        torch.save(model.state_dict(), f"./character_classifier/checkpoints/best/{model_name}_best.pth")
+        printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/checkpoints/best/{model_name}_best.pth")
 
-# Save trained model checkpoint
-# os.makedirs("./checkpoints", exist_ok=True)
-# torch.save(model.state_dict(), f"./checkpoints/{model_name}_.pth")
-# printLogAndConsole(f"[{datetime.now()}] Model saved to ./checkpoints/{model_name}.pth")
+print(f"[{datetime.now()}] Training Completed!")

@@ -24,12 +24,12 @@ def get_dataloaders(data_dir, batch_size=64, img_size=64):
     train_transform = transforms.Compose([
         transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
         transforms.Resize((img_size, img_size)),      # Resize to a consistent size
-        transforms.RandomApply([
-            transforms.ColorJitter(brightness=[0.8,1.1], contrast=[0.85,1.05], 
-                                    saturation=None, hue=None), # Brightness / contrast manipulations
-            
+        transforms.RandomApply([ # only apply brightness / contrast on half the time
+            transforms.ColorJitter( # Brightness / contrast manipulations
+                brightness=[0.8,1.1], contrast=[0.85,1.05], saturation=None, hue=None
+            ),
         ], p=0.5),
-        transforms.RandomApply([
+        transforms.RandomApply([ # only apply these about 65% of samples
             transforms.RandomAffine(
                 degrees=5, scale=(0.90, 1.05), shear=0, translate=(0.035, 0.035)
             ), # Translation manipulations

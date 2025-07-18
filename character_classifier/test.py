@@ -6,7 +6,7 @@ from model import ChineseCharacterCNN
 import os
 from datetime import datetime
 
-data_dir = "data/filtered/top-500"  # Adjust based on location
+data_dir = "./character_classifier/data/filtered/top-5"  # Adjust based on location
 
 batch_size = 64
 img_size = 64
@@ -36,7 +36,7 @@ def test_model():
 
 def main():
     # Initialize model
-    model.load_state_dict(torch.load('checkpoints/best/model-GoogLeNet-500_best.pth', map_location=device))
+    model.load_state_dict(torch.load('./character_classifier/checkpoints/best/model_best.pth', map_location=device))
     print(f"[{datetime.now()}] Finished model initialization")
     test_model()
 

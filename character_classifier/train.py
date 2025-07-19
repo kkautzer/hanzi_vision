@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from dataset import get_dataloaders
-from scripts.create_filtered_set import create_filtered_set
-from scripts.generate_whitelist import generate_whitelist
-from model import ChineseCharacterCNN
+from character_classifier.dataset import get_dataloaders
+from character_classifier.scripts.create_filtered_set import create_filtered_set
+from character_classifier.scripts.generate_whitelist import generate_whitelist
+from character_classifier.model import ChineseCharacterCNN
 import os
 from datetime import datetime
 import argparse

@@ -1,9 +1,6 @@
 import torch
-import torch.nn as nn
-import torch.optim as optim
-from dataset import get_dataloaders
-from model import ChineseCharacterCNN
-import os
+from character_classifier.dataset import get_dataloaders
+from character_classifier.model import ChineseCharacterCNN
 from datetime import datetime
 
 data_dir = "./character_classifier/data/filtered/top-5"  # Adjust based on location

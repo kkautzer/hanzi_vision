@@ -1,15 +1,17 @@
 import cv2
 import torch
 from torchvision import datasets, transforms
-from model import ChineseCharacterCNN
+from character_classifier.model import ChineseCharacterCNN
     
-def evaluate(image, path_to_model):
+def evaluate(image, model_name, epoch_num=-1):
     """
     Evaluates a single input image based on the trained model, and returns the closest matching
     Hanzi character.
 
     Args:
         image (NumPy Array): a single image, as a NumPy array of the shape (H, W)
+        model_name (str): the name of the model that `image` will be evaluated on 
+        epoch_num (int): the epoch number to evaluate this model on, or the best available if not provided
 
     Returns:
         tuple( int, char ): a tuple of the predicted character index, and the character itself
@@ -28,6 +30,10 @@ def evaluate(image, path_to_model):
     num_classes = len(class_names)
 
     model = ChineseCharacterCNN(num_classes=num_classes).to(device)
+    if (epoch_num <= 0):
+        path_to_model = f"./character_classifier/checkpoints/best/{model_name}_best.pth"
+    else:
+        path_to_model = f"./character_classifier/checkpoints/training/{model_name}/tr_epoch{epoch_num}.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 
     # Series of transformations to apply to normalize each input image
@@ -77,6 +83,6 @@ if __name__ == "__main__":
         cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
     ]
     
-    for image in images: print(evaluate(image, "./character_classifier/checkpoints/training/model-GoogLeNet-500-aug-0.2/tr_epoch39.pth"))
+    for image in images: print(evaluate(image, "model-GoogLeNet-500-aug-0.2", 39))
     
     # for image in images[:]: show_image(image)

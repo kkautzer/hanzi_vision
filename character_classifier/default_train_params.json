@@ -4,7 +4,7 @@
     "data_dir": "character_classifier/data/filtered/top-",
     "num_characters": 5,
     "learning_rate": 0.0125,
-    "num_epochs": 2,
+    "num_epochs": 10,
     "model_name": "model",
     "initial_epoch": 1,
     "saved_pretrained_model_path": ""

@@ -1,6 +1,4 @@
 from datetime import datetime
-import os
-import torch
 from torchvision import datasets
 import torchvision.transforms.v2 as transforms
 from torch.utils.data import DataLoader

@@ -10,11 +10,9 @@ export default function Evaluation() {
         <div>
             <Navbar/>
         </div>
-        <div>
-            <p>This is the evaluation page -- see below!</p>
-            <button onClick={() => setIsDrawing((o) => !o)} className="btn btn-primary">Switch to {(isDrawing) ? "upload" : "drawing"}</button>
-        </div>
-        <div>
+        <div className="mx-10 my-4 text-center">
+            <p className="text-lg">This is the evaluation page - see below!</p>
+            <button onClick={() => setIsDrawing((o) => !o)} className="btn btn-primary mt-2">Switch to {(isDrawing) ? "upload" : "drawing canvas"}</button>
             {(isDrawing) ? <EvalDrawing/> : <EvalUpload />}
         </div>
     </div>

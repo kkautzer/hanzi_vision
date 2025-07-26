@@ -32,3 +32,7 @@ def evaluate_image():
             return "Failed to evaluate image"
     else:
         return "No image provided [2]"
+    
+    
+if __name__ == "__main__":
+    app.run()

@@ -9,7 +9,6 @@ export default function EvalUpload() {
     function submit(e) {
         e.preventDefault();
         setAllowSubmit(false)
-        // console.log(e.target.image.files[0])
         
         const formData = new FormData();
         formData.append('image', e.target.image.files[0]);

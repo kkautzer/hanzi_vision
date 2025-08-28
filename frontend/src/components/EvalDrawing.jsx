@@ -1,9 +1,14 @@
 import { useRef, useState, useEffect } from 'react'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 
-export default function EvalDrawing() {   
+export default function EvalDrawing() {
+
+    const localServerURL = "http://localhost:5000"
+    const globalServerURL = 'https://hanzi-vision-api.onrender.com'
+
     const canvasRef = useRef(null)
     const [ usePen, setUsePen ] = useState(true)
+    const [ allowSubmit, setAllowSubmit ] = useState(true)
 
     function switchTool() {
         if (usePen) {
@@ -13,6 +18,45 @@ export default function EvalDrawing() {
             canvasRef?.current?.eraseMode(false)
             setUsePen(true)
         }
+    }
+
+    function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]; // gets encoding (e.g. 'base64')
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
+        }
+
+    async function submit(e) {
+        e.preventDefault();
+        setAllowSubmit(false);
+
+        const imgURI = await canvasRef.current.exportImage("png");
+
+        const blob = dataURItoBlob(imgURI);
+
+        const formData = new FormData();
+        formData.append('image', blob);
+        formData.entries().forEach((e) => console.log(e))
+        fetch(`${localServerURL}/evaluate`, {
+            method: "POST",
+            body: formData
+        }).then(async (res) => {
+            console.log(res)
+            const r = await res.json();
+            if (res.status === 200) {
+                console.log(r)
+                alert(`Predicted character: ${r.label}`)
+            } else {
+                alert(r.message)
+            }
+        }).then(() => {
+            setAllowSubmit(true);
+        });
     }
 
     return <>
@@ -26,17 +70,19 @@ export default function EvalDrawing() {
 
         </div>
 
-        <form action={null}>
-            <ReactSketchCanvas 
+        <form onSubmit={submit}>
+            <ReactSketchCanvas style={{aspectRatio:"1/1"}} 
                 ref={canvasRef}
-                className='mt-2'
+                className='mt-4 mx-auto'
                 strokeWidth={4}
-                strokeColor="white"
-                canvasColor='black'
+                strokeColor="black"
+                // canvasColor='black'
+                width="50%"
+                height="100%"
             />
 
             <br/>
-            <button type='submit' className="btn btn-warning mt-2">Evaluate!</button>
+            <button disabled={!allowSubmit} type='submit' className="btn btn-warning mt-2">Evaluate!</button>
         </form>
     </>
 }

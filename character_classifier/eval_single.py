@@ -25,7 +25,8 @@ def evaluate(image, model_name, epoch_num=-1):
     img_size = 64
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+    
+    ### replace with data mapping for model from `classes` folder
     class_names = datasets.ImageFolder(root=f"{data_dir}/val").classes
     num_classes = len(class_names)
 
@@ -44,6 +45,7 @@ def evaluate(image, model_name, epoch_num=-1):
         transforms.ToTensor(),                        # Convert image to PyTorch tensor
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
+    
 
     model.eval()
     with torch.no_grad():

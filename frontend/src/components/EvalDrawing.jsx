@@ -41,8 +41,7 @@ export default function EvalDrawing() {
 
         const formData = new FormData();
         formData.append('image', blob);
-        formData.entries().forEach((e) => console.log(e))
-        fetch(`${localServerURL}/evaluate`, {
+        fetch(`${globalServerURL}/evaluate`, {
             method: "POST",
             body: formData
         }).then(async (res) => {

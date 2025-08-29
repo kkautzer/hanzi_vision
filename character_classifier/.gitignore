@@ -1,6 +1,6 @@
 __pycache__
 
-checkpoints/*
+checkpoints/training/*
 custom_test_images/*
 
 data/filtered

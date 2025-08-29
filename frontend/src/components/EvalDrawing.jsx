@@ -61,7 +61,12 @@ export default function EvalDrawing() {
         }).then(() => {
             setAllowSubmit(true);
             document.getElementById('drawingLoadingModal').close();
-        });
+        }).catch(err => {
+            alert(err);
+            setAllowSubmit(true)
+            document.getElementById('drawingLoadingModal').close();
+
+        })
     }
 
     return <>

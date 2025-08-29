@@ -35,6 +35,11 @@ export default function EvalUpload() {
         }).then(() => {
             setAllowSubmit(true)
             document.getElementById("uploadLoadingModal").close();
+        }).catch(err => {
+            alert(err);
+            setAllowSubmit(true)
+            document.getElementById('uploadLoadingModal').close();
+
         })
     }
 

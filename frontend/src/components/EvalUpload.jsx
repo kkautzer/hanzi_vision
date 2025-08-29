@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import LoadingAnimationModal from './LoadingAnimationModal'
+
 export default function EvalUpload() {
 
     // if running locally, use local server, if run on web, use web server
@@ -10,7 +12,10 @@ export default function EvalUpload() {
 
     function submit(e) {
         e.preventDefault();
+
+        document.getElementById("uploadLoadingModal").showModal();
         setAllowSubmit(false)
+
         
         const formData = new FormData();
         formData.append('image', e.target.image.files[0]);
@@ -29,10 +34,13 @@ export default function EvalUpload() {
             }
         }).then(() => {
             setAllowSubmit(true)
+            document.getElementById("uploadLoadingModal").close();
         })
     }
 
     return <>
+        <LoadingAnimationModal modalId={"uploadLoadingModal"} />
+
         <h1 className="mt-2">Evaluation - Photo Upload Page</h1>
         <form onSubmit={submit}>
             <input name='image' type='file' className="file-input file-input-primary mt-2" accept='image/*'/>

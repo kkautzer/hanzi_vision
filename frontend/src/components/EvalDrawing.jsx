@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
+import LoadingAnimationModal from './LoadingAnimationModal'
 
 export default function EvalDrawing() {
     // if running locally, use local server, if run on web, use web server
@@ -35,6 +36,8 @@ export default function EvalDrawing() {
 
     async function submit(e) {
         e.preventDefault();
+
+        document.getElementById('drawingLoadingModal').showModal();
         setAllowSubmit(false);
 
         const imgURI = await canvasRef.current.exportImage("png");
@@ -57,12 +60,14 @@ export default function EvalDrawing() {
             }
         }).then(() => {
             setAllowSubmit(true);
+            document.getElementById('drawingLoadingModal').close();
         });
     }
 
     return <>
-        <br/>
+        <LoadingAnimationModal modalId={"drawingLoadingModal"} />
         
+        <h1 className="mt-2">Evaluation - Photo Drawing Page</h1>
         <div className='mt-2 space-x-2'>
             <button onClick={() => canvasRef?.current?.clearCanvas()} className='btn btn-error'>Clear</button>
             <button onClick={() => canvasRef?.current?.undo()} className='btn btn-primary'>Undo</button>

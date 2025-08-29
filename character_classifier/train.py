@@ -112,7 +112,7 @@ else:
 epoch_data_export = [] # {model_name, nchars, LR, epoch, train_acc, val_acc}
 for epoch in range(initial_epoch, num_epochs+1):
     epoch_data_export = []
-    epoch_data_export.append(str(model_name))
+    epoch_data_export.append(f"\"{str(model_name)}\"")
     epoch_data_export.append(str(num_characters))
     epoch_data_export.append(str(learning_rate))
     epoch_data_export.append(str(epoch))
@@ -157,9 +157,9 @@ for epoch in range(initial_epoch, num_epochs+1):
     epoch_data_export.append(str(val_accuracy))
     
     # Save training data after each epoch model checkpoint
-    with open("./character_classifier/data/data.csv", "a") as f:
+    with open("./character_classifier/data/training_data.csv", "a") as f:
         f.write(f"{(",").join(epoch_data_export)}\n")
-    printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/data/data.csv")
+    printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/data/training_data.csv")
     os.makedirs(f"./character_classifier/checkpoints/training/{model_name}", exist_ok=True)
     torch.save(model.state_dict(), f"./character_classifier/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
     printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")

@@ -3,7 +3,7 @@ import torch
 from torchvision import transforms
 from character_classifier.model import ChineseCharacterCNN
     
-def evaluate(image, model_name, n_chars, epoch_num=-1):
+def evaluate(image, model_name, n_chars):
     """
     Evaluates a single input image based on the trained model, and returns the closest matching
     Hanzi character.
@@ -29,10 +29,7 @@ def evaluate(image, model_name, n_chars, epoch_num=-1):
     num_classes = len(class_names)
 
     model = ChineseCharacterCNN(num_classes=num_classes).to(device)
-    if (epoch_num <= 0):
-        path_to_model = f"./character_classifier/checkpoints/best/{model_name}_best.pth"
-    else:
-        path_to_model = f"./character_classifier/checkpoints/training/{model_name}/tr_epoch{epoch_num}.pth"
+    path_to_model = f"./character_classifier/checkpoints/best/{model_name}_best.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 
     # Series of transformations to apply to normalize each input image

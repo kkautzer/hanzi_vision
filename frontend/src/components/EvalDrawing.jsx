@@ -2,15 +2,17 @@ import { useRef, useState, useEffect } from 'react'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 
 export default function EvalDrawing() {
-
-    const localServerURL = "http://localhost:5000"
-    const globalServerURL = 'https://hanzi-vision-api.onrender.com'
+    // if running locally, use local server, if run on web, use web server
+    const serverURL = (window.location.hostname == "localhost")
+        ? "http://localhost:5000"
+        : "https://hanzi-vision-api.onrender.com"
 
     const canvasRef = useRef(null)
     const [ usePen, setUsePen ] = useState(true)
     const [ allowSubmit, setAllowSubmit ] = useState(true)
 
     function switchTool() {
+
         if (usePen) {
             canvasRef?.current?.eraseMode(true)
             setUsePen(false)
@@ -41,7 +43,7 @@ export default function EvalDrawing() {
 
         const formData = new FormData();
         formData.append('image', blob);
-        fetch(`${globalServerURL}/evaluate`, {
+        fetch(`${serverURL}/evaluate`, {
             method: "POST",
             body: formData
         }).then(async (res) => {
@@ -76,8 +78,7 @@ export default function EvalDrawing() {
                 strokeWidth={4}
                 strokeColor="black"
                 // canvasColor='black'
-                width="50%"
-                height="100%"
+                width="300px"
             />
 
             <br/>

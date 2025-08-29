@@ -1,8 +1,10 @@
 import { useState } from 'react'
 export default function EvalUpload() {
 
-    const localServerURL = "http://localhost:5000"
-    const globalServerURL = 'https://hanzi-vision-api.onrender.com'
+    // if running locally, use local server, if run on web, use web server
+    const serverURL = (window.location.hostname == "localhost")
+        ? "http://localhost:5000"
+        : "https://hanzi-vision-api.onrender.com"
 
     const [ allowSubmit, setAllowSubmit ] = useState(true);
 
@@ -13,7 +15,7 @@ export default function EvalUpload() {
         const formData = new FormData();
         formData.append('image', e.target.image.files[0]);
         
-        fetch(`${globalServerURL}/evaluate`, {
+        fetch(`${serverURL}/evaluate`, {
             method: "POST",
             body: formData
         }).then(async (res) => {

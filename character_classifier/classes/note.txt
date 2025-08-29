@@ -1,7 +1,0 @@
-this folder should be populated with some form of mapping between class names and IDs
-based on each model's training set (`data/filtered/top-*`)
-
-** for each data subset, there should be a corresponding class mapping in this folder **
-
-this mapping should be loaded instead of looking to the `filtered` directory, since this 
-would be substantially more time- and resource-efficient

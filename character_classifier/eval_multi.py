@@ -1,24 +1,21 @@
 import cv2
 import torch
-from torchvision import datasets, transforms
+from torchvision import transforms
 from character_classifier.model import ChineseCharacterCNN
 
-def evaluate(images, model_name, epoch_num=-1):
+def evaluate(images, model_name, n_chars, epoch_num=-1):
     '''
     
     '''
     
-    # this should be updated dynamically to reflect model characteristics - eventually, save
-    # a mapping of the model name => nchars & other data
-    # OR, check from model weight to detect the # of classes (based on final fc layer)
-    data_dir = "./character_classifier/data/filtered/top-500"  # Adjust based on script location
-
     batch_size = 64
     img_size = 64
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    class_names = datasets.ImageFolder(root=f"{data_dir}/val").classes
+    with open(f"./character_classifier/classes/top-{n_chars}-classes.txt", 'r', encoding='utf-8') as f:
+        class_names = [line.strip() for line in f.readlines()]
+        
     num_classes = len(class_names)
 
     model = ChineseCharacterCNN(num_classes=num_classes).to(device)
@@ -74,6 +71,6 @@ if __name__ == "__main__":
         cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
     ]
     
-    (ids, labels) = evaluate(images, "model-GoogLeNet-500-1.0")
+    (ids, labels) = evaluate(images, "model-GoogLeNet-500-1.0", 500)
     for id, label in zip(ids, labels): print(str(id)+": " + label)
     

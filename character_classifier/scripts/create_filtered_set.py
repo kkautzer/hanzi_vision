@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import shutil
+from torchvision import datasets
 
 
 def load_whitelist(path):
@@ -27,6 +28,14 @@ def filter_dataset(src, dst, whitelist):
         copied_count_s = 0
     print(f"[{datetime.now()}] Successfully initialized directories (copied {copied_count} folders from '{src}' to '{dst}')")
     
+def create_class_list(whitelist):
+    classes = whitelist[:]
+    classes.sort()
+    # classes = [ name+"\n" for name in classes]
+    with open(f"character_classifier/classes/top-{len(whitelist)}-classes.txt", 'w', encoding='utf-8') as f:
+        print(classes)
+        f.writelines(f"{c}\n" for c in classes)
+    print(f"[{datetime.now()}] Successfully created class list for {len(whitelist)} characters")
     
 def create_filtered_set(whitelist_file):
     whitelist = load_whitelist(whitelist_file)
@@ -38,9 +47,15 @@ def create_filtered_set(whitelist_file):
     # since there no need to waste 5-10 minutes overwriting data with exact copies of it
     if os.path.isdir(target_dir):
         print("\tData directories for this charset already exist!")
-        return
+        if os.path.isfile(f"character_classifier/classes/top-{len(whitelist)}-classes.txt"):
+            print("\tClass list file for this charset already exists!")
+            return
+        else:
+            create_class_list(whitelist)
+            return
     else:
         filter_dataset(source_dir, target_dir, whitelist)
+        create_class_list(whitelist)
     
 if __name__=="__main__":
     create_filtered_set(whitelist_file="character_classifier/data/whitelist.txt")

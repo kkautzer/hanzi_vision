@@ -1,9 +1,9 @@
 import cv2
 import torch
-from torchvision import datasets, transforms
+from torchvision import transforms
 from character_classifier.model import ChineseCharacterCNN
     
-def evaluate(image, model_name, epoch_num=-1):
+def evaluate(image, model_name, n_chars, epoch_num=-1):
     """
     Evaluates a single input image based on the trained model, and returns the closest matching
     Hanzi character.
@@ -17,17 +17,15 @@ def evaluate(image, model_name, epoch_num=-1):
         tuple( int, char ): a tuple of the predicted character index, and the character itself
     """
     
-    # if path_to_image is not a string/path, handle this case by directly setting it as image
-    data_dir = "./character_classifier/data/filtered/top-500"  # Adjust based on script location
-    ## if we want to use only top character data, use this, otherwise, use 'data/processed' for full dataset
 
     batch_size = 64
     img_size = 64
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    ### replace with data mapping for model from `classes` folder
-    class_names = datasets.ImageFolder(root=f"{data_dir}/val").classes
+    with open(f"./character_classifier/classes/top-{n_chars}-classes.txt", 'r', encoding='utf-8') as f:
+        class_names = [line.strip() for line in f.readlines()]
+        
     num_classes = len(class_names)
 
     model = ChineseCharacterCNN(num_classes=num_classes).to(device)
@@ -85,6 +83,6 @@ if __name__ == "__main__":
         cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
     ]
     
-    for image in images: print(evaluate(image, "model-GoogLeNet-500-aug-0.2", 39))
+    for image in images: print(evaluate(image, "model-GoogLeNet-500-1.0", 500, 39))
     
     # for image in images[:]: show_image(image)

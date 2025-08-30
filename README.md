@@ -31,5 +31,3 @@ Some brief future directions for this project are as follows:
 2. Model Architecture Comparison
     - As stated in the overview, the recognition model currently utilizes a tweaked GoogLeNet architecture. In the future (with more resource availability), we can compare and evaluate the various aspects of many popular architectures (like ResNet and VGG)
     - Additionally, we can implement training processes to fully understand the effects of using more modern technologies like Vision Transformers rather than CNNs
-
-**More likely than not, one of these two above will be expanded into a Senior Honors Thesis for the 2026-27 Academic Year (and possibly Summer 2026, leading into the following AY)**

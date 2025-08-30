@@ -1,6 +1,6 @@
 # Hanzi Vision OCR
 > Project started 6/25/25<br>
-> Last updated on 7/19/25
+> Last updated on 8/29/25
 
 > Authors/Contributors: Keagan Kautzer
 

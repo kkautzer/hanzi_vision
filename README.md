@@ -19,8 +19,9 @@ This is the main directory for behind-the-scenes connections between the fronten
 ## Current Goals
 The current core objectives for this project are as follows:
 
-1. Incorporate novice-level handwriting into the training data
-2. Scale training to 750, 1000, and 1500 characters, rather than the current 500
+1. Build a mobile interface / app (very similar to web interface from `frontend`)
+2. Incorporate novice-level handwriting into the training data
+3. Scale training to 750, 1000, and 1500 characters, rather than the current 500
 
 ## Future Directions
 Some brief future directions for this project are as follows:

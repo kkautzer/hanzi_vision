@@ -2,10 +2,9 @@ import cv2
 import torch
 from torchvision import transforms
 from character_classifier.model import ChineseCharacterCNN
-# # import numpy as np
 from character_classifier.scripts.crop_image import crop_image
     
-def evaluate(image, model_name, n_chars):
+def evaluate(image, model_name, n_chars, thresholded=False):
     """
     Evaluates a single input image based on the trained model, and returns the closest matching
     Hanzi character.
@@ -19,10 +18,7 @@ def evaluate(image, model_name, n_chars):
         tuple( int, char ): a tuple of the predicted character index, and the character itself
     """
     
-    image = crop_image(image)
-    # # cv2.imshow("Cropped Image", image)
-    # # cv2.waitKey(0)
-    # # cv2.destroyAllWindows()
+    image = crop_image(image, thresholded=thresholded)
     
     batch_size = 64
     img_size = 64
@@ -35,7 +31,7 @@ def evaluate(image, model_name, n_chars):
     num_classes = len(class_names)
 
     model = ChineseCharacterCNN(num_classes=num_classes).to(device)
-    path_to_model = f"./character_classifier/checkpoints/best/{model_name}_best.pth"
+    path_to_model = f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 
     # Series of transformations to apply to normalize each input image
@@ -47,10 +43,6 @@ def evaluate(image, model_name, n_chars):
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
     
-    # transform is (channels, height, width), cv2.cvtColor() needs (height, width, channels)
-    # # transformed_image = np.transpose(transform(image).numpy(), (1, 2, 0))
-    # # cv2.imshow("Evaluated Image", transformed_image)
-
     model.eval()
     with torch.no_grad():
         output = model(transform(image).unsqueeze(0)) ## unsqueeze to add batch dimension (=1)

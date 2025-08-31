@@ -159,14 +159,16 @@ for epoch in range(initial_epoch, num_epochs+1):
     # Save training data after each epoch model checkpoint
     with open("./character_classifier/data/training_data.csv", "a") as f:
         f.write(f"{(",").join(epoch_data_export)}\n")
+        
     printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/data/training_data.csv")
-    os.makedirs(f"./character_classifier/checkpoints/training/{model_name}", exist_ok=True)
-    torch.save(model.state_dict(), f"./character_classifier/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
-    printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
+    os.makedirs(f"./character_classifier/models/checkpoints/training/{model_name}", exist_ok=True)
+    torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
+    printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
+    
     if (val_accuracy > highest_val_accuracy):
         highest_val_accuracy = val_accuracy
-        os.makedirs(f"./character_classifier/checkpoints/best", exist_ok=True)
-        torch.save(model.state_dict(), f"./character_classifier/checkpoints/best/{model_name}_best.pth")
+        os.makedirs(f"./character_classifier/models/checkpoints/best", exist_ok=True)
+        torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/best/{model_name}_best.pth")
         printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/checkpoints/best/{model_name}_best.pth")
 
 print(f"[{datetime.now()}] Training Completed!")

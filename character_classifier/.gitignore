@@ -1,10 +1,10 @@
 __pycache__
 
-checkpoints/training/*
 custom_test_images/*
+models/checkpoints/training/*
 
-data/filtered
-data/processed
 data/raw
+data/processed
+data/filtered
 
 logs/*

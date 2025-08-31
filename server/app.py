@@ -26,7 +26,7 @@ def evaluate_image():
         try:
             image_array = np.frombuffer(image.read(), np.uint8) # read image bytes, convert to np.uint8 array
             image = cv2.imdecode(image_array, cv2.IMREAD_UNCHANGED) # convert np.uint8 array to a cv2 image            
-            # dictionary of form {id: [id], label: [char]}
+            # return dictionary of form {id: [id], label: [char]}
             return jsonify(dict(zip( ("id", "label"), evaluate(image, "model-GoogLeNet-500-1.0", 500) ) )) , 200
 
         except Exception as e:

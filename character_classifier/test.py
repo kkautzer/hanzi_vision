@@ -10,7 +10,7 @@ img_size = 64
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"[{datetime.now()}] Using device: {device}")
-train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
+_, _, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
 num_classes = len(class_names)
 model = ChineseCharacterCNN(num_classes=num_classes).to(device)
 
@@ -33,7 +33,7 @@ def test_model():
 
 def main():
     # Initialize model
-    model.load_state_dict(torch.load('./character_classifier/checkpoints/best/model_best.pth', map_location=device))
+    model.load_state_dict(torch.load('./character_classifier/models/checkpoints/best/model_best.pth', map_location=device))
     print(f"[{datetime.now()}] Finished model initialization")
     test_model()
 

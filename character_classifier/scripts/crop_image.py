@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def detect_edges(image):
+def get_thresholded_image(image):
     
     sobelx = cv2.Sobel(image, cv2.CV_32F, 1, 0, ksize=3)
     sobely = cv2.Sobel(image, cv2.CV_32F, 0, 1, ksize=3)
@@ -22,7 +22,7 @@ def get_crop_dimensions(image):
     '''    
     
     # find edges and apply threshold
-    image_thresholded = detect_edges(image)
+    image_thresholded = get_thresholded_image(image)
     
     # define constants required for large bounding box
     max_y, max_x, _ = np.shape(image)
@@ -74,7 +74,7 @@ def crop_image(image, thresholded=False):
     y_top, y_bottom, x_left, x_right = get_crop_dimensions(image)
     
     if (thresholded):
-        thresholded_image = detect_edges(image)
+        thresholded_image = get_thresholded_image(image)
         return thresholded_image[y_top:y_bottom, x_left:x_right]
     else:
         return image[y_top:y_bottom, x_left:x_right]

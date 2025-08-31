@@ -2,24 +2,32 @@ from datetime import datetime
 from torchvision import datasets
 import torchvision.transforms.v2 as transforms
 from torch.utils.data import DataLoader
+from character_classifier.scripts.crop_image import get_threshold_image
 
 # Function to create data loaders for train, validation, and test sets
-def get_dataloaders(data_dir, batch_size=64, img_size=64):
+def get_dataloaders(data_dir, batch_size=64, img_size=64, thresholded=False):
     """
     Returns PyTorch DataLoader objects for training, validation, and test sets.
 
     Parameters:
         data_dir (str): Path to the root data directory containing 'train', 'val', 'test' folders.
         batch_size (int): Number of samples per batch to load.
-        img_size (int): Size to which each image will be resized (img_size x img_size).
+        img_size (int): Size to which each image will be resized (img_size, img_size).
 
     Returns:
         train_loader, val_loader, test_loader (DataLoader): Dataloaders for training, validation, and testing.
         class_names (list): List of class (character) names.
     """
 
+    ## TODO Define custom thresholding transformation here 
+
+
     # Transformations for TRAINING SET ONLY (includes brightness / contrast augmentation)
     train_transform = transforms.Compose([
+        
+        ## TODO If the thresholded parameter is set to True, define a custom transformation
+        # that includes immediate image thresholding (using )
+        
         transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
         transforms.Resize((img_size, img_size)),      # Resize to a consistent size
         transforms.RandomApply([ # only apply brightness / contrast on half the time
@@ -38,6 +46,10 @@ def get_dataloaders(data_dir, batch_size=64, img_size=64):
     
     # Standard transformations for all images (no augmentations)
     transform = transforms.Compose([
+        
+        ## TODO If the thresholded parameter is set to True, define a custom transformation
+        # that includes immediate image thresholding (using )
+
         transforms.Grayscale(num_output_channels=1), # Ensure single grayscale channel
         transforms.Resize((img_size, img_size)), # Resize to consistent size
         transforms.ToTensor(), # Convert to Tensor

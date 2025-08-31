@@ -2,6 +2,8 @@ import cv2
 import torch
 from torchvision import transforms
 from character_classifier.model import ChineseCharacterCNN
+# # import numpy as np
+from character_classifier.scripts.crop_image import crop_image
     
 def evaluate(image, model_name, n_chars):
     """
@@ -17,7 +19,11 @@ def evaluate(image, model_name, n_chars):
         tuple( int, char ): a tuple of the predicted character index, and the character itself
     """
     
-
+    image = crop_image(image)
+    # # cv2.imshow("Cropped Image", image)
+    # # cv2.waitKey(0)
+    # # cv2.destroyAllWindows()
+    
     batch_size = 64
     img_size = 64
 
@@ -41,6 +47,9 @@ def evaluate(image, model_name, n_chars):
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
     
+    # transform is (channels, height, width), cv2.cvtColor() needs (height, width, channels)
+    # # transformed_image = np.transpose(transform(image).numpy(), (1, 2, 0))
+    # # cv2.imshow("Evaluated Image", transformed_image)
 
     model.eval()
     with torch.no_grad():
@@ -80,6 +89,11 @@ if __name__ == "__main__":
         cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
     ]
     
-    for image in images: print(evaluate(image, "model-GoogLeNet-500-1.0", 500, 39))
+    
+    for image in images: 
+        
+        print(evaluate(image, "model-GoogLeNet-500-1.0", 500))
+        
+    # for image in images: print(evaluate(image, "model-GoogLeNet-500-1.0", 500, 39))
     
     # for image in images[:]: show_image(image)

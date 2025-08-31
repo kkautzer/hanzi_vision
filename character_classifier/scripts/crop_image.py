@@ -1,0 +1,101 @@
+import cv2
+import numpy as np
+
+def detect_edges(image):
+    
+    sobelx = cv2.Sobel(image, cv2.CV_32F, 1, 0, ksize=3)
+    sobely = cv2.Sobel(image, cv2.CV_32F, 0, 1, ksize=3)
+    
+    edge_image = cv2.convertScaleAbs( cv2.magnitude(sobelx,sobely) )
+    _, thresholded_image = cv2.threshold(edge_image, 90, 255, type=cv2.THRESH_BINARY)
+    return thresholded_image
+
+def crop_image(image):
+    # find edges and apply threshold
+    image_thresholded = detect_edges(image)
+    
+    # define constants required for large bounding box
+    max_y, max_x, _ = np.shape(image)
+    x_left = -1
+    y_top = -1
+    x_right = -1
+    y_bottom = -1
+    
+    # determine contours in the image and draw boxes around each
+    image_gray = cv2.cvtColor(image_thresholded, cv2.COLOR_BGR2GRAY)
+    contours, _ = cv2.findContours(image_gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    for contour in contours:
+        if cv2.contourArea(contour) > 80:
+            x, y, w, h = cv2.boundingRect(contour)
+            ## check for updates in perimeter
+            if x_left == -1 or x < x_left:
+                x_left = x
+            if x_right == -1 or x+w > x_right:
+                x_right = x+w
+            if y_top == -1 or y < y_top:
+                y_top = y
+            if y_bottom == -1 or y+h > y_bottom:
+                y_bottom = y+h
+            cv2.rectangle(image_thresholded, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    
+    # add a small padding around the bounding box area
+    x_left = x_left-10     if x_left-10 >= 0 else 0
+    x_right = x_right+10   if x_right+10 <= max_x else max_x
+    y_top = y_top-10       if y_top-10 >= 0 else 0
+    y_bottom = y_bottom+10 if y_bottom+10 <= max_y else max_y
+    
+    # draw large bounding box
+    cv2.rectangle(image_thresholded, (x_left, y_top), (x_right, y_bottom), (255, 0, 0), 2)
+    
+    # display images
+    image_cropped = image[y_top:y_bottom, x_left:x_right]
+    # # image_thresholded_cropped = image_thresholded[y_top:y_bottom, x_left:x_right]
+    # # cv2.imshow("Cropped Thres.", image_thresholded_cropped)
+    # # cv2.imshow("Cropped Orig.", image_cropped)
+    
+    # # cv2.waitKey(0)
+    # # cv2.destroyAllWindows()
+
+    return image_cropped
+
+if __name__=="__main__":
+    # replace with path to any image file
+    images = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
+        cv2.imread('./character_classifier/custom_test_images/IMG_1949.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1949-2.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1975.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1976.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1977.jpg'),
+
+        cv2.imread('./character_classifier/custom_test_images/IMG_2000.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2001.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2001-2.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2002.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2003.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2004.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2005.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2006.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2007.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2008.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2009.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2010.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2011.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2012.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2013.jpg'), 
+        cv2.imread('./character_classifier/custom_test_images/IMG_2014.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2015.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
+    ]
+    
+    native_images = [
+        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0001.png'),
+        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0002.png'),
+        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0003.png'),
+        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0004.png'),
+        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0005.png'),
+    ]
+        
+    # image = cv2.imread('./character_classifier/custom_test_images/IMG_1976.jpg')
+    for image in native_images:
+        # # # thresholded_image = detect_edges(image)
+        cropped_image = crop_image(image)

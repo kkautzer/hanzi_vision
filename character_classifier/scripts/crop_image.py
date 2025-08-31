@@ -8,9 +8,19 @@ def detect_edges(image):
     
     edge_image = cv2.convertScaleAbs( cv2.magnitude(sobelx,sobely) )
     _, thresholded_image = cv2.threshold(edge_image, 90, 255, type=cv2.THRESH_BINARY)
+    
     return thresholded_image
 
-def crop_image(image):
+def get_crop_dimensions(image):
+    '''
+    
+        IMAGE: A NumPy array with shape `(height, width, channels=3)`
+            
+        RETURNS: Tuple in the form `(y_top, y_bottom, x_left, x_right)` as the bounds for 
+        a cropped version of the image
+   
+    '''    
+    
     # find edges and apply threshold
     image_thresholded = detect_edges(image)
     
@@ -47,25 +57,33 @@ def crop_image(image):
     # draw large bounding box
     cv2.rectangle(image_thresholded, (x_left, y_top), (x_right, y_bottom), (255, 0, 0), 2)
     
-    # display images
-    image_cropped = image[y_top:y_bottom, x_left:x_right]
-    # # image_thresholded_cropped = image_thresholded[y_top:y_bottom, x_left:x_right]
-    # # cv2.imshow("Cropped Thres.", image_thresholded_cropped)
-    # # cv2.imshow("Cropped Orig.", image_cropped)
-    
-    # # cv2.waitKey(0)
-    # # cv2.destroyAllWindows()
+    return y_top, y_bottom, x_left, x_right
 
-    return image_cropped
+def crop_image(image, thresholded=False):
+    '''
+    
+        IMAGE: A NumPy array with shape `(height, width, channels=3)`
+        
+        THRESHOLDED: Set to True to return the thresholded version with contours shown,
+        else the (cropped) original image will be returned
+        
+        RETURNS: The cropped image, depending on the value of `thresholded` parameter
+   
+    '''    
+
+    y_top, y_bottom, x_left, x_right = get_crop_dimensions(image)
+    
+    if (thresholded):
+        thresholded_image = detect_edges(image)
+        return thresholded_image[y_top:y_bottom, x_left:x_right]
+    else:
+        return image[y_top:y_bottom, x_left:x_right]
 
 if __name__=="__main__":
     # replace with path to any image file
     images = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
         cv2.imread('./character_classifier/custom_test_images/IMG_1949.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_1949-2.jpg'),
-        cv2.imread('./character_classifier/custom_test_images/IMG_1975.jpg'),
-        cv2.imread('./character_classifier/custom_test_images/IMG_1976.jpg'),
-        cv2.imread('./character_classifier/custom_test_images/IMG_1977.jpg'),
 
         cv2.imread('./character_classifier/custom_test_images/IMG_2000.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_2001.jpg'),
@@ -85,17 +103,27 @@ if __name__=="__main__":
         cv2.imread('./character_classifier/custom_test_images/IMG_2014.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_2015.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
-    ]
     
-    native_images = [
-        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0001.png'),
-        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0002.png'),
-        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0003.png'),
-        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0004.png'),
-        cv2.imread('./character_classifier/data/filtered/top-500/train/书/0005.png'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1975.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1976.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1977.jpg'),
+        
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0001.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0002.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0003.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0004.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0005.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0006.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0007.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0008.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0009.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0010.png', np.uint8), cv2.IMREAD_UNCHANGED),
     ]
         
     # image = cv2.imread('./character_classifier/custom_test_images/IMG_1976.jpg')
-    for image in native_images:
-        # # # thresholded_image = detect_edges(image)
-        cropped_image = crop_image(image)
+    for image in images:
+        
+        ## add channels dimension
+        if (len(np.shape(image)) == 2):
+            image = image[..., np.newaxis]
+            image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)

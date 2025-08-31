@@ -1,6 +1,6 @@
 # Hanzi Vision OCR
 > Project started 6/25/25<br>
-> Last updated on 7/19/25
+> Last updated on 8/29/25
 
 > Authors/Contributors: Keagan Kautzer
 
@@ -19,9 +19,9 @@ This is the main directory for behind-the-scenes connections between the fronten
 ## Current Goals
 The current core objectives for this project are as follows:
 
-1. Scale training to 750, 1000, and 1500 characters, rather than the current 500
-2. Build a frontend interface that allows users to (a) upload and evaluate an image and (b) draw in and evaluate writing from an on-screen canvas / drawing
-3. Incorporate novice-level handwriting into the training data (requires building a new dataset from scratch)
+1. Build a mobile interface / app (very similar to web interface from `frontend`)
+2. Incorporate novice-level handwriting into the training data
+3. Scale training to 750, 1000, and 1500 characters, rather than the current 500
 
 ## Future Directions
 Some brief future directions for this project are as follows:
@@ -31,5 +31,3 @@ Some brief future directions for this project are as follows:
 2. Model Architecture Comparison
     - As stated in the overview, the recognition model currently utilizes a tweaked GoogLeNet architecture. In the future (with more resource availability), we can compare and evaluate the various aspects of many popular architectures (like ResNet and VGG)
     - Additionally, we can implement training processes to fully understand the effects of using more modern technologies like Vision Transformers rather than CNNs
-
-**More likely than not, one of these two above will be expanded into a Senior Honors Thesis for the 2026-27 Academic Year (and possibly Summer 2026, leading into the following AY)**

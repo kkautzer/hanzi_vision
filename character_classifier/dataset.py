@@ -1,11 +1,13 @@
 from datetime import datetime
+import cv2
+import numpy as np
+import torch
 from torchvision import datasets
 import torchvision.transforms.v2 as transforms
 from torch.utils.data import DataLoader
-from character_classifier.scripts.crop_image import get_threshold_image
-
+from character_classifier.scripts.crop_image import crop_image
 # Function to create data loaders for train, validation, and test sets
-def get_dataloaders(data_dir, batch_size=64, img_size=64, thresholded=False):
+def get_dataloaders(data_dir, batch_size=64, img_size=64, thresholded=True):
     """
     Returns PyTorch DataLoader objects for training, validation, and test sets.
 
@@ -19,22 +21,32 @@ def get_dataloaders(data_dir, batch_size=64, img_size=64, thresholded=False):
         class_names (list): List of class (character) names.
     """
 
-    ## TODO Define custom thresholding transformation here 
+    class CropAndThresholdTransform:
+        def __call__(self, img):
+            # convert (C, H, W) to (H, W, C)
+            image = np.transpose(img.numpy() * 255, (1, 2, 0))            
+            cropped = crop_image(image, thresholded=thresholded) # get cropped & edge detected image
+            grayscale = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY) # convert to grayscale
+            resized = cv2.resize(grayscale, dsize=(img_size, img_size), interpolation=cv2.INTER_AREA) # shrink
+            _, threshold = cv2.threshold(resized, thresh=40, maxval=255, type=cv2.THRESH_BINARY) # threshold
+                       
+            # Convert NumPy -> Tensor, reshape (H, W) -> (C, H, W)
+            threshold = torch.from_numpy(threshold).unsqueeze(0).float()
+            return threshold
 
-
+    class NoneTransform:
+        def __call__(self, image):
+            return image
+        
     # Transformations for TRAINING SET ONLY (includes brightness / contrast augmentation)
-    train_transform = transforms.Compose([
+    train_transform = transforms.Compose([    
+        transforms.ToTensor(),
+        CropAndThresholdTransform(), # crop and threshold
         
-        ## TODO If the thresholded parameter is set to True, define a custom transformation
-        # that includes immediate image thresholding (using )
-        
-        transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
-        transforms.Resize((img_size, img_size)),      # Resize to a consistent size
-        transforms.RandomApply([ # only apply brightness / contrast on half the time
-            transforms.ColorJitter( # Brightness / contrast manipulations
-                brightness=[0.8,1.1], contrast=[0.85,1.05], saturation=None, hue=None
-            ),
-        ], p=0.5),
+         # randomly apply brightness / contrast changes on ~50% samples
+        transforms.RandomApply([transforms.ColorJitter(
+            brightness=[0.8,1.1], contrast=[0.85,1.05], saturation=None, hue=None
+        )], p=0.5) if not thresholded else NoneTransform(), # only apply if thresholding is not enabled
         transforms.RandomApply([ # only apply these about 65% of samples
             transforms.RandomAffine(
                 degrees=5, scale=(0.90, 1.05), shear=0, translate=(0.035, 0.035)
@@ -47,11 +59,9 @@ def get_dataloaders(data_dir, batch_size=64, img_size=64, thresholded=False):
     # Standard transformations for all images (no augmentations)
     transform = transforms.Compose([
         
-        ## TODO If the thresholded parameter is set to True, define a custom transformation
-        # that includes immediate image thresholding (using )
-
-        transforms.Grayscale(num_output_channels=1), # Ensure single grayscale channel
-        transforms.Resize((img_size, img_size)), # Resize to consistent size
+        transforms.ToTensor(),
+        CropAndThresholdTransform(), # crop and threshold
+        
         transforms.ToTensor(), # Convert to Tensor
         transforms.Normalize((0.5,), (0.5,)) # Normalize pixel values
     ])

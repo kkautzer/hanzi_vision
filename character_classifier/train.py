@@ -169,6 +169,6 @@ for epoch in range(initial_epoch, num_epochs+1):
         highest_val_accuracy = val_accuracy
         os.makedirs(f"./character_classifier/models/checkpoints/best", exist_ok=True)
         torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/best/{model_name}_best.pth")
-        printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/checkpoints/best/{model_name}_best.pth")
+        printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/best/{model_name}_best.pth")
 
 print(f"[{datetime.now()}] Training Completed!")

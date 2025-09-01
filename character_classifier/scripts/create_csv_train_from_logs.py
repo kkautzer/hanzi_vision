@@ -41,11 +41,11 @@ def create_csv():
                     export_data.append(data.copy())
                     
     # open csv log file to write [TEST FILE, CHANGE WHEN CONFIRMED WORKING]
-    with open("./character_classifier/data/training_data.csv", "w", encoding='utf-8') as csv: 
+    with open("./character_classifier/exports/training_data.csv", "w", encoding='utf-8') as csv: 
         csv.writelines(f"{(",").join(entry)}\n" for entry in export_data)
         print("Log data successfully written to `./character_classifier/data/data_export.csv`")
         
-if os.path.isfile("./character_classifier/data/training_data.csv"):
+if os.path.isfile("./character_classifier/exports/training_data.csv"):
     run = input("CSV file already exists, running this script will overwrite existing data. Continue? (Y/N): ")
 
     # check before overwriting

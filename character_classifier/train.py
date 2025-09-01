@@ -85,7 +85,7 @@ printLogAndConsole(f"[{datetime.now()}] Using device: {device}")
 
 # Load data loaders
 printLogAndConsole(f"[{datetime.now()}] Loading data loaders...")
-train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
+train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size, thresholded=True)
 num_classes = len(class_names)
 printLogAndConsole(f"[{datetime.now()}] Finished loading data loaders")
 
@@ -157,10 +157,10 @@ for epoch in range(initial_epoch, num_epochs+1):
     epoch_data_export.append(str(val_accuracy))
     
     # Save training data after each epoch model checkpoint
-    with open("./character_classifier/data/training_data.csv", "a") as f:
+    with open("./character_classifier/exports/training_data.csv", "a") as f:
         f.write(f"{(",").join(epoch_data_export)}\n")
         
-    printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/data/training_data.csv")
+    printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/exports/training_data.csv")
     os.makedirs(f"./character_classifier/models/checkpoints/training/{model_name}", exist_ok=True)
     torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
     printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")

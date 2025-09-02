@@ -21,34 +21,80 @@ def printLogAndConsole(content):
     
 # Configuration Parameters
 print("Loading Configuration Data...")
-with open(f"./character_classifier/default_train_params.json", 'r') as file:
-    defaults = json.load(file)
 
 parser = argparse.ArgumentParser(description="Parameters for Training a Model on Chinese Hanzi Characters")
-parser.add_argument('--nchars', type=int, default=defaults['num_characters'], help="Number of characters to include in the training for this model.")
-parser.add_argument('--lr', type=float, default=defaults['learning_rate'], help="Learning rate to use throughout the training process.")
-parser.add_argument('--epochs', type=int, default=defaults['num_epochs'], help='The epoch number at which this training will end at [inclusive]')
-parser.add_argument('--name', type=str, default=defaults['model_name'], help='The name under which data revolving around this model will be stored.')
-parser.add_argument('--initial', type=int, default=defaults['initial_epoch'], help="The epoch value with which to start this model with [inclusive]")
-parser.add_argument('--pretrained', type=str, default=defaults['saved_pretrained_model_path'], help='The path to a `.pth` file containing the weights of a compatible pretrained model.')
-parser.add_argument('--thresholded', type=bool, default=True)
+
+parser.add_argument('--name', type=str, default=f"model", help='[Required for all] The name under which data revolving around this model will be stored.')
+parser.add_argument('--epochs', type=int, default=10, help='[Required for all] The number of epochs to perform')
+parser.add_argument('--lr', type=float, default=0.0125, help="[Required for all] Learning rate to use throughout the training process.")
+
+parser.add_argument('--nchars', type=int, default=5, help="[Required for new models] Number of characters to include in the training for this model.")
+parser.add_argument('--thresholded', type=bool, default=True, help='[Required for new models] Whether or not to use edge detected and thresholded images, instead of the standard training images. Defaults to True')
+
+parser.add_argument('--resume', type=bool, default=False, help='[Optional] Whether this training will be a brand new model (set to False), or based on another model (set to True). Defaults to False')
+parser.add_argument('--resepoch', type=int, default=0, help='[Optional] The epoch number to resume training from. Set to -1 to resume from the epoch with the highest validation accuracy; set to 0 to resume from the most recent epoch (default).') # epoch resuming from (default to the most recent, NOT best (use 0 to resume from best))
+parser.add_argument('--resname', type=str, default="", help='[Optional] The name of the model to base training on - defaults to the model specified under "--name", but can be another model if desired.')
+
 args = parser.parse_args()
 
-num_characters = args.nchars
-learning_rate = args.lr
-num_epochs = args.epochs
-thresholded = args.thresholded
-
-data_dir = f"{defaults['data_dir']}{num_characters}"
-batch_size = defaults['batch_size']
-img_size = defaults['img_size']
-
 model_name = args.name
-initial_epoch = args.initial
-saved_pretrained_model_path = args.pretrained
+num_epochs = args.epochs
+learning_rate = args.lr
+
+if not args.resume: # starting with a completely untrained model
+    num_characters = args.nchars
+    thresholded = args.thresholded
+    
+    saved_pretrained_model_path = '' ## bypass NameError errors for undefined field
+
+else: # resuming from a pretrained weights
+    # optionally, scaffold weights from one model to use with another
+    if len(args.resname) > 0:
+        load_model_name = args.resname
+    else:
+        load_model_name = model_name
+    
+    # try-except to check if metadata file actually exists
+    try:
+        with open(f'./character_classifier/models/metadata/{load_model_name}-metadata.json', 'r', encoding='utf-8') as f:
+            # get nchars & thresholded from metadata
+            metadata = json.load(f)
+            num_characters = metadata['nchars']
+            thresholded = metadata['threshold']
+            pass
+    except Exception as e:
+        print(e)
+        print("Error -- Cannot resume training from a model that does not exist / has no completed epochs!")
+        quit()   
+        
+    if args.resepoch < 0:
+        # best
+        initial_epoch = metadata['max_val_epoch']
+        saved_pretrained_model_path = f"./character_classifier/models/checkpoints/best/{load_model_name}_best.pth"
+    elif args.resepoch == 0 or args.resepoch > metadata['epochs']:
+        # most recent
+        initial_epoch = metadata['epochs']
+        saved_pretrained_model_path = f"./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{metadata['epochs']}.pth"
+    else:
+        # specified epoch
+        initial_epoch = args.resepoch
+        saved_pretrained_model_path = f'./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{args.resepoch}.pth'
+
+
+data_dir = f"character_classifier/data/filtered/top-{num_characters}"
+batch_size = 64
+img_size = 64
+
 
 ## anything printed before this line will not be logged on file ##
 ## use the standard `print()` function, else an indicator message will be printed to the console ##
+
+## if not resuming, or if scaffolding from a previous model, check that the new model name is not in use
+if (not args.resume or (args.resume and args.resname != model_name)):
+    initial_epoch = 1
+    if os.path.isfile(f'./character_classifier/models/metadata/{model_name}-metadata.json'):
+        print("Cannot use a model name that is already in use - please choose another using the `--name` parameter and try again!")
+        quit()
 
 log_file_name = f"log-{model_name}" # save log files by name of the model
 printLogAndConsole("------------------")
@@ -58,14 +104,16 @@ printLogAndConsole(f"Model Configuration: { {
     "batch_size": batch_size,
     "img_size": img_size,
     "data_dir": data_dir,
+    "model_name": model_name,
     "num_characters": num_characters,
     "learning_rate": learning_rate,
     "num_epochs": num_epochs,
-    "model_name": model_name,
     "initial_epoch": initial_epoch,
     "saved_pretrained_model_path": saved_pretrained_model_path,
     "thresholded": thresholded
 } }")
+
+
 
 max_val_accuracy = 0
 max_val_epoch = 0
@@ -104,7 +152,7 @@ printLogAndConsole(f"[{datetime.now()}] Finished loading data loaders")
 # Initialize model
 printLogAndConsole(f"[{datetime.now()}] Initializing model...")
 model = ChineseCharacterCNN(num_classes=num_classes).to(device)
-if len(saved_pretrained_model_path) > 0:
+if saved_pretrained_model_path:
     model.load_state_dict(torch.load(saved_pretrained_model_path, map_location=device))
 printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
 
@@ -119,7 +167,7 @@ else:
 
 # Training loop
 epoch_data_export = [] # {model_name, nchars, LR, epoch, train_loss, val_acc, thresholded}
-for epoch in range(initial_epoch, num_epochs+1):
+for epoch in range(initial_epoch, initial_epoch+num_epochs):
     epoch_data_export = [
         f"\"{str(model_name)}\"", # [0] model name
         str(num_characters), # [1] nchars
@@ -191,7 +239,7 @@ for epoch in range(initial_epoch, num_epochs+1):
             "epochs": epoch,
             "max_val_accuracy": max_val_accuracy,
             "max_val_epoch": max_val_epoch,
-            "threshold": thresholded
+            "threshold": thresholded,
         }
         
         json.dump(metadata_json, f, indent=4)

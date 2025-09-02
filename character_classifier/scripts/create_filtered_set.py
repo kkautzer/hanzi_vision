@@ -1,8 +1,6 @@
 from datetime import datetime
 import os
 import shutil
-from torchvision import datasets
-
 
 def load_whitelist(path):
     with open(path, 'r', encoding='utf-8') as f:
@@ -27,6 +25,7 @@ def filter_dataset(src, dst, whitelist):
         print(f"[{datetime.now()}] Copied {copied_count_s} folders from '{src+'/'+set_type}' to '{dst+'/'+set_type}'")
         copied_count_s = 0
     print(f"[{datetime.now()}] Successfully initialized directories (copied {copied_count} folders from '{src}' to '{dst}')")
+    
     
 def create_class_list(whitelist):
     classes = whitelist[:]

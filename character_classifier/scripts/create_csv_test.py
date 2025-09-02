@@ -57,7 +57,7 @@ def record_to_csv(model_name):
             print("Model has no epochs to evaluate!")
             return
     except Exception as e:
-        print("Failed to fetch model data!")
+        print("Model does not exist / Failed to fetch model data!")
         print(e)
         return
         

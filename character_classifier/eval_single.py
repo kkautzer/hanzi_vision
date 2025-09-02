@@ -3,10 +3,10 @@ import torch
 from torchvision import transforms
 from character_classifier.model import ChineseCharacterCNN
 from character_classifier.scripts.crop_image import crop_image
-    
+import json
 import numpy as np
     
-def evaluate(image, model_name, n_chars, thresholded=False):
+def evaluate(image, model_name):
     """
     Evaluates a single input image based on the trained model, and returns the closest matching
     Hanzi character.
@@ -20,6 +20,18 @@ def evaluate(image, model_name, n_chars, thresholded=False):
         tuple( int, char ): a tuple of the predicted character index, and the character itself
     """
     
+    try:
+        with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+            metadata = json.load(f)
+        n_chars = metadata['nchars']
+        thresholded = metadata['threshold']
+        if metadata['epochs'] == 0:
+            print("Model has no epochs to evaluate!")
+            return
+    except Exception as e:
+        print("Model does not exist / Failed to fetch model data!")
+        print(e)
+        return
     
     img_size = 64
 
@@ -34,17 +46,12 @@ def evaluate(image, model_name, n_chars, thresholded=False):
     path_to_model = f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 
-    def crop(image):
-        """
-        Returns a cropped version of the specified image, and is thresholded if the flag is set 
-        """
-        return crop_image(image, thresholded=thresholded)
     
     def transform_cv2(image):
         """
         Transformations intended for thresholded-trained images
         """
-        image = crop(image) # get cropped & edge detected image
+        image = crop_image(image, thresholded=thresholded) # get cropped & edge detected image
         
         # otherwise, perform more extensive transformations
         grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # convert to grayscale
@@ -73,9 +80,6 @@ def evaluate(image, model_name, n_chars, thresholded=False):
     
     # Series of transformations to apply to normalize each input image
     transform = transforms.Compose([
-        transforms.ToPILImage(),
-        transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
-        transforms.Resize((img_size, img_size), transforms.InterpolationMode.LANCZOS),      # Resize to a consistent size
         transforms.ToTensor(),                        # Convert image to PyTorch tensor
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
@@ -88,11 +92,8 @@ def evaluate(image, model_name, n_chars, thresholded=False):
     
     model.eval()
     with torch.no_grad():
-        # if thresholded, apply the newly defined transformations instead
-        if thresholded:
-            output = model(transform_cv2(image).unsqueeze(0)) ## unsqueeze to add batch dimension (=1)
-        else:
-            output = model(transform(crop(image)).unsqueeze(0)) ## unsqueeze to add batch dimension (=1)
+        # apply the newly defined transformations in addition to originals
+        output = model(transform(transform_cv2(image)).unsqueeze(0)) ## unsqueeze to add batch dimension (=1)
         predicted = torch.argmax(output, 1).item()
         
     # print(f"[{datetime.now()}] Finished Evaluation!")
@@ -157,7 +158,7 @@ if __name__ == "__main__":
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
             
             
-        print(evaluate(image, "model-GoogLeNet-500-1.0", 500, thresholded=False))
+        print(evaluate(image, "model-GoogLeNet-500-1.0"))
         
     # for image in images: print(evaluate(image, "model-GoogLeNet-500-1.0", 500, 39))
     

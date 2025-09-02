@@ -2,19 +2,43 @@ import torch
 from character_classifier.dataset import get_dataloaders
 from character_classifier.model import ChineseCharacterCNN
 from datetime import datetime
+import json
+import argparse
 
-data_dir = "./character_classifier/data/filtered/top-5"  # Adjust based on location
+def test_model(model_name, epoch=-1):
+    
+    # get nchars based on model_name
+    try:
+        with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+            metadata = json.load(f)
+        n_chars = metadata['nchars']
+        max_epoch = metadata['epochs']
+        epoch = max_epoch if epoch > max_epoch else epoch ## no out of bounds epoch values
+        if max_epoch == 0:
+            print("Model has no epochs to evaluate!")
+            return
+    except Exception as e:
+        print("Model does not exist / Failed to fetch model data!")
+        print(e)
+        return
+    
+    if epoch < 1:
+        model_path = f'./character_classifier/models/checkpoints/best/{model_name}_best.pth'
+    else:
+        model_path = f'./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth'
+    data_dir = f"./character_classifier/data/filtered/top-{n_chars}"  # Adjust based on location
+    batch_size = 64
+    img_size = 64
 
-batch_size = 64
-img_size = 64
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"[{datetime.now()}] Using device: {device}")
+    _, _, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
+    num_classes = len(class_names)
+    model = ChineseCharacterCNN(num_classes=num_classes).to(device)
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"[{datetime.now()}] Using device: {device}")
-_, _, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
-num_classes = len(class_names)
-model = ChineseCharacterCNN(num_classes=num_classes).to(device)
+    model.load_state_dict(torch.load(model_path, map_location=device))
+    print(f"[{datetime.now()}] Finished model initialization")
 
-def test_model():
     print(f"[{datetime.now()}] Beginning Testing...")
     model.eval()
     correct = 0
@@ -31,11 +55,17 @@ def test_model():
     print(f"[{datetime.now()}] Test Accuracy: {test_accuracy:.2f}%")
 
 
-def main():
-    # Initialize model
-    model.load_state_dict(torch.load('./character_classifier/models/checkpoints/best/model_best.pth', map_location=device))
-    print(f"[{datetime.now()}] Finished model initialization")
-    test_model()
-
 if __name__ == "__main__":
-    main()
+    
+    parser = argparse.ArgumentParser(description="Arguments for Calculating Test Accuracy on a Model")
+    parser.add_argument("--name", type=str, help="Name of the Model to run Test Data Through")
+    parser.add_argument("--epoch", type=int, default=-1, help="[Optional] Epoch Number to Run Test Data Through. If none provided, will use the epoch with the highest validation accuracy")
+    
+    args = parser.parse_args()
+    name = args.name
+    epoch = args.epoch
+    
+    if not name:
+        print("Must provide a model name using the `--name` flag. Program terminated.")
+    else:
+       test_model(name, epoch)

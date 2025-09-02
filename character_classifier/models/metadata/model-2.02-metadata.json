@@ -1,0 +1,8 @@
+{
+    "model_name": "model-2.02",
+    "nchars": 5,
+    "epochs": 5,
+    "max_val_accuracy": 96.02649006622516,
+    "max_val_epoch": 5,
+    "threshold": true
+}

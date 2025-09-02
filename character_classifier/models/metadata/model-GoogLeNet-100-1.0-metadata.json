@@ -1,0 +1,8 @@
+{
+    "model_name": "model-GoogLeNet-100-1.0",
+    "nchars": 100,
+    "epochs": 0,
+    "max_val_accuracy": 0.0,
+    "max_val_epoch": 0,
+    "threshold": "False"
+}

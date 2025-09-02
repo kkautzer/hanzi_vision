@@ -31,12 +31,13 @@ parser.add_argument('--epochs', type=int, default=defaults['num_epochs'], help='
 parser.add_argument('--name', type=str, default=defaults['model_name'], help='The name under which data revolving around this model will be stored.')
 parser.add_argument('--initial', type=int, default=defaults['initial_epoch'], help="The epoch value with which to start this model with [inclusive]")
 parser.add_argument('--pretrained', type=str, default=defaults['saved_pretrained_model_path'], help='The path to a `.pth` file containing the weights of a compatible pretrained model.')
-
+parser.add_argument('--thresholded', type=bool, default=True)
 args = parser.parse_args()
 
 num_characters = args.nchars
 learning_rate = args.lr
 num_epochs = args.epochs
+thresholded = args.thresholded
 
 data_dir = f"{defaults['data_dir']}{num_characters}"
 batch_size = defaults['batch_size']
@@ -62,8 +63,19 @@ printLogAndConsole(f"Model Configuration: { {
     "num_epochs": num_epochs,
     "model_name": model_name,
     "initial_epoch": initial_epoch,
-    "saved_pretrained_model_path": saved_pretrained_model_path
+    "saved_pretrained_model_path": saved_pretrained_model_path,
+    "thresholded": thresholded
 } }")
+
+max_val_accuracy = 0
+max_val_epoch = 0
+try: # load the max validation accuracy from metadata file if it exists
+    with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+        initial_metadata = json.load(f)
+        max_val_accuracy = initial_metadata['max_val_accuracy']
+        max_val_epoch = initial_metadata['max_val_epoch']
+except FileNotFoundError as e:
+    pass
 
 # End of Configuration Parameters
 
@@ -85,7 +97,7 @@ printLogAndConsole(f"[{datetime.now()}] Using device: {device}")
 
 # Load data loaders
 printLogAndConsole(f"[{datetime.now()}] Loading data loaders...")
-train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size, thresholded=True)
+train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size, thresholded=thresholded)
 num_classes = len(class_names)
 printLogAndConsole(f"[{datetime.now()}] Finished loading data loaders")
 
@@ -100,22 +112,23 @@ printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-# Track the highest validation accuracy for storing weights
-highest_val_accuracy = -1
-
 if initial_epoch <= 1:
     printLogAndConsole(f"[{datetime.now()}] Beginning training...")
 else:
     printLogAndConsole(f"[{datetime.now()}] Resuming training from epoch {initial_epoch}...")
 
 # Training loop
-epoch_data_export = [] # {model_name, nchars, LR, epoch, train_acc, val_acc}
+epoch_data_export = [] # {model_name, nchars, LR, epoch, train_loss, val_acc, thresholded}
 for epoch in range(initial_epoch, num_epochs+1):
-    epoch_data_export = []
-    epoch_data_export.append(f"\"{str(model_name)}\"")
-    epoch_data_export.append(str(num_characters))
-    epoch_data_export.append(str(learning_rate))
-    epoch_data_export.append(str(epoch))
+    epoch_data_export = [
+        f"\"{str(model_name)}\"", # [0] model name
+        str(num_characters), # [1] nchars
+        str(learning_rate), # [2] learning rate
+        str(epoch), # [3] epoch
+        None, # [4] training loss
+        None, # [5] validation accuracy
+        str(thresholded) # [6] thresholded images
+    ]
 
     printLogAndConsole(f"[{datetime.now()}] -- Beginning epoch {epoch} of {num_epochs} --")
     model.train()  # Set model to training mode
@@ -134,9 +147,7 @@ for epoch in range(initial_epoch, num_epochs+1):
         
     avg_loss = running_loss / len(train_loader)
     printLogAndConsole(f"[{datetime.now()}] Epoch [{epoch}/{num_epochs}], Loss: {avg_loss:.4f}")
-    epoch_data_export.append(str(avg_loss))
-
-
+    epoch_data_export[4] = str(avg_loss)
 
     # Validation phase
     model.eval()  # Set model to evaluation mode
@@ -154,7 +165,7 @@ for epoch in range(initial_epoch, num_epochs+1):
     val_accuracy = 100 * correct / total
     
     printLogAndConsole(f"[{datetime.now()}] Validation Accuracy: {val_accuracy:.2f}%")
-    epoch_data_export.append(str(val_accuracy))
+    epoch_data_export[5] = str(val_accuracy)
     
     # Save training data after each epoch model checkpoint
     with open("./character_classifier/exports/training_data.csv", "a") as f:
@@ -165,10 +176,25 @@ for epoch in range(initial_epoch, num_epochs+1):
     torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
     printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
     
-    if (val_accuracy > highest_val_accuracy):
-        highest_val_accuracy = val_accuracy
+    if (val_accuracy > max_val_accuracy):
+        max_val_accuracy = val_accuracy
+        max_val_epoch = epoch
         os.makedirs(f"./character_classifier/models/checkpoints/best", exist_ok=True)
         torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/best/{model_name}_best.pth")
         printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/best/{model_name}_best.pth")
+
+    # update metadata (name, completed epochs, highest validation accuracy, highest val epoch, thresholded images [T/F] )
+    with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'w', encoding='utf-8') as f:
+        metadata_json = {
+            "model_name": model_name,
+            "nchars": num_characters,
+            "epochs": epoch,
+            "max_val_accuracy": max_val_accuracy,
+            "max_val_epoch": max_val_epoch,
+            "threshold": thresholded
+        }
+        
+        json.dump(metadata_json, f, indent=4)
+    printLogAndConsole(f"[{datetime.now()}] Metadata updated at ./character_classifier/models/metadata/{model_name}-metadata.json")
 
 print(f"[{datetime.now()}] Training Completed!")

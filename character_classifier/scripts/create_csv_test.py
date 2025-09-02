@@ -3,6 +3,8 @@ from character_classifier.model import ChineseCharacterCNN
 import torch
 from datetime import datetime
 import os
+import argparse
+import json
 
 # initialization - get test images, define model class, etc.
 def initialize(nchars):
@@ -46,9 +48,19 @@ def test_model(model, model_weight_path, loader, device):
 
     # format as model_name, epoch, test_accuracy
     
-def record_to_csv(model_name, nchars):
-    # nchars = 500
-    
+def record_to_csv(model_name):
+    try:
+        with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+            metadata = json.load(f)
+        nchars = metadata['nchars']
+        if metadata['epochs'] == 0:
+            print("Model has no epochs to evaluate!")
+            return
+    except Exception as e:
+        print("Failed to fetch model data!")
+        print(e)
+        return
+        
     print(f"[{datetime.now()}] Initializing model and test data...")
     device, model, loader = initialize(nchars)
     print(f"[{datetime.now()}] Initialization successful!")
@@ -76,4 +88,10 @@ def record_to_csv(model_name, nchars):
     print(f"[{datetime.now()}] Successfully recorded data to ./character_classifier/exports/test/{model_name}-test.csv")
 
 if __name__ == "__main__":
-    record_to_csv("model-GoogLeNet-500-1.0", 500)
+    
+    parser = argparse.ArgumentParser(description="Parameters to create a CSV file of test accuracies")
+    parser.add_argument('--name', type=str, default="model", help="Name of model to create test CSV file for")
+
+    model_name = parser.parse_args().name
+    
+    record_to_csv(model_name)

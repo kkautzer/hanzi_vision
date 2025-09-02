@@ -3,6 +3,9 @@ from flask_cors import CORS as cors
 import cv2
 import numpy as np
 from character_classifier.eval_single import evaluate
+import pandas as pd
+import os
+import json
 
 app = Flask(__name__)
 cors(app)
@@ -14,6 +17,9 @@ def hello_world():
 @app.route('/evaluate', methods=['POST'])
 def evaluate_image():
     print(request)
+    ## update to send model_name with request, based on the available models from `/models`
+    model_name = "model-GoogLeNet-500-1.0"
+    
     if 'image' not in request.files:
         return jsonify({"message": "No image provided"}), 400
     
@@ -27,7 +33,7 @@ def evaluate_image():
             image_array = np.frombuffer(image.read(), np.uint8) # read image bytes, convert to np.uint8 array
             image = cv2.imdecode(image_array, cv2.IMREAD_UNCHANGED) # convert np.uint8 array to a cv2 image            
             # return dictionary of form {id: [id], label: [char]}
-            return jsonify(dict(zip( ("id", "label"), evaluate(image, "model-GoogLeNet-500-1.0", 500) ) )) , 200
+            return jsonify(dict(zip( ("id", "label"), evaluate(image, model_name) ) )) , 200
 
         except Exception as e:
             print(e)
@@ -35,6 +41,29 @@ def evaluate_image():
     else:
         return jsonify({"message": "No image provided [2]"}), 400
     
+@app.route('/models', methods=['GET'])
+def get_models():
+    filenames = os.listdir('./character_classifier/models/metadata_public')
     
+    model_data = []
+    for file in filenames:
+        with open(f'./character_classifier/models/metadata_public/{file}', 'r', encoding='utf-8') as f:
+            j = json.load(f)
+            model_data.append(j)
+            
+    return model_data, 200
+
+@app.route('/characters/<character>', methods=['GET'])
+def get_char_info(character):
+    df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
+    
+    for _, entry in df.iterrows():
+        if entry['character'] == character:
+            print(entry)
+            print(type(entry))
+            return jsonify(entry.to_dict()), 200
+        
+    return "Character not found", 404
+
 if __name__ == "__main__":
     app.run()

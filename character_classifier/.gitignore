@@ -2,6 +2,7 @@ __pycache__
 
 custom_test_images/*
 models/checkpoints/training/*
+models/metadata/*
 
 data/raw
 data/processed

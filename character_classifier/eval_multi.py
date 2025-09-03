@@ -3,7 +3,7 @@ import torch
 from torchvision import transforms
 from character_classifier.model import ChineseCharacterCNN
 import json
-
+import numpy as np
 from character_classifier.scripts.crop_image import crop_image
 
 def evaluate(images, model_name):
@@ -50,6 +50,7 @@ def evaluate(images, model_name):
     
     images_transformed = [transform(crop_image(image)) for image in images]
     images_eval = torch.stack(images_transformed)
+    
     model.eval()
     with torch.no_grad():
         output = model(images_eval) ## unsqueeze to add batch dimension (=1)
@@ -60,12 +61,15 @@ def evaluate(images, model_name):
 
 
 if __name__ == "__main__":
-    images = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
+    
+    ## TODO Add argparser for model name
+    
+    images_initial = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
+        # typed fonts, black text & white background
         cv2.imread('./character_classifier/custom_test_images/IMG_1949.jpg'),
-        cv2.imread('./character_classifier/custom_test_images/IMG_1975.jpg'),
-        cv2.imread('./character_classifier/custom_test_images/IMG_1976.jpg'),
-        cv2.imread('./character_classifier/custom_test_images/IMG_1977.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1949-2.jpg'),
 
+        # computer drawn, black text & white background
         cv2.imread('./character_classifier/custom_test_images/IMG_2000.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_2001.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_2001-2.jpg'),
@@ -84,8 +88,37 @@ if __name__ == "__main__":
         cv2.imread('./character_classifier/custom_test_images/IMG_2014.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_2015.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
+        
+        # computer drawn, non-BW background / foreground colors
+        cv2.imread('./character_classifier/custom_test_images/IMG_2100.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2101.jpg'),
+        
+        # hand drawn
+        cv2.imread('./character_classifier/custom_test_images/IMG_1975.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1976.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1977.jpg'),
+        
+        # actual training samples
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/十/0001.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/只/0002.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/回/0003.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/教/0004.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0005.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0006.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0007.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0008.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0009.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0010.png', np.uint8), cv2.IMREAD_UNCHANGED),
     ]
     
+    images = []
+    for image in images_initial: 
+        
+        ## add channels dimension if not present
+        if (len(np.shape(image)) == 2):
+            image = image[..., np.newaxis]
+            image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+        images.append(image)
+            
     (ids, labels) = evaluate(images, "model-GoogLeNet-500-1.0")
     for id, label in zip(ids, labels): print(str(id)+": " + label)
-    

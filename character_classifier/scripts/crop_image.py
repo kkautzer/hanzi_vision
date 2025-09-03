@@ -25,8 +25,6 @@ def get_crop_dimensions(image):
         bounds for a cropped version of the image, along with the uncropped thresholded image
     """
 
-        
-
     # find edges and apply threshold
     image_thresholded = get_thresholded_image(image)
     

@@ -63,11 +63,8 @@ def get_models():
 
 @app.route("/models/data/<model_name>")
 def get_model_data(model_name):
-    print(model_name)
-    # model_name = request.form.get("model")
 
     model_train_data = training_data[training_data['name'] == model_name]
-    print(model_train_data)
 
     if len(model_train_data) < 1:
         return "No available data for model", 404

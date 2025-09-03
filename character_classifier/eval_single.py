@@ -53,7 +53,7 @@ def evaluate(image, model_name):
         transforms.ToTensor(),                        # Convert image to PyTorch tensor
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
-        
+            
     model.eval()
     with torch.no_grad():
         # apply the newly defined transformations in addition to originals
@@ -122,9 +122,4 @@ if __name__ == "__main__":
             image = image[..., np.newaxis]
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
             
-            
         print(evaluate(image, "model-GoogLeNet-500-1.0"))
-        
-    # for image in images: print(evaluate(image, "model-GoogLeNet-500-1.0", 500, 39))
-    
-    # for image in images[:]: show_image(image)

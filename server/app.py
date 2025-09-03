@@ -11,6 +11,8 @@ import traceback
 app = Flask(__name__)
 cors(app)
 
+training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
+
 @app.route('/') # basic route to test the connection to the API
 def hello_world():
     return "<p>Hello World!</p>"
@@ -58,6 +60,20 @@ def get_models():
             model_data.append(j)
             
     return model_data, 200
+
+@app.route("/models/data/<model_name>")
+def get_model_data(model_name):
+    print(model_name)
+    # model_name = request.form.get("model")
+
+    model_train_data = training_data[training_data['name'] == model_name]
+    print(model_train_data)
+
+    if len(model_train_data) < 1:
+        return "No available data for model", 404
+        
+    return model_train_data.to_dict(orient='records'), 200
+
 
 @app.route('/characters/<character>', methods=['GET'])
 def get_char_info(character):

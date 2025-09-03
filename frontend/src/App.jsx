@@ -4,6 +4,7 @@ import './index.css'
 import Home from './components/Home'
 import Evaluation from './components/Evaluation'
 import Models from './components/Models'
+import TrainingData from './components/TrainingData'
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
     <Route path='/home?' element={<Home /> } />
     <Route path='/evaluate' element={ <Evaluation />} />
     <Route path='/models' element={<Models />} />
+    <Route path='/training' element={<TrainingData />} />
   </Routes>
 }
 

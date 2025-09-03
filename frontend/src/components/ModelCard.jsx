@@ -1,26 +1,15 @@
-
-
+import { useNavigate } from "react-router";
 
 export default function ModelCard(props) {
-    console.log(props.model)
-    const model = props.model
+    // if running locally, use local server, if run on web, use web server
+    const serverURL = (window.location.hostname == "localhost")
+        ? "http://localhost:5000"
+        : "https://hanzi-vision-api.onrender.com"
 
+    const model = props.model
+    const navigate = useNavigate()
     function getModelInfo() {
-        
-        fetch("", {
-            method: "GET"
-        }).then(async (res) => {
-            const r = await res.json();
-            if (res.status === 200) {
-                console.log(r)
-                /// display model info or set state variable to display model information
-                return r
-            } else {
-                console.log(r)
-                alert("Error getting model training information. Please try again later or see the console for more information")
-            }
-        })
-        return
+        navigate('/training', { state: {preselect_model: model}})
     }
 
 
@@ -36,7 +25,7 @@ export default function ModelCard(props) {
                 Total Epochs: {model?.['epochs']}
             </p>
             <div className="card-actions">
-                <button onClick={/*getModelInfo*/null} className="btn btn-primary btn-block">View Training Graph</button>
+                <button onClick={getModelInfo} className="btn btn-primary btn-block">View Training Data</button>
 
             </div>
         </div>

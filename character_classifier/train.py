@@ -29,7 +29,7 @@ parser.add_argument('--epochs', type=int, default=10, help='[Required for all] T
 parser.add_argument('--lr', type=float, default=0.0125, help="[Required for all] Learning rate to use throughout the training process.")
 
 parser.add_argument('--nchars', type=int, default=5, help="[Required for new models] Number of characters to include in the training for this model.")
-parser.add_argument('--thresholded', type=bool, default=True, help='[Required for new models] Whether or not to use edge detected and thresholded images, instead of the standard training images. Defaults to True')
+# parser.add_argument('--thresholded', type=bool, default=True, help='[Required for new models] Whether or not to use edge detected and thresholded images, instead of the standard training images. Defaults to True')
 
 parser.add_argument('--resume', type=bool, default=False, help='[Optional] Whether this training will be a brand new model (set to False), or based on another model (set to True). Defaults to False')
 parser.add_argument('--resepoch', type=int, default=0, help='[Optional] The epoch number to resume training from. Set to -1 to resume from the epoch with the highest validation accuracy; set to 0 to resume from the most recent epoch (default).') # epoch resuming from (default to the most recent, NOT best (use 0 to resume from best))
@@ -43,7 +43,7 @@ learning_rate = args.lr
 
 if not args.resume: # starting with a completely untrained model
     num_characters = args.nchars
-    thresholded = args.thresholded
+    thresholded = False#args.thresholded
     
     saved_pretrained_model_path = '' ## bypass NameError errors for undefined field
 
@@ -145,7 +145,7 @@ printLogAndConsole(f"[{datetime.now()}] Using device: {device}")
 
 # Load data loaders
 printLogAndConsole(f"[{datetime.now()}] Loading data loaders...")
-train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size, thresholded=thresholded)
+train_loader, val_loader, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
 num_classes = len(class_names)
 printLogAndConsole(f"[{datetime.now()}] Finished loading data loaders")
 

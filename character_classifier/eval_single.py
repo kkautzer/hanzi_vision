@@ -24,7 +24,6 @@ def evaluate(image, model_name):
         with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         n_chars = metadata['nchars']
-        thresholded = metadata['threshold']
         if metadata['epochs'] == 0:
             print("Model has no epochs to evaluate!")
             return
@@ -45,54 +44,21 @@ def evaluate(image, model_name):
     model = ChineseCharacterCNN(num_classes=num_classes).to(device)
     path_to_model = f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
-
-    
-    def transform_cv2(image):
-        """
-        Transformations intended for thresholded-trained images
-        """
-        image = crop_image(image, thresholded=thresholded) # get cropped & edge detected image
-        
-        # otherwise, perform more extensive transformations
-        grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # convert to grayscale
-        resized = cv2.resize(grayscale, dsize=(64, 64), interpolation=cv2.INTER_AREA) # shrink
-        _, threshold = cv2.threshold(resized, thresh=40, maxval=255, type=cv2.THRESH_BINARY) # threshold
-                
-        # # cv2.namedWindow("Cropped", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Grayscale", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Resized", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Threshold", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Inverted", cv2.WINDOW_NORMAL)
-        # # cv2.imshow("Cropped", image)
-        # # cv2.imshow("Grayscale", grayscale)
-        # # cv2.imshow("Resized", resized)
-        # # cv2.imshow("Threshold", threshold)
-        # # cv2.imshow("Inverted", inverted)
-        
-        # # cv2.waitKey(0)
-        # # cv2.destroyAllWindows()
-        
-        return threshold
-    
-    
-    # transform_cv2(image[:])
-    
+            
     # Series of transformations to apply to normalize each input image
     transform = transforms.Compose([
+        transforms.ToPILImage(),
+        transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
+        transforms.Resize((img_size, img_size)),      # Resize to a consistent size
         transforms.ToTensor(),                        # Convert image to PyTorch tensor
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
-    
-    # # # eval_img = np.transpose(transform_cv2(image).numpy(), (1,2,0))
-    # # # cv2.namedWindow("Evaluated Image", cv2.WINDOW_NORMAL)
-    # # # cv2.imshow("Evaluated Image", eval_img)
-    # # # cv2.waitKey(0)
-    # # # cv2.destroyAllWindows()
-    
+        
     model.eval()
     with torch.no_grad():
         # apply the newly defined transformations in addition to originals
-        output = model(transform(transform_cv2(image)).unsqueeze(0)) ## unsqueeze to add batch dimension (=1)
+        output = model(transform(crop_image(image)).unsqueeze(0))
+            
         predicted = torch.argmax(output, 1).item()
         
     # print(f"[{datetime.now()}] Finished Evaluation!")
@@ -103,29 +69,29 @@ if __name__ == "__main__":
     
     # replace with path to any image file
     images = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
-        # # typed fonts, black text & white background
-        # cv2.imread('./character_classifier/custom_test_images/IMG_1949.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_1949-2.jpg'),
+        # typed fonts, black text & white background
+        cv2.imread('./character_classifier/custom_test_images/IMG_1949.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_1949-2.jpg'),
 
-        # # computer drawn, black text & white background
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2000.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2001.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2001-2.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2002.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2003.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2004.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2005.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2006.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2007.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2008.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2009.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2010.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2011.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2012.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2013.jpg'), 
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2014.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2015.jpg'),
-        # cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
+        # computer drawn, black text & white background
+        cv2.imread('./character_classifier/custom_test_images/IMG_2000.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2001.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2001-2.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2002.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2003.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2004.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2005.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2006.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2007.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2008.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2009.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2010.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2011.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2012.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2013.jpg'), 
+        cv2.imread('./character_classifier/custom_test_images/IMG_2014.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2015.jpg'),
+        cv2.imread('./character_classifier/custom_test_images/IMG_2016.jpg'),
         
         # computer drawn, non-BW background / foreground colors
         cv2.imread('./character_classifier/custom_test_images/IMG_2100.jpg'),

@@ -15,7 +15,6 @@ def evaluate(images, model_name):
         with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         n_chars = metadata['nchars']
-        thresholded = metadata['threshold']
         if metadata['epochs'] == 0:
             print("Model has no epochs to evaluate!")
             return
@@ -39,40 +38,17 @@ def evaluate(images, model_name):
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 
 
-    def transform_cv2(image):
-        """
-        Transformations intended for thresholded-trained images
-        """
-        image = crop_image(image, thresholded=thresholded) # get cropped & edge detected image
-        
-        # otherwise, perform more extensive transformations
-        grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # convert to grayscale
-        resized = cv2.resize(grayscale, dsize=(64, 64), interpolation=cv2.INTER_AREA) # shrink
-        _, threshold = cv2.threshold(resized, thresh=40, maxval=255, type=cv2.THRESH_BINARY) # threshold
-                
-        # # cv2.namedWindow("Cropped", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Grayscale", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Resized", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Threshold", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Inverted", cv2.WINDOW_NORMAL)
-        # # cv2.imshow("Cropped", image)
-        # # cv2.imshow("Grayscale", grayscale)
-        # # cv2.imshow("Resized", resized)
-        # # cv2.imshow("Threshold", threshold)
-        # # cv2.imshow("Inverted", inverted)
-        
-        # # cv2.waitKey(0)
-        # # cv2.destroyAllWindows()
-        
-        return threshold
-    
     # Series of transformations to apply to normalize each input image
     transform = transforms.Compose([
+        transforms.ToPILImage(),
+        transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
+        transforms.Resize((img_size, img_size)),      # Resize to a consistent size
         transforms.ToTensor(),                        # Convert image to PyTorch tensor
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
+        
     
-    images_transformed = [transform(transform_cv2(image)) for image in images]
+    images_transformed = [transform(crop_image(image)) for image in images]
     images_eval = torch.stack(images_transformed)
     model.eval()
     with torch.no_grad():

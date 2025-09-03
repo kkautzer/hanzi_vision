@@ -1,3 +1,2 @@
 model-GoogLeNet-500-1.0
-model-GoogLeNet-500-2.0
 model-GoogLeNet-750-1.0

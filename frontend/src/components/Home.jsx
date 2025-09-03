@@ -32,9 +32,11 @@ function Home() {
                         model currently utilizes a tweaked GoogLeNet-based 
                         architecture, as this provided the best trade-off between
                         training time and computational resources (my laptop). It 
-                        was trained using the CASIA-HWDB1.0 and HWDB1.2 datasets,
-                        which [together] contain approximately 2.6 million sample 
-                        images and 7,185 distinct Hanzi.
+                        was trained using the <a className="link hover:link-primary" 
+                            href='https://nlpr.ia.ac.cn/databases/handwriting/Offline_database.html'>
+                        CASIA-HWDB1.0 and HWDB1.2 datasets,</a> which [together] 
+                        contain approximately 2.6 million sample images and 7,185 
+                        distinct Hanzi.
                     </p>
                     <p>
                         This interface also allows users to easily evaluate their own 

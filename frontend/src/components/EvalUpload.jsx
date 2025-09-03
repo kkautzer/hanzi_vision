@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import LoadingAnimationModal from './LoadingAnimationModal'
 
-export default function EvalUpload() {
+export default function EvalUpload(props) {
 
     // if running locally, use local server, if run on web, use web server
     const serverURL = (window.location.hostname == "localhost")
@@ -10,41 +9,19 @@ export default function EvalUpload() {
 
     const [ allowSubmit, setAllowSubmit ] = useState(true);
 
-    function submit(e) {
+    async function submit(e) {
         e.preventDefault();
-
-        document.getElementById("uploadLoadingModal").showModal();
         setAllowSubmit(false)
 
-        
         const formData = new FormData();
         formData.append('image', e.target.image.files[0]);
-        
-        fetch(`${serverURL}/evaluate`, {
-            method: "POST",
-            body: formData
-        }).then(async (res) => {
-            console.log(res)
-            const r = await res.json();
-            if (res.status === 200) {
-                console.log(r)
-                alert(`Predicted character: ${r.label}`)
-            } else {
-                alert(r.message)
-            }
-        }).then(() => {
-            setAllowSubmit(true)
-            document.getElementById("uploadLoadingModal").close();
-        }).catch(err => {
-            alert(err);
-            setAllowSubmit(true)
-            document.getElementById('uploadLoadingModal').close();
 
-        })
+        props.evaluate(formData)    
+
+        setAllowSubmit(true) 
     }
 
     return <>
-        <LoadingAnimationModal modalId={"uploadLoadingModal"} />
 
         <h1 className="mt-2">Evaluation - Photo Upload Page</h1>
         <form onSubmit={submit}>

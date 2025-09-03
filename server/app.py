@@ -6,6 +6,7 @@ from character_classifier.eval_single import evaluate
 import pandas as pd
 import os
 import json
+import traceback
 
 app = Flask(__name__)
 cors(app)
@@ -17,8 +18,12 @@ def hello_world():
 @app.route('/evaluate', methods=['POST'])
 def evaluate_image():
     print(request)
+    
     ## update to send model_name with request, based on the available models from `/models`
-    model_name = "model-GoogLeNet-500-1.0"
+    if request.form.get('model') == None:
+        return jsonify({"message": "No model selection provided"}), 400
+    
+    model_name = request.form.get('model') ## check if correct
     
     if 'image' not in request.files:
         return jsonify({"message": "No image provided"}), 400
@@ -36,6 +41,7 @@ def evaluate_image():
             return jsonify(dict(zip( ("id", "label"), evaluate(image, model_name) ) )) , 200
 
         except Exception as e:
+            print(traceback.format_exc())
             print(e)
             return jsonify({"message": "Failed to evaluate image"}), 500
     else:

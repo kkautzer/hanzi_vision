@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import LoadingAnimationModal from './LoadingAnimationModal'
 
-export default function EvalDrawing() {
+export default function EvalDrawing(props) {
     // if running locally, use local server, if run on web, use web server
     const serverURL = (window.location.hostname == "localhost")
         ? "http://localhost:5000"
@@ -37,41 +37,19 @@ export default function EvalDrawing() {
     async function submit(e) {
         e.preventDefault();
 
-        document.getElementById('drawingLoadingModal').showModal();
         setAllowSubmit(false);
 
         const imgURI = await canvasRef.current.exportImage("png");
-
         const blob = dataURItoBlob(imgURI);
-
         const formData = new FormData();
         formData.append('image', blob);
-        fetch(`${serverURL}/evaluate`, {
-            method: "POST",
-            body: formData
-        }).then(async (res) => {
-            console.log(res)
-            const r = await res.json();
-            if (res.status === 200) {
-                console.log(r)
-                alert(`Predicted character: ${r.label}`)
-            } else {
-                alert(r.message)
-            }
-        }).then(() => {
-            setAllowSubmit(true);
-            document.getElementById('drawingLoadingModal').close();
-        }).catch(err => {
-            alert(err);
-            setAllowSubmit(true)
-            document.getElementById('drawingLoadingModal').close();
 
-        })
+        props.evaluate(formData)
+        
+        setAllowSubmit(true)
     }
 
-    return <>
-        <LoadingAnimationModal modalId={"drawingLoadingModal"} />
-        
+    return <>        
         <h1 className="mt-2">Evaluation - Photo Drawing Page</h1>
         <div className='mt-2 space-x-2'>
             <button onClick={() => canvasRef?.current?.clearCanvas()} className='btn btn-error'>Clear</button>

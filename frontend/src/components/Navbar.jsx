@@ -6,6 +6,8 @@ export default function Navbar() {
             <ul className="menu sm:menu-horizontal px-1 primary-case">
                 <li><NavLink to='/home'>Home</NavLink></li>
                 <li><NavLink to='/evaluate'>Evaluate</NavLink></li>
+                <li><NavLink to='/models'>Models</NavLink></li>
+                {/* <li><NavLink to='/characters'>Characters</NavLink></li> */}
             </ul>
         </div>
     </div>

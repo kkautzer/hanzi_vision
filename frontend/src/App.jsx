@@ -3,6 +3,7 @@ import './index.css'
 
 import Home from './components/Home'
 import Evaluation from './components/Evaluation'
+import Models from './components/Models'
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
   return <Routes>
     <Route path='/home?' element={<Home /> } />
     <Route path='/evaluate' element={ <Evaluation />} />
+    <Route path='/models' element={<Models />} />
   </Routes>
 }
 

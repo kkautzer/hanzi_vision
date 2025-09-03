@@ -72,8 +72,7 @@ def evaluate(image, model_name):
         # # cv2.waitKey(0)
         # # cv2.destroyAllWindows()
         
-        toTensor = transforms.ToTensor()
-        return toTensor(threshold) 
+        return threshold
     
     
     # transform_cv2(image[:])

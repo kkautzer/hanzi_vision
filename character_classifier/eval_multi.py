@@ -35,7 +35,7 @@ def evaluate(images, model_name):
     num_classes = len(class_names)
 
     model = ChineseCharacterCNN(num_classes=num_classes).to(device)
-    path_to_model = f"./character_classifier/checkpoints/best/{model_name}_best.pth"
+    path_to_model = f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 
 
@@ -64,8 +64,7 @@ def evaluate(images, model_name):
         # # cv2.waitKey(0)
         # # cv2.destroyAllWindows()
         
-        toTensor = transforms.ToTensor()
-        return toTensor(threshold) 
+        return threshold
     
     # Series of transformations to apply to normalize each input image
     transform = transforms.Compose([
@@ -73,7 +72,7 @@ def evaluate(images, model_name):
         transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
     ])
     
-    images_transformed = [transform(transform_cv2(image, thresholded=thresholded)) for image in images]
+    images_transformed = [transform(transform_cv2(image)) for image in images]
     images_eval = torch.stack(images_transformed)
     model.eval()
     with torch.no_grad():

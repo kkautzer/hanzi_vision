@@ -19,7 +19,6 @@ def hello_world():
 
 @app.route('/evaluate', methods=['POST'])
 def evaluate_image():
-    print(request)
     
     ## update to send model_name with request, based on the available models from `/models`
     if request.form.get('model') == None:

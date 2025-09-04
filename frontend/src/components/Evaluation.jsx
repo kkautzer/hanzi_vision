@@ -14,6 +14,10 @@ export default function Evaluation() {
 
     const [ isDrawing, setIsDrawing ] = useState(0)
     const [ models, setModels ] = useState([])
+    const [ evalResult, setEvalResult ] = useState({})
+    const [ charData, setCharData ] = useState({})
+    const [ allowSubmit, setAllowSubmit ] = useState(true)
+
     const modelRef = useRef(null)
     const DEFAULT_MODEL_NAME = "model-GoogLeNet-750-2.0"
 
@@ -23,7 +27,6 @@ export default function Evaluation() {
         }).then(async (res) => {
             const r = await res.json()
             if (res.status == 200) {
-                console.log(r)
                 setModels(r)
             } else {
                 console.log(r)
@@ -42,11 +45,9 @@ export default function Evaluation() {
             method: "POST",
             body: formData
         }).then(async (res) => {
-            console.log(res)
             const r = await res.json();
             if (res.status === 200) {
-                console.log(r)
-                alert(`Predicted character: ${r.label}`)
+                setEvalResult(r)
             } else {
                 alert(r.message)
             }
@@ -61,13 +62,33 @@ export default function Evaluation() {
         })
     }
 
+    useEffect(() => {
+        if (Object.keys(evalResult).length < 1) {
+            return
+        }
+
+        fetch(`${serverURL}/characters/${evalResult?.['label']}`, { method: "GET" })
+        .then(async (res) => {
+            const r = await res.json()
+            if (res.status === 200) {
+                setCharData(r)
+            } else {
+                alert("Failed to get character data! See terminal or try again later")
+                
+            }
+        }).catch((err) => {
+            alert("Error - please try again later or check the console")
+            console.log(err)
+        })
+    }, [evalResult])
+    
     return <div>
         <LoadingAnimationModal modalId={"loadingModal"} />
 
         <div>
             <Navbar/>
         </div>
-        <div className="mx-10 my-4 text-center">
+        <div className="mx-20 my-4 text-center">
             <h4 className="text-xl">Choose Evaluation Model &darr;</h4>
 
             {models.length > 0 ? 
@@ -78,8 +99,26 @@ export default function Evaluation() {
                 </select>
             : <p className="text-md mt-2"><em>Loading Models...</em></p> 
             }
-            <button onClick={() => setIsDrawing((o) => !o)} className="btn btn-primary mt-4 ">Switch to {(isDrawing) ? "upload" : "drawing canvas"}</button>
-            {(isDrawing) ? <EvalDrawing evaluate={run_eval} /> : <EvalUpload evaluate={run_eval} />}
+
+            <div className='flex gap-x-15 mt-2'>
+                <div className="w-2/3 mt-4">
+                    <button onClick={() => setIsDrawing((o) => !o)} className="btn btn-primary">Switch to {(isDrawing) ? "upload" : "drawing canvas"}</button>
+                    {(isDrawing) ? <EvalDrawing evaluate={run_eval} /> : <EvalUpload evaluate={run_eval} />}
+
+                </div>
+                <div className="w-1/3 mt-4">
+                    {Object.keys(charData).length > 0 ? 
+                    <div className="text-center">
+                        <p className="text-xl"><strong>{charData['character']}</strong> ({charData['pinyin']})</p>
+                        <p><em>{charData['definition']}</em></p>
+                        <p>#{charData['frequency_rank']} Most Common Character</p>
+                        <p>HSK Level {charData['hsk_level']}</p>
+                    </div>
+
+                    : <p>Evaluate an image using the panel to the left. Once completed, results will show up here!</p>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 

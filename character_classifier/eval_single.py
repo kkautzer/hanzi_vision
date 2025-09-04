@@ -21,7 +21,7 @@ def evaluate(image, model_name):
     """
     
     try:
-        with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+        with open(f'./character_classifier/models/metadata{"" if __name__=="__main__" else "_public"}/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         n_chars = metadata['nchars']
         if metadata['epochs'] == 0:

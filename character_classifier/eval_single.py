@@ -115,12 +115,12 @@ if __name__ == "__main__":
         cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/只/0002.png', np.uint8), cv2.IMREAD_UNCHANGED),
         cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/回/0003.png', np.uint8), cv2.IMREAD_UNCHANGED),
         cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/教/0004.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0005.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0006.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0007.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0008.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0009.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0010.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0005.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0006.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0007.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0008.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0009.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0010.png', np.uint8), cv2.IMREAD_UNCHANGED),
     ]
     
     

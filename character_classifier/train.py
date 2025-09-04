@@ -90,7 +90,8 @@ img_size = 64
 ## use the standard `print()` function, else an indicator message will be printed to the console ##
 
 ## if not resuming, or if scaffolding from a previous model, check that the new model name is not in use
-if (not args.resume or (args.resume and args.resname != model_name)):
+
+if (not args.resume or (args.resume and load_model_name != model_name)):
     initial_epoch = 1
     if os.path.isfile(f'./character_classifier/models/metadata/{model_name}-metadata.json'):
         print("Cannot use a model name that is already in use - please choose another using the `--name` parameter and try again!")

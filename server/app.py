@@ -77,8 +77,6 @@ def get_char_info(character):
     
     for _, entry in df.iterrows():
         if entry['character'] == character:
-            print(entry)
-            print(type(entry))
             return jsonify(entry.to_dict()), 200
         
     return "Character not found", 404

@@ -5,6 +5,7 @@ from character_classifier.model import ChineseCharacterCNN
 import json
 import numpy as np
 from character_classifier.scripts.crop_image import crop_image
+import argparse
 
 def evaluate(images, model_name):
     '''
@@ -63,8 +64,11 @@ def evaluate(images, model_name):
 
 if __name__ == "__main__":
     
-    ## TODO Add argparser for model name
+    parser = argparse.ArgumentParser(description="Parameters for Evaluating a Model on Chinese Hanzi Characters")
     
+    parser.add_argument("--name", type=str, help="Name of the model to use for evaluating images")
+    
+    model_name = parser.parse_args().name    
     images_initial = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
         # typed fonts, black text & white background
         cv2.imread('./character_classifier/custom_test_images/IMG_1949.jpg'),
@@ -121,5 +125,5 @@ if __name__ == "__main__":
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
         images.append(image)
             
-    (ids, labels) = evaluate(images, "model-GoogLeNet-500-1.0")
+    (ids, labels) = evaluate(images, model_name)
     for id, label in zip(ids, labels): print(str(id)+": " + label)

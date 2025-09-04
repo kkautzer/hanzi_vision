@@ -5,6 +5,7 @@ from character_classifier.model import ChineseCharacterCNN
 from character_classifier.scripts.crop_image import crop_image
 import json
 import numpy as np
+import argparse
     
 def evaluate(image, model_name):
     """
@@ -68,6 +69,12 @@ def evaluate(image, model_name):
 
 if __name__ == "__main__":
     
+    parser = argparse.ArgumentParser(description="Parameters for Evaluating a Model on Chinese Hanzi Characters")
+    
+    parser.add_argument("--name", type=str, help="Name of the model to use for evaluating images")
+    
+    model_name = parser.parse_args().name
+    
     # replace with path to any image file
     images = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
         # typed fonts, black text & white background
@@ -108,12 +115,12 @@ if __name__ == "__main__":
         cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/只/0002.png', np.uint8), cv2.IMREAD_UNCHANGED),
         cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/回/0003.png', np.uint8), cv2.IMREAD_UNCHANGED),
         cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/教/0004.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0005.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0006.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0007.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0008.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0009.png', np.uint8), cv2.IMREAD_UNCHANGED),
-        # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0010.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0005.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0006.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0007.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0008.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0009.png', np.uint8), cv2.IMREAD_UNCHANGED),
+        cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0010.png', np.uint8), cv2.IMREAD_UNCHANGED),
     ]
     
     
@@ -123,4 +130,4 @@ if __name__ == "__main__":
             image = image[..., np.newaxis]
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
             
-        print(evaluate(image, "model-GoogLeNet-500-1.0"))
+        print(evaluate(image, model_name))

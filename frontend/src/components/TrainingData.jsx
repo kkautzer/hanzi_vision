@@ -67,7 +67,8 @@ export default function TrainingData(props) {
                 : <p className="text-md mt-2"><em>Loading Models...</em></p> 
                 }
             </div>
- 
+                
+            {/* TODO - Update the below to be a graph of epoch vs validation accuracy */}
             <div className="mt-4 text-center">
                 <ul>
                     {data.map((entry) => {

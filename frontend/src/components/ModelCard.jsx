@@ -21,7 +21,7 @@ export default function ModelCard(props) {
             </h2>
             <p>
                 <em>{model?.['nchars']} characters</em><br/>
-                Highest Validation Accuracy: {model?.['max_val_accuracy']}%<br/>
+                Highest Validation Accuracy: {model?.['max_val_accuracy']?.toFixed(2)}%<br/>
                 Total Epochs: {model?.['epochs']}
             </p>
             <div className="card-actions">

@@ -25,6 +25,11 @@ export default function Models() {
         })
     }, [])
 
+    const newModels = [
+        // "model-GoogLeNet-500-1.0"
+        "model-GoogLeNet-750-1.0", 
+    ]
+    
     return <div>
         <div>
             <Navbar />
@@ -34,7 +39,7 @@ export default function Models() {
 
             <div className="flex flex-col gap-y-2 mt-4">
                 {models ? models.map((mod) => {
-                    return <ModelCard model={mod} new={true} key={mod["model_name"]} />
+                    return <ModelCard model={mod} new={newModels.includes(mod['model_name'])} key={mod["model_name"]} />
                 }) : <p className="text-xl text-red">Loading Models...</p>}
             </div>
         </div>

@@ -8,7 +8,7 @@ import ast
 
 def create_csv():
     # each list entry will be appended to a .csv
-    export_data = [["name", "nchars", "lr", "epoch", "train_loss", "val_accuracy", "thresholded"]] 
+    export_data = [["name", "nchars", "lr", "epoch", "train_loss", "val_accuracy"]] 
 
     # open folder of log files
     for filename in os.listdir("./character_classifier/logs"):
@@ -20,7 +20,7 @@ def create_csv():
                 # if the line starts with Epoch [ax/yz], update the epoch # and training loss
                 # if the line starts with Validation Accuracy:, set the val_accuracy
             # then, we can push to export_data, and reset values for epoch, loss, and accuracy
-            data = [None] * 7 # ["name", "nchars", "lr", "epoch", "train_loss", "val_accuracy"]
+            data = [None] * 6 # ["name", "nchars", "lr", "epoch", "train_loss", "val_accuracy"]
             max_val = float(0)
             max_val_epoch = 0
             for line in log.readlines(): # read file lines
@@ -34,7 +34,6 @@ def create_csv():
                     data[0] = f"\"{params_dict['model_name']}\"" ## name
                     data[1] = str(params_dict['num_characters']) ## nchars
                     data[2] = str(params_dict['learning_rate']) ## learning rate
-                    data[6] = str(params_dict.get('thresholded', False) ) ## if thresholded images were used for training
                 elif (line.startswith("Epoch [")): 
                     data[3] = line.split("Epoch [")[-1]. split('/')[0] ## epoch
                     data[4] = line.split("Epoch [")[-1].split(", Loss: ")[-1] ## loss
@@ -53,7 +52,6 @@ def create_csv():
                 "epochs": int(data[3] or 0),
                 "max_val_accuracy": max_val,
                 "max_val_epoch": max_val_epoch,
-                "threshold": data[6]
             }
             json.dump(metadata_json, f, indent=4)
         ## put most recent data to the metadata file 

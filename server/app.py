@@ -50,11 +50,11 @@ def evaluate_image():
     
 @app.route('/models', methods=['GET'])
 def get_models():
-    filenames = os.listdir('./character_classifier/models/metadata_public')
+    filenames = os.listdir('./character_classifier/exports/metadata_public')
     
     model_data = []
     for file in filenames:
-        with open(f'./character_classifier/models/metadata_public/{file}', 'r', encoding='utf-8') as f:
+        with open(f'./character_classifier/exports/metadata_public/{file}', 'r', encoding='utf-8') as f:
             j = json.load(f)
             model_data.append(j)
             

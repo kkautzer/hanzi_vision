@@ -21,11 +21,11 @@ def get_dataloaders(data_dir, batch_size=64, img_size=64):
         class_names (list): List of class (character) names.
     """
 
-    # class CropAndThresholdTransform:
+    # class CropTransform:
     #     def __call__(self, img):
     #         # convert (C, H, W) to (H, W, C)
     #         image = np.transpose(img.numpy() * 255, (1, 2, 0))            
-    #         cropped = crop_image(image, thresholded=thresholded) # get cropped & edge detected image
+    #         cropped = crop_image(image) # get cropped image
     #         grayscale = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY) # convert to grayscale
     #         resized = cv2.resize(grayscale, dsize=(img_size, img_size), interpolation=cv2.INTER_AREA) # shrink
     #         _, threshold = cv2.threshold(resized, thresh=40, maxval=255, type=cv2.THRESH_BINARY) # threshold

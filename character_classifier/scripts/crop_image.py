@@ -69,25 +69,18 @@ def get_crop_dimensions(image):
     
     return y_top, y_bottom, x_left, x_right, image_thresholded
 
-def crop_image(image, thresholded=False):
+def crop_image(image):
     """
     Args:
         image (NumPy Array): A NumPy array with shape `(height, width, channels=3)`
-        
-        thresholded (bool, optional): Set to True to use the thresholded version of the provided `image`, which also includes small contour black-outs. Defaults to False.
-
     Returns:
         (NumPy Array): NumPy array with shape `(height, width, channels=3)` representing the
         cropped `image`, depending on the value of `thresholded` parameter
     """
     
     y_top, y_bottom, x_left, x_right, thresholded_image = get_crop_dimensions(image)
-
-    if (thresholded):
-        return thresholded_image[y_top:y_bottom, x_left:x_right]
-    else:
-        return image[y_top:y_bottom, x_left:x_right]
-
+    return image[y_top:y_bottom, x_left:x_right]
+        
 if __name__=="__main__":
     # replace with path to any image file
     images = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
@@ -138,16 +131,3 @@ if __name__=="__main__":
         if (len(np.shape(image)) == 2):
             image = image[..., np.newaxis]
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-            
-        
-        # # cropped = crop_image(image, thresholded=True)
-        # # grayscale_cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
-        # # grayscale_cropped_resized = cv2.resize(grayscale_cropped, dsize=(64, 64), interpolation=cv2.INTER_AREA)
-        # # cv2.namedWindow("Cropped", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Grayscale", cv2.WINDOW_NORMAL)
-        # # cv2.namedWindow("Resized", cv2.WINDOW_NORMAL)
-        # # cv2.imshow("Cropped", cropped)
-        # # cv2.imshow("Grayscale", grayscale_cropped)
-        # # cv2.imshow("Resized", grayscale_cropped_resized)
-        # # cv2.waitKey(0)
-        # # cv2.destroyAllWindows()

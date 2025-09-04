@@ -29,7 +29,6 @@ parser.add_argument('--epochs', type=int, default=10, help='[Required for all] T
 parser.add_argument('--lr', type=float, default=0.0125, help="[Required for all] Learning rate to use throughout the training process.")
 
 parser.add_argument('--nchars', type=int, default=5, help="[Required for new models] Number of characters to include in the training for this model.")
-# parser.add_argument('--thresholded', type=bool, default=True, help='[Required for new models] Whether or not to use edge detected and thresholded images, instead of the standard training images. Defaults to True')
 
 parser.add_argument('--resume', type=bool, default=False, help='[Optional] Whether this training will be a brand new model (set to False), or based on another model (set to True). Defaults to False')
 parser.add_argument('--resepoch', type=int, default=0, help='[Optional] The epoch number to resume training from. Set to -1 to resume from the epoch with the highest validation accuracy; set to 0 to resume from the most recent epoch (default).') # epoch resuming from (default to the most recent, NOT best (use 0 to resume from best))
@@ -43,7 +42,6 @@ learning_rate = args.lr
 
 if not args.resume: # starting with a completely untrained model
     num_characters = args.nchars
-    thresholded = False#args.thresholded
     
     saved_pretrained_model_path = '' ## bypass NameError errors for undefined field
 
@@ -57,11 +55,9 @@ else: # resuming from a pretrained weights
     # try-except to check if metadata file actually exists
     try:
         with open(f'./character_classifier/models/metadata/{load_model_name}-metadata.json', 'r', encoding='utf-8') as f:
-            # get nchars & thresholded from metadata
+            # get nchars from metadata
             metadata = json.load(f)
             num_characters = metadata['nchars']
-            thresholded = metadata['threshold']
-            pass
     except Exception as e:
         print(e)
         print("Error -- Cannot resume training from a model that does not exist / has no completed epochs!")
@@ -69,15 +65,15 @@ else: # resuming from a pretrained weights
         
     if args.resepoch < 0:
         # best
-        initial_epoch = metadata['max_val_epoch']
+        initial_epoch = metadata['max_val_epoch']+1
         saved_pretrained_model_path = f"./character_classifier/models/checkpoints/best/{load_model_name}_best.pth"
     elif args.resepoch == 0 or args.resepoch > metadata['epochs']:
         # most recent
-        initial_epoch = metadata['epochs']
+        initial_epoch = metadata['epochs']+1
         saved_pretrained_model_path = f"./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{metadata['epochs']}.pth"
     else:
         # specified epoch
-        initial_epoch = args.resepoch
+        initial_epoch = args.resepoch+1
         saved_pretrained_model_path = f'./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{args.resepoch}.pth'
 
 
@@ -111,7 +107,6 @@ printLogAndConsole(f"Model Configuration: { {
     "num_epochs": num_epochs,
     "initial_epoch": initial_epoch,
     "saved_pretrained_model_path": saved_pretrained_model_path,
-    "thresholded": thresholded
 } }")
 
 
@@ -167,7 +162,7 @@ else:
     printLogAndConsole(f"[{datetime.now()}] Resuming training from epoch {initial_epoch}...")
 
 # Training loop
-epoch_data_export = [] # {model_name, nchars, LR, epoch, train_loss, val_acc, thresholded}
+epoch_data_export = [] # {model_name, nchars, LR, epoch, train_loss, val_acc}
 for epoch in range(initial_epoch, initial_epoch+num_epochs):
     epoch_data_export = [
         f"\"{str(model_name)}\"", # [0] model name
@@ -176,7 +171,6 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
         str(epoch), # [3] epoch
         None, # [4] training loss
         None, # [5] validation accuracy
-        str(thresholded) # [6] thresholded images
     ]
 
     printLogAndConsole(f"[{datetime.now()}] -- Beginning epoch {epoch} of {num_epochs} --")
@@ -213,7 +207,7 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
 
     val_accuracy = 100 * correct / total
     
-    printLogAndConsole(f"[{datetime.now()}] Validation Accuracy: {val_accuracy:.2f}%")
+    printLogAndConsole(f"[{datetime.now()}] Validation Accuracy: {val_accuracy}%")
     epoch_data_export[5] = str(val_accuracy)
     
     # Save training data after each epoch model checkpoint
@@ -232,7 +226,7 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
         torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/best/{model_name}_best.pth")
         printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/best/{model_name}_best.pth")
 
-    # update metadata (name, completed epochs, highest validation accuracy, highest val epoch, thresholded images [T/F] )
+    # update metadata (name, completed epochs, highest validation accuracy, highest val epoch)
     with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'w', encoding='utf-8') as f:
         metadata_json = {
             "model_name": model_name,
@@ -240,7 +234,6 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
             "epochs": epoch,
             "max_val_accuracy": max_val_accuracy,
             "max_val_epoch": max_val_epoch,
-            "threshold": thresholded,
         }
         
         json.dump(metadata_json, f, indent=4)

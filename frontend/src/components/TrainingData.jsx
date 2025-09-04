@@ -71,7 +71,7 @@ export default function TrainingData(props) {
             <div className="mt-4 text-center">
                 <ul>
                     {data.map((entry) => {
-                        return <li key={`${entry["epoch"]}+${entry['val_accuracy']}`} ><strong>Epoch {entry['epoch']}</strong>: <em>{entry['val_accuracy']}% Validation Accuracy</em></li>
+                        return <li key={`${entry["epoch"]}+${entry['val_accuracy']}`} ><strong>Epoch {entry['epoch']}</strong>: <em>{entry['val_accuracy'].toFixed(2)}% Validation Accuracy</em></li>
                     })}
                 </ul>
             </div>

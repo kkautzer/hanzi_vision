@@ -1,75 +1,16 @@
 import cv2
-import torch
-from torchvision import transforms
-from character_classifier.model import ChineseCharacterCNN
-import json
-import numpy as np
-from character_classifier.scripts.crop_image import crop_image
-import argparse
-
-def evaluate(images, model_name):
-    '''
+import numpy as np    
     
-    '''
-    
-    try:
-        metadata_location = f'./character_classifier/{"models/metadata" if __name__=="__main__" else "/exports/metadata_public"}/{model_name}-metadata.json'
-        with open(metadata_location, 'r', encoding='utf-8') as f:
-            metadata = json.load(f)
-        n_chars = metadata['nchars']
-        if metadata['epochs'] == 0:
-            print("Model has no epochs to evaluate!")
-            return
-    except Exception as e:
-        print("Model does not exist / Failed to fetch model data!")
-        print(e)
-        return
-    
-    batch_size = 64
-    img_size = 64
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    with open(f"./character_classifier/classes/top-{n_chars}-classes.txt", 'r', encoding='utf-8') as f:
-        class_names = [line.strip() for line in f.readlines()]
+def convert_image(image):
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    _, thresholded = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    if (cv2.mean(thresholded)[0] < 100):
+        thresholded = cv2.bitwise_not(thresholded)
         
-    num_classes = len(class_names)
-
-    model = ChineseCharacterCNN(num_classes=num_classes).to(device)
-    path_to_model = f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
-    model.load_state_dict(torch.load(path_to_model, map_location=device))
-
-
-    # Series of transformations to apply to normalize each input image
-    transform = transforms.Compose([
-        transforms.ToPILImage(),
-        transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
-        transforms.Resize((img_size, img_size)),      # Resize to a consistent size
-        transforms.ToTensor(),                        # Convert image to PyTorch tensor
-        transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
-    ])
-        
+    return thresholded
     
-    images_transformed = [transform(crop_image(image)) for image in images]
-    images_eval = torch.stack(images_transformed)
-    
-    model.eval()
-    with torch.no_grad():
-        output = model(images_eval) ## unsqueeze to add batch dimension (=1)
-        predicted = [torch.argmax(out, 0).item() for out in output]
-        
-    # print(f"[{datetime.now()}] Finished Evaluation!")
-    return (predicted, [class_names[p] for p in predicted])
-
-
 if __name__ == "__main__":
-    
-    parser = argparse.ArgumentParser(description="Parameters for Evaluating a Model on Chinese Hanzi Characters")
-    
-    parser.add_argument("--name", type=str, help="Name of the model to use for evaluating images", default='model-GoogLeNet-750-1.0')
-    
-    model_name = parser.parse_args().name    
-    images_initial = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
+    images = [ # assuming file run from monorepo (using VS code, usually the case for name=main)
         # typed fonts, black text & white background
         cv2.imread('./character_classifier/custom_test_images/IMG_1949.jpg'),
         cv2.imread('./character_classifier/custom_test_images/IMG_1949-2.jpg'),
@@ -116,14 +57,15 @@ if __name__ == "__main__":
         # cv2.imdecode(np.fromfile('./character_classifier/data/filtered/top-500/train/书/0010.png', np.uint8), cv2.IMREAD_UNCHANGED),
     ]
     
-    images = []
-    for image in images_initial: 
-        
+
+    for image in images: 
         ## add channels dimension if not present
         if (len(np.shape(image)) == 2):
             image = image[..., np.newaxis]
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-        images.append(image)
             
-    (ids, labels) = evaluate(images, model_name)
-    for id, label in zip(ids, labels): print(str(id)+": " + label)
+        thresholded = convert_image(image)
+        
+        cv2.imshow("image", thresholded)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()

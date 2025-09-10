@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from character_classifier.scripts.convert_to_binary_image import convert_image
 
 def get_thresholded_image(image):
     
@@ -77,7 +78,8 @@ def crop_image(image):
         (NumPy Array): NumPy array with shape `(height, width, channels=3)` representing the
         cropped `image`, depending on the value of `thresholded` parameter
     """
-    
+    image = convert_image(image)
+    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
     y_top, y_bottom, x_left, x_right, thresholded_image = get_crop_dimensions(image)
     return image[y_top:y_bottom, x_left:x_right]
         

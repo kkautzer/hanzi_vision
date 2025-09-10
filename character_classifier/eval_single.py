@@ -71,7 +71,7 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Parameters for Evaluating a Model on Chinese Hanzi Characters")
     
-    parser.add_argument("--name", type=str, help="Name of the model to use for evaluating images")
+    parser.add_argument("--name", type=str, help="Name of the model to use for evaluating images", default='model-GoogLeNet-750-1.0')
     
     model_name = parser.parse_args().name
     

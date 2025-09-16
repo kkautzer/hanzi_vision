@@ -13,7 +13,7 @@ export default function ModelCard(props) {
     }
 
 
-    return <div className="card card-border bg-gray-700 shadow-md text-center" >
+    return <div className="card card-border bg-base-300 border border-base-200 text-base-content shadow-md text-center" >
         <div className="card-body mx-auto">
             <h2 className="card-title">
                 {props.new ? <div className="badge badge-secondary">NEW</div> : ''}

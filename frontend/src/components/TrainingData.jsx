@@ -59,7 +59,7 @@ export default function TrainingData(props) {
 
             <div className="mt-4">
                 {models.length > 0 ? 
-                    <select onChange={(s) => setModel(s.target.value)} value={model} id='evalModel' name='evalModel' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block mx-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500">
+                    <select onChange={(s) => setModel(s.target.value)} value={model} id='evalModel' name='evalModel' className="bg-base-300 border border-base-200 text-base-content text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block mx-auto p-2.5">
                         {models.map((model) => {
                             return <option key={model["model_name"]} value={model['model_name']}>{model['model_name']}</option>
                         })}

@@ -49,6 +49,9 @@ export default function EvalDrawing(props) {
         setAllowSubmit(true)
     }
 
+
+    const rootStyles = getComputedStyle(document.documentElement)
+
     return <>        
         <h1 className="mt-2">Evaluation - Photo Drawing Page</h1>
         <div className='mt-2 space-x-2'>
@@ -64,8 +67,8 @@ export default function EvalDrawing(props) {
                 ref={canvasRef}
                 className='mt-4 mx-auto'
                 strokeWidth={4}
-                strokeColor="black"
-                // canvasColor='black'
+                strokeColor={rootStyles.getPropertyValue("--color-base-content")}
+                canvasColor={rootStyles.getPropertyValue("--color-base-300")}
                 width="300px"
             />
 

@@ -2,83 +2,131 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS as cors
 import cv2
 import numpy as np
-from character_classifier.eval_single import evaluate
 import pandas as pd
 import os
 import json
 import traceback
+import torch
+from torchvision import transforms
+from character_classifier.model import ChineseCharacterCNN
+from character_classifier.scripts.crop_image import crop_image
 
 app = Flask(__name__)
 cors(app)
 
 training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
 
-@app.route('/') # basic route to test the connection to the API
+# -----------------------------
+# HanziEvaluator class (singleton)
+# -----------------------------
+class HanziEvaluator:
+    def __init__(self, model_name):
+        try:
+            metadata_path = f"./character_classifier/exports/metadata_public/{model_name}-metadata.json"
+            with open(metadata_path, "r", encoding="utf-8") as f:
+                metadata = json.load(f)
+            
+            self.n_chars = metadata['nchars']
+            self.class_names = []
+            with open(f"./character_classifier/classes/top-{self.n_chars}-classes.txt", "r", encoding="utf-8") as f:
+                self.class_names = [line.strip() for line in f.readlines()]
+
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            self.model = ChineseCharacterCNN(num_classes=self.n_chars).to(self.device)
+            self.model.load_state_dict(torch.load(
+                f"./character_classifier/models/checkpoints/best/{model_name}_best.pth", 
+                map_location=self.device
+            ))
+            self.model.eval()
+
+            self.transform = transforms.Compose([
+                transforms.ToPILImage(),
+                transforms.Grayscale(num_output_channels=1),
+                transforms.Resize((64,64)),
+                transforms.ToTensor(),
+                transforms.Normalize((0.5,), (0.5,))
+            ])
+        except Exception as e:
+            print("Failed to initialize evaluator for model:", model_name)
+            print(traceback.format_exc())
+            raise e
+
+    def predict(self, image_array):
+        try:
+            image_tensor = self.transform(crop_image(image_array)).unsqueeze(0).to(self.device)
+            with torch.no_grad():
+                output = self.model(image_tensor)
+                predicted = torch.argmax(output, 1).item()
+            return predicted, self.class_names[predicted]
+        except Exception as e:
+            print("Prediction failed:", e)
+            print(traceback.format_exc())
+            return None, None
+
+# Cache evaluator instances for different models
+evaluators = {}
+
+def get_evaluator(model_name):
+    if model_name not in evaluators:
+        evaluators[model_name] = HanziEvaluator(model_name)
+    return evaluators[model_name]
+
+
+# -----------------------------
+# Flask routes
+# -----------------------------
+@app.route('/')
 def hello_world():
     return "<p>Hello World!</p>"
 
 @app.route('/evaluate', methods=['POST'])
 def evaluate_image():
-    
-    ## update to send model_name with request, based on the available models from `/models`
-    if request.form.get('model') == None:
+    model_name = request.form.get('model')
+    if not model_name:
         return jsonify({"message": "No model selection provided"}), 400
-    
-    model_name = request.form.get('model') ## check if correct
-    
+
     if 'image' not in request.files:
         return jsonify({"message": "No image provided"}), 400
-    
-    image = request.files.get('image') # must match the value of the HTML `name` attribute for the image
 
-    if image.filename == '':
+    image_file = request.files['image']
+    if image_file.filename == '':
         return jsonify({"message": "No selected file"}), 400
-    
-    if image:
-        try:
-            image_array = np.frombuffer(image.read(), np.uint8) # read image bytes, convert to np.uint8 array
-            image = cv2.imdecode(image_array, cv2.IMREAD_UNCHANGED) # convert np.uint8 array to a cv2 image            
-            # return dictionary of form {id: [id], label: [char]}
-            return jsonify(dict(zip( ("id", "label"), evaluate(image, model_name) ) )) , 200
 
-        except Exception as e:
-            print(traceback.format_exc())
-            print(e)
+    try:
+        image_array = np.frombuffer(image_file.read(), np.uint8)
+        image = cv2.imdecode(image_array, cv2.IMREAD_UNCHANGED)
+        evaluator = get_evaluator(model_name)
+        pred_idx, pred_char = evaluator.predict(image)
+        if pred_idx is None:
             return jsonify({"message": "Failed to evaluate image"}), 500
-    else:
-        return jsonify({"message": "No image provided [2]"}), 400
-    
+        return jsonify({"id": pred_idx, "label": pred_char}), 200
+    except Exception as e:
+        print(traceback.format_exc())
+        return jsonify({"message": "Failed to evaluate image"}), 500
+
 @app.route('/models', methods=['GET'])
 def get_models():
     filenames = os.listdir('./character_classifier/exports/metadata_public')
-    
     model_data = []
     for file in filenames:
         with open(f'./character_classifier/exports/metadata_public/{file}', 'r', encoding='utf-8') as f:
             j = json.load(f)
             model_data.append(j)
-            
     return model_data, 200
 
 @app.route("/models/data/<model_name>")
 def get_model_data(model_name):
-
     model_train_data = training_data[training_data['name'] == model_name]
-
     if len(model_train_data) < 1:
         return "No available data for model", 404
-        
     return model_train_data.to_dict(orient='records'), 200
-
 
 @app.route('/characters/<character>', methods=['GET'])
 def get_char_info(character):
     df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
-    
     for _, entry in df.iterrows():
         if entry['character'] == character:
             return jsonify(entry.to_dict()), 200
-        
     return "Character not found", 404
 
 if __name__ == "__main__":

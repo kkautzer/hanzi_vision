@@ -1,6 +1,7 @@
 import { useLocation } from "react-router";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
+import TrainingDataChart from "./TrainingDataChart";
 
 export default function TrainingData(props) {
     // if running locally, use local server, if run on web, use web server
@@ -68,13 +69,19 @@ export default function TrainingData(props) {
                 }
             </div>
                 
-            {/* TODO - Update the below to be a graph of epoch vs validation accuracy */}
+
             <div className="mt-4 text-center">
-                <ul>
+                <TrainingDataChart data={data} />
+
+
+                {/* REMOVE ( OR REFORMAT ) THE BELOW IN THE FUTURE */}
+                {/* <ul>
+
                     {data.map((entry) => {
+
                         return <li key={`${entry["epoch"]}+${entry['val_accuracy']}`} ><strong>Epoch {entry['epoch']}</strong>: <em>{entry['val_accuracy'].toFixed(2)}% Validation Accuracy</em></li>
                     })}
-                </ul>
+                </ul> */}
             </div>
         </div>
 

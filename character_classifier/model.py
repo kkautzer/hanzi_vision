@@ -1,8 +1,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
-
-class ChineseCharacterCNN(nn.Module):
+    
+class GoogLeNet(nn.Module):
     def __init__(self, num_classes):
         """
         Convolutional Neural Network for Chinese Character Classification, based on GoogLeNet.
@@ -10,10 +10,10 @@ class ChineseCharacterCNN(nn.Module):
         Parameters:
             num_classes (int): Number of unique Chinese characters (classes) to classify.
         """
-        super(ChineseCharacterCNN, self).__init__()
+        super(GoogLeNet, self).__init__()
     
         ## base this model off of GoogLeNet
-        self.googlenet = models.googlenet()
+        self.googlenet = models.googlenet(weights=None)
         
         # modify to take grayscale image input, and output based on dynamic # classes
         self.googlenet.conv1.conv = nn.Conv2d(in_channels=1, out_channels=64, kernel_size=7, stride=2, padding=3, bias=False)
@@ -30,9 +30,30 @@ class ChineseCharacterCNN(nn.Module):
         """
         return self.googlenet(x)
 
+# here, we can add additional model architecture classes that can be cleanly imported
+# in other project files (e.g. ResNet, VGG, etc)
+
+
+
+
+
+AVAILABLE_MODELS = {
+    "googlenet": GoogLeNet
+}
+
+
+class ChineseCharacterCNN():
+    def __new__(cls, architecture="one million beers please", num_classes=3928):
+        model_class = AVAILABLE_MODELS.get(architecture.lower())
+        if not model_class:
+            raise ValueError(f"\033[31mUnknown model '{architecture}'. Available: {list(AVAILABLE_MODELS.keys())}\033[0m")
+        
+        return model_class(num_classes=num_classes)
+
+
 # Example usage for testing
 if __name__ == "__main__":
-    model = ChineseCharacterCNN(num_classes=3928)    
+    model = ChineseCharacterCNN(architecture="googlenet", num_classes=3928)    
     # print(model)
     # dummy_input = torch.randn(8, 1, 64, 64)  # Example input (batch of 8 grayscale 64x64 images)
     # output = model(dummy_input)

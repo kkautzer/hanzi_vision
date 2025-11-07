@@ -3,5 +3,6 @@
     "nchars": 750,
     "epochs": 91,
     "max_val_accuracy": 93.06369467470752,
-    "max_val_epoch": 91
+    "max_val_epoch": 91,
+    "architecture": "googlenet"
 }

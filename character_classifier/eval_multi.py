@@ -17,6 +17,7 @@ def evaluate(images, model_name):
         with open(metadata_location, 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         n_chars = metadata['nchars']
+        architecture = metadata['architecture']
         if metadata['epochs'] == 0:
             print("Model has no epochs to evaluate!")
             return
@@ -35,7 +36,7 @@ def evaluate(images, model_name):
         
     num_classes = len(class_names)
 
-    model = ChineseCharacterCNN(num_classes=num_classes).to(device)
+    model = ChineseCharacterCNN(architecture=architecture, num_classes=num_classes).to(device)
     path_to_model = f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 

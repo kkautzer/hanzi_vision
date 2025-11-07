@@ -13,6 +13,7 @@ def test_model(model_name, epoch=-1):
             metadata = json.load(f)
         n_chars = metadata['nchars']
         max_epoch = metadata['epochs']
+        architecture = metadata['architecture']
         epoch = max_epoch if epoch > max_epoch else epoch ## no out of bounds epoch values
         if max_epoch == 0:
             print("Model has no epochs to evaluate!")
@@ -34,7 +35,7 @@ def test_model(model_name, epoch=-1):
     print(f"[{datetime.now()}] Using device: {device}")
     _, _, test_loader, class_names = get_dataloaders(data_dir, batch_size, img_size)
     num_classes = len(class_names)
-    model = ChineseCharacterCNN(num_classes=num_classes).to(device)
+    model = ChineseCharacterCNN(architecture=architecture, num_classes=num_classes).to(device)
 
     model.load_state_dict(torch.load(model_path, map_location=device))
     print(f"[{datetime.now()}] Finished model initialization")

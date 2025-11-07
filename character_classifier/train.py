@@ -27,7 +27,7 @@ parser = argparse.ArgumentParser(description="Parameters for Training a Model on
 parser.add_argument('--name', type=str, default=f"model", help='[Required for all] The name under which data revolving around this model will be stored.')
 parser.add_argument('--epochs', type=int, default=10, help='[Required for all] The number of epochs to perform')
 parser.add_argument('--lr', type=float, default=0.0125, help="[Required for all] Learning rate to use throughout the training process.")
-
+parser.add_argument('--architecture', type=str, default='googlenet', help="[Required for new models] The underlying architecture to train this new model on.")
 parser.add_argument('--nchars', type=int, default=5, help="[Required for new models] Number of characters to include in the training for this model.")
 
 parser.add_argument('--resume', type=bool, default=False, help='[Optional] Whether this training will be a brand new model (set to False), or based on another model (set to True). Defaults to False')
@@ -41,6 +41,7 @@ num_epochs = args.epochs
 learning_rate = args.lr
 
 if not args.resume: # starting with a completely untrained model
+    architecture = args.architecture
     num_characters = args.nchars
     
     saved_pretrained_model_path = '' ## bypass NameError errors for undefined field
@@ -58,6 +59,7 @@ else: # resuming from a pretrained weights
             # get nchars from metadata
             metadata = json.load(f)
             num_characters = metadata['nchars']
+            architecture = metadata['architecture']
     except Exception as e:
         print(e)
         print("Error -- Cannot resume training from a model that does not exist / has no completed epochs!")
@@ -101,6 +103,7 @@ printLogAndConsole(f"Model Configuration: { {
     "batch_size": batch_size,
     "img_size": img_size,
     "data_dir": data_dir,
+    "architecture": architecture,
     "model_name": model_name,
     "num_characters": num_characters,
     "learning_rate": learning_rate,
@@ -147,7 +150,7 @@ printLogAndConsole(f"[{datetime.now()}] Finished loading data loaders")
 
 # Initialize model
 printLogAndConsole(f"[{datetime.now()}] Initializing model...")
-model = ChineseCharacterCNN(num_classes=num_classes).to(device)
+model = ChineseCharacterCNN(architecture=architecture, num_classes=num_classes).to(device)
 if saved_pretrained_model_path:
     model.load_state_dict(torch.load(saved_pretrained_model_path, map_location=device))
 printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
@@ -173,7 +176,7 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
         None, # [5] validation accuracy
     ]
 
-    printLogAndConsole(f"[{datetime.now()}] -- Beginning epoch {epoch} of {num_epochs} --")
+    printLogAndConsole(f"[{datetime.now()}] -- Beginning epoch {epoch} of {initial_epoch-1+num_epochs} --")
     model.train()  # Set model to training mode
     running_loss = 0.0
 
@@ -189,7 +192,7 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
         running_loss += loss.item()
         
     avg_loss = running_loss / len(train_loader)
-    printLogAndConsole(f"[{datetime.now()}] Epoch [{epoch}/{num_epochs}], Loss: {avg_loss:.4f}")
+    printLogAndConsole(f"[{datetime.now()}] Epoch [{epoch}/{initial_epoch-1+num_epochs}], Loss: {avg_loss:.4f}")
     epoch_data_export[4] = str(avg_loss)
 
     # Validation phase
@@ -234,6 +237,7 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
             "epochs": epoch,
             "max_val_accuracy": max_val_accuracy,
             "max_val_epoch": max_val_epoch,
+            "architecture": architecture
         }
         
         json.dump(metadata_json, f, indent=4)

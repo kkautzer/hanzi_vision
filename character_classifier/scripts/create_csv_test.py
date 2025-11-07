@@ -7,7 +7,7 @@ import argparse
 import json
 
 # initialization - get test images, define model class, etc.
-def initialize(nchars):
+def initialize(architecture, nchars):
     
     data_dir = f'./character_classifier/data/filtered/top-{nchars}'
     batch_size = 64
@@ -16,7 +16,7 @@ def initialize(nchars):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"[{datetime.now()}] Using device: {device}")
     _, _, test_loader, _ = get_dataloaders(data_dir, batch_size, img_size)
-    model = ChineseCharacterCNN(num_classes=nchars).to(device)
+    model = ChineseCharacterCNN(architecture=architecture, num_classes=nchars).to(device)
     
     return device, model, test_loader
 
@@ -53,6 +53,7 @@ def record_to_csv(model_name):
         with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         nchars = metadata['nchars']
+        architecture = metadata['architecture']
         if metadata['epochs'] == 0:
             print("Model has no epochs to evaluate!")
             return
@@ -62,7 +63,7 @@ def record_to_csv(model_name):
         return
         
     print(f"[{datetime.now()}] Initializing model and test data...")
-    device, model, loader = initialize(nchars)
+    device, model, loader = initialize(architecture, nchars)
     print(f"[{datetime.now()}] Initialization successful!")
     print(f"[{datetime.now()}] Retrieving model epoch weights...")
     paths = get_model_paths(model_name)

@@ -27,12 +27,13 @@ class HanziEvaluator:
                 metadata = json.load(f)
             
             self.n_chars = metadata['nchars']
+            self.architecture = metadata['architecture']
             self.class_names = []
             with open(f"./character_classifier/classes/top-{self.n_chars}-classes.txt", "r", encoding="utf-8") as f:
                 self.class_names = [line.strip() for line in f.readlines()]
 
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-            self.model = ChineseCharacterCNN(num_classes=self.n_chars).to(self.device)
+            self.model = ChineseCharacterCNN(architecture=self.architecture, num_classes=self.n_chars).to(self.device)
             self.model.load_state_dict(torch.load(
                 f"./character_classifier/models/checkpoints/best/{model_name}_best.pth", 
                 map_location=self.device
@@ -66,7 +67,7 @@ class HanziEvaluator:
 # Cache evaluator instances for different models
 evaluators = {}
 
-def get_evaluator(model_name):
+def get_evaluator(model_name): # TODO Refactor this function to check the model's architecture
     if model_name not in evaluators:
         evaluators[model_name] = HanziEvaluator(model_name)
     return evaluators[model_name]

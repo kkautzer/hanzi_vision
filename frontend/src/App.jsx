@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Evaluation from './components/Evaluation'
 import Models from './components/Models'
 import TrainingData from './components/TrainingData'
+import CharactersList from './components/CharactersList'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
     <Route path='/evaluate' element={ <Evaluation />} />
     <Route path='/models' element={<Models />} />
     <Route path='/training' element={<TrainingData />} />
+    <Route path='/characters' element={<CharactersList />} />
   </Routes>
 }
 

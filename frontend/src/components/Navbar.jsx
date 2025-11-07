@@ -26,8 +26,7 @@ export default function Navbar() {
                 <li><NavLink to='/evaluate'>Evaluate</NavLink></li>
                 <li><NavLink to='/models'>Models</NavLink></li>
                 <li><NavLink to='/training'>Training Data</NavLink></li>
-                
-                {/* <li><NavLink to='/characters'>Characters</NavLink></li> */}
+                <li><NavLink to='/characters'>View All Characters</NavLink></li>
             </ul>
         </div>
     </div>

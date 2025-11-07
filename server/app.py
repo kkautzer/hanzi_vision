@@ -15,7 +15,7 @@ app = Flask(__name__)
 cors(app)
 
 training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
-
+training_data.replace({np.nan: None})
 # -----------------------------
 # HanziEvaluator class (singleton)
 # -----------------------------
@@ -122,9 +122,18 @@ def get_model_data(model_name):
         return "No available data for model", 404
     return model_train_data.to_dict(orient='records'), 200
 
+@app.route('/characters', methods=['GET'])
+def get_all_char_info():
+    df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
+    df = df.replace({np.nan: None})
+    
+    return jsonify(df.to_dict(orient='records')), 200
+
 @app.route('/characters/<character>', methods=['GET'])
 def get_char_info(character):
     df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
+    df = df.replace({np.nan: None})
+
     for _, entry in df.iterrows():
         if entry['character'] == character:
             return jsonify(entry.to_dict()), 200

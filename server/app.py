@@ -18,18 +18,23 @@ app = Flask(__name__)
 load_dotenv()
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-furl = os.getenv("FRONTEND_URL")
-print(f"--------------\n\n\n{furl}\n\n\n")
+#furl = os.getenv("FRONTEND_URL")
+#print(f"--------------\n\n\n{furl}\n\n\n")
 cors(app, 
-    origins=[furl],
+    origins=[os.getenv("FRONTEND_URL")],
     supports_credentials=False,
     allow_headers=["Content-Type", "Authorization"],
     methods=["GET", "POST", "OPTIONS"]
 )
 
+
 # TODO Read with csv module instead
 training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
-training_data.replace({np.nan: None})
+training_data = training_data.replace({np.nan: None})
+
+character_data = pd.read_csv('./character_classifier/data/hanzi_db.csv')
+character_data = character_data.replace({np.nan: None})
+
 # -----------------------------
 # HanziEvaluator class (singleton)
 # -----------------------------
@@ -138,20 +143,12 @@ def get_model_data(model_name):
     return model_train_data.to_dict(orient='records'), 200
 
 @app.route('/characters', methods=['GET'])
-def get_all_char_info():
-    # TODO read with csv module instead (load and reference globally, instead of each call)
-    df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
-    df = df.replace({np.nan: None})
-    
-    return jsonify(df.to_dict(orient='records')), 200
+def get_all_char_info():    
+    return jsonify(character_data.to_dict(orient='records')), 200
 
 @app.route('/characters/<character>', methods=['GET'])
 def get_char_info(character):
-    # TODO read with csv module instead (load and reference globally, instead of each call)
-    df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
-    df = df.replace({np.nan: None})
-
-    for _, entry in df.iterrows():
+    for _, entry in character_data.iterrows():
         if entry['character'] == character:
             return jsonify(entry.to_dict()), 200
     return "Character not found", 404

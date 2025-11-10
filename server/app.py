@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS as cors
+from werkzeug.middleware.proxy_fix import ProxyFix
 import cv2
 import numpy as np
 import pandas as pd
@@ -16,10 +17,9 @@ app = Flask(__name__)
 
 load_dotenv()
 
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 furl = os.getenv("FRONTEND_URL")
-
 print(f"--------------\n\n\n{furl}\n\n\n")
-
 cors(app, origins=[furl])
 # TODO Read with csv module instead
 training_data = pd.read_csv("./character_classifier/exports/training_data.csv")

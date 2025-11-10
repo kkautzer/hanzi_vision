@@ -25,12 +25,12 @@ print("Loading Configuration Data...")
 parser = argparse.ArgumentParser(description="Parameters for Training a Model on Chinese Hanzi Characters")
 
 parser.add_argument('--name', type=str, default=f"model", help='[Required for all] The name under which data revolving around this model will be stored.')
-parser.add_argument('--epochs', type=int, default=10, help='[Required for all] The number of epochs to perform')
-parser.add_argument('--lr', type=float, default=0.0125, help="[Required for all] Learning rate to use throughout the training process.")
+parser.add_argument('--epochs', type=int, default=10, help='[Required for all] The final epoch number in this training cycle')
+parser.add_argument('--lr', type=float, default=0.0125, help="[Required for new models] Learning rate to use throughout the training process.")
 parser.add_argument('--architecture', type=str, default='googlenet', help="[Required for new models] The underlying architecture to train this new model on.")
 parser.add_argument('--nchars', type=int, default=5, help="[Required for new models] Number of characters to include in the training for this model.")
 
-parser.add_argument('--resume', type=bool, default=False, help='[Optional] Whether this training will be a brand new model (set to False), or based on another model (set to True). Defaults to False')
+parser.add_argument('--resume', type=bool, default=False, help='[Required for resuming] Whether this training will be a brand new model (set to False), or based on another model (set to True). Defaults to False')
 parser.add_argument('--resepoch', type=int, default=0, help='[Optional] The epoch number to resume training from. Set to -1 to resume from the epoch with the highest validation accuracy; set to 0 to resume from the most recent epoch (default).') # epoch resuming from (default to the most recent, NOT best (use 0 to resume from best))
 parser.add_argument('--resname', type=str, default="", help='[Optional] The name of the model to base training on - defaults to the model specified under "--name", but can be another model if desired.')
 
@@ -60,6 +60,7 @@ else: # resuming from a pretrained weights
             metadata = json.load(f)
             num_characters = metadata['nchars']
             architecture = metadata['architecture']
+            learning_rate = metadata.get('lr', learning_rate)
     except Exception as e:
         print(e)
         print("Error -- Cannot resume training from a model that does not exist / has no completed epochs!")
@@ -151,13 +152,31 @@ printLogAndConsole(f"[{datetime.now()}] Finished loading data loaders")
 # Initialize model
 printLogAndConsole(f"[{datetime.now()}] Initializing model...")
 model = ChineseCharacterCNN(architecture=architecture, num_classes=num_classes).to(device)
-if saved_pretrained_model_path:
-    model.load_state_dict(torch.load(saved_pretrained_model_path, map_location=device))
-printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
 
-# Define loss function and optimizer
+# Define loss function, optimizer, and scheduler
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+
+if not saved_pretrained_model_path:
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
+else:
+    checkpoint = torch.load(saved_pretrained_model_path, map_location=device)
+    if "model_state_dict" in checkpoint:
+        model.load_state_dict(checkpoint['model_state_dict'])
+
+    optimizer = optim.SGD(model.parameters(), momentum=0.9, weight_decay=1e-4)
+    if "optimizer_state_dict" in checkpoint:
+        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+        
+    # Ensure initial_lr exists for each param group (prevents KeyError)
+    for pg in optimizer.param_groups:
+        pg.setdefault("initial_lr", pg["lr"])
+    
+# Initialize scheduler
+scheduler = optim.lr_scheduler.CosineAnnealingLR(
+    optimizer, T_max=num_epochs+1-initial_epoch, last_epoch=initial_epoch-2 # -2 accounts for internal 0-indexing
+)
+
+printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
 
 if initial_epoch <= 1:
     printLogAndConsole(f"[{datetime.now()}] Beginning training...")
@@ -166,7 +185,7 @@ else:
 
 # Training loop
 epoch_data_export = [] # {model_name, nchars, LR, epoch, train_loss, val_acc}
-for epoch in range(initial_epoch, initial_epoch+num_epochs):
+for epoch in range(initial_epoch, num_epochs+1):
     epoch_data_export = [
         f"\"{str(model_name)}\"", # [0] model name
         str(num_characters), # [1] nchars
@@ -176,7 +195,7 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
         None, # [5] validation accuracy
     ]
 
-    printLogAndConsole(f"[{datetime.now()}] -- Beginning epoch {epoch} of {initial_epoch-1+num_epochs} --")
+    printLogAndConsole(f"[{datetime.now()}] -- Beginning epoch {epoch} of {num_epochs} --")
     model.train()  # Set model to training mode
     running_loss = 0.0
 
@@ -188,11 +207,13 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
         loss = criterion(outputs, labels)  # Compute loss
         loss.backward()             # Backpropagation
         optimizer.step()            # Update model weights
-
         running_loss += loss.item()
         
+    scheduler.step()            # Step scheduler too
+    epoch_data_export[2] = str(optimizer.param_groups[0]['lr']) # update learning rate var
+    
     avg_loss = running_loss / len(train_loader)
-    printLogAndConsole(f"[{datetime.now()}] Epoch [{epoch}/{initial_epoch-1+num_epochs}], Loss: {avg_loss:.4f}")
+    printLogAndConsole(f"[{datetime.now()}] Epoch [{epoch}/{num_epochs}], Loss: {avg_loss:.4f}")
     epoch_data_export[4] = str(avg_loss)
 
     # Validation phase
@@ -219,14 +240,20 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
         
     printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/exports/training_data.csv")
     os.makedirs(f"./character_classifier/models/checkpoints/training/{model_name}", exist_ok=True)
-    torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
+    torch.save(
+        {"model_state_dict": model.state_dict(), "optimizer_state_dict": optimizer.state_dict()}, 
+        f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth"
+    )
     printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
     
     if (val_accuracy > max_val_accuracy):
         max_val_accuracy = val_accuracy
         max_val_epoch = epoch
         os.makedirs(f"./character_classifier/models/checkpoints/best", exist_ok=True)
-        torch.save(model.state_dict(), f"./character_classifier/models/checkpoints/best/{model_name}_best.pth")
+        torch.save(
+            {"model_state_dict": model.state_dict(), "optimizer_state_dict": optimizer.state_dict()}, 
+            f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
+        )
         printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/best/{model_name}_best.pth")
 
     # update metadata (name, completed epochs, highest validation accuracy, highest val epoch)
@@ -237,6 +264,7 @@ for epoch in range(initial_epoch, initial_epoch+num_epochs):
             "epochs": epoch,
             "max_val_accuracy": max_val_accuracy,
             "max_val_epoch": max_val_epoch,
+            "lr": optimizer.param_groups[0]['lr'],
             "architecture": architecture
         }
         

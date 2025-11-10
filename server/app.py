@@ -20,7 +20,13 @@ load_dotenv()
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 furl = os.getenv("FRONTEND_URL")
 print(f"--------------\n\n\n{furl}\n\n\n")
-cors(app, origins=[furl])
+cors(app, 
+    origins=[furl],
+    supports_credentials=False,
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "OPTIONS"]
+)
+
 # TODO Read with csv module instead
 training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
 training_data.replace({np.nan: None})
@@ -41,6 +47,7 @@ class HanziEvaluator:
                 self.class_names = [line.strip() for line in f.readlines()]
 
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            #self.device = "cpu"
             self.model = ChineseCharacterCNN(architecture=self.architecture, num_classes=self.n_chars).to(self.device)
             self.model.load_state_dict(torch.load(
                 f"./character_classifier/models/checkpoints/best/{model_name}_best.pth", 

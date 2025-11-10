@@ -13,7 +13,7 @@ from character_classifier.scripts.crop_image import crop_image
 
 app = Flask(__name__)
 cors(app)
-
+# TODO Read with csv module instead
 training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
 training_data.replace({np.nan: None})
 # -----------------------------
@@ -124,6 +124,7 @@ def get_model_data(model_name):
 
 @app.route('/characters', methods=['GET'])
 def get_all_char_info():
+    # TODO read with csv module instead (load and reference globally, instead of each call)
     df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
     df = df.replace({np.nan: None})
     
@@ -131,6 +132,7 @@ def get_all_char_info():
 
 @app.route('/characters/<character>', methods=['GET'])
 def get_char_info(character):
+    # TODO read with csv module instead (load and reference globally, instead of each call)
     df = pd.read_csv('./character_classifier/data/hanzi_db.csv')
     df = df.replace({np.nan: None})
 

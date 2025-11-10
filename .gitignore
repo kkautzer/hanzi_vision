@@ -1,1 +1,2 @@
-.venv
+server/server-venv
+character_classifier/model-venv

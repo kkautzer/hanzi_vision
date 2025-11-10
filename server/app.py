@@ -3,6 +3,7 @@ from flask_cors import CORS as cors
 import cv2
 import numpy as np
 import pandas as pd
+from dotenv import load_dotenv
 import os
 import json
 import traceback
@@ -12,7 +13,14 @@ from character_classifier.model import ChineseCharacterCNN
 from character_classifier.scripts.crop_image import crop_image
 
 app = Flask(__name__)
-cors(app)
+
+load_dotenv()
+
+furl = os.getenv("FRONTEND_URL")
+
+print(f"--------------\n\n\n{furl}\n\n\n")
+
+cors(app, origins=[furl])
 # TODO Read with csv module instead
 training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
 training_data.replace({np.nan: None})

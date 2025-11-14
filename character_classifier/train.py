@@ -60,7 +60,6 @@ else: # resuming from a pretrained weights
             metadata = json.load(f)
             num_characters = metadata['nchars']
             architecture = metadata['architecture']
-            learning_rate = metadata.get('lr', learning_rate)
     except Exception as e:
         print(e)
         print("Error -- Cannot resume training from a model that does not exist / has no completed epochs!")
@@ -156,25 +155,26 @@ model = ChineseCharacterCNN(architecture=architecture, num_classes=num_classes).
 # Define loss function, optimizer, and scheduler
 criterion = nn.CrossEntropyLoss()
 
-if not saved_pretrained_model_path:
+if not saved_pretrained_model_path: # starting fresh training cycle
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
-else:
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
+else: # resuming from another training cycle
+    printLogAndConsole(f"[{datetime.now()}] Loading checkpoint: {saved_pretrained_model_path}")
+
     checkpoint = torch.load(saved_pretrained_model_path, map_location=device)
-    if "model_state_dict" in checkpoint:
-        model.load_state_dict(checkpoint['model_state_dict'])
+    
+    model.load_state_dict(checkpoint['model_state_dict'])
 
     optimizer = optim.SGD(model.parameters(), momentum=0.9, weight_decay=1e-4)
-    if "optimizer_state_dict" in checkpoint:
-        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
-        
-    # Ensure initial_lr exists for each param group (prevents KeyError)
-    for pg in optimizer.param_groups:
-        pg.setdefault("initial_lr", pg["lr"])
+    optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, T_max=num_epochs+1-initial_epoch, last_epoch=checkpoint['epoch']-1
+    )
     
-# Initialize scheduler
-scheduler = optim.lr_scheduler.CosineAnnealingLR(
-    optimizer, T_max=num_epochs+1-initial_epoch, last_epoch=initial_epoch-2 # -2 accounts for internal 0-indexing
-)
+    scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
+    printLogAndConsole(f"Resume successful - epoch={checkpoint['epoch']} | LR={optimizer.param_groups[0]['lr']}")
+    
 
 printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
 
@@ -236,23 +236,30 @@ for epoch in range(initial_epoch, num_epochs+1):
     
     # Save training data after each epoch model checkpoint
     with open("./character_classifier/exports/training_data.csv", "a") as f:
-        f.write(f"{(",").join(epoch_data_export)}\n")
+        f.write(f"{",".join(epoch_data_export)}\n")
         
     printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/exports/training_data.csv")
     os.makedirs(f"./character_classifier/models/checkpoints/training/{model_name}", exist_ok=True)
-    torch.save(
-        {"model_state_dict": model.state_dict(), "optimizer_state_dict": optimizer.state_dict()}, 
-        f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth"
+    torch.save({
+        "epoch": epoch,
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "scheduler_state_dict": scheduler.state_dict()
+    }, f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth"
     )
-    printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/training/{model_name}/train_epoch_{epoch}.pth")
+    
+    printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
     
     if (val_accuracy > max_val_accuracy):
         max_val_accuracy = val_accuracy
         max_val_epoch = epoch
         os.makedirs(f"./character_classifier/models/checkpoints/best", exist_ok=True)
-        torch.save(
-            {"model_state_dict": model.state_dict(), "optimizer_state_dict": optimizer.state_dict()}, 
-            f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
+        torch.save({
+            "epoch": epoch,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "scheduler_state_dict": scheduler.state_dict()
+        }, f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
         )
         printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/best/{model_name}_best.pth")
 
@@ -264,7 +271,6 @@ for epoch in range(initial_epoch, num_epochs+1):
             "epochs": epoch,
             "max_val_accuracy": max_val_accuracy,
             "max_val_epoch": max_val_epoch,
-            "lr": optimizer.param_groups[0]['lr'],
             "architecture": architecture
         }
         

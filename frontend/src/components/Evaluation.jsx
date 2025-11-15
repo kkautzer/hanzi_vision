@@ -12,7 +12,7 @@ export default function Evaluation() {
         : "https://hanzi-vision-api.onrender.com"
 
 
-    const [ isDrawing, setIsDrawing ] = useState(0)
+    const [ isDrawing, setIsDrawing ] = useState(1)
     const [ models, setModels ] = useState([])
     const [ evalResult, setEvalResult ] = useState({})
     const [ charData, setCharData ] = useState({})

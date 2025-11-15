@@ -28,10 +28,10 @@ function Home() {
                     <p>
                         This project is a solo-developed full-stack application
                         that aims to recognize Chinese characters (Hanzi) using 
-                        computer vision and machine learning models. The Underlying
-                        model currently utilizes a tweaked GoogLeNet-based 
+                        computer vision and machine learning models. The underlying
+                        model currently utilizes a tweaked Inception-v1 (GoogLeNet)-based 
                         architecture, as this provided the best trade-off between
-                        training time and computational resources (my laptop). It 
+                        training time and computational resources (personal laptop). It 
                         was trained using the <a className="link hover:link-primary" 
                             href='https://nlpr.ia.ac.cn/databases/handwriting/Offline_database.html'>
                         CASIA-HWDB1.0 and HWDB1.2 datasets,</a> which [together] 
@@ -65,8 +65,7 @@ function Home() {
                         <h2 className="text-2xl">Current Goals</h2>
                         <p>Currently, the following goals are in progress: </p>
                         <ul className="list-disc list-inside">
-                            <li>Building a mobile interface</li>
-                            <li>Incorporating novice-level handwriting into training data</li>
+                            <li>Comparative Analysis of Different Underlying Model Architectures</li>
                             <li>Scaling training to 750, 1000, and 1500 characters (currently 500)</li>
                         </ul>
                     </div>
@@ -74,8 +73,9 @@ function Home() {
                         <h2 className="text-2xl">Future Directions</h2>
                         <p>There are a few future directions that can be pursued, including: </p>
                         <ul className="list-disc list-inside">
+                            <li>Incorporating novice-level handwriting into training data</li>
+                            <li>Mobile Interface and Edge Inference</li>
                             <li>Image Segmentation / Multi-Character Recognition</li>
-                            <li>Comparative Analysis of Different Underlying Model Architectures</li>
                         </ul>
                     </div>
                 </div>

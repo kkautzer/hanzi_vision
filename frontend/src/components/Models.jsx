@@ -26,8 +26,7 @@ export default function Models() {
     }, [])
 
     const newModels = [
-        // "model-GoogLeNet-500-1.0"
-        "model-GoogLeNet-750-1.0", 
+        "model-500-Inception-v1-SGD", 
     ]
     
     return <div>

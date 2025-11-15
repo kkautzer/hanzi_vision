@@ -18,8 +18,7 @@ app = Flask(__name__)
 load_dotenv()
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-#furl = os.getenv("FRONTEND_URL")
-#print(f"--------------\n\n\n{furl}\n\n\n")
+
 cors(app, 
     origins=[os.getenv("FRONTEND_URL")],
     supports_credentials=False,
@@ -54,10 +53,8 @@ class HanziEvaluator:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             #self.device = "cpu"
             self.model = ChineseCharacterCNN(architecture=self.architecture, num_classes=self.n_chars).to(self.device)
-            self.model.load_state_dict(torch.load(
-                f"./character_classifier/models/checkpoints/best/{model_name}_best.pth", 
-                map_location=self.device
-            ))
+            state_dict = torch.load(f"./character_classifier/models/checkpoints/best/{model_name}_best.pth", map_location=self.device)
+            self.model.load_state_dict(state_dict["model_state_dict"] if ("model_state_dict" in state_dict) else state_dict)
             self.model.eval()
 
             self.transform = transforms.Compose([

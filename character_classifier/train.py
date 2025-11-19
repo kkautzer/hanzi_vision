@@ -157,7 +157,7 @@ criterion = nn.CrossEntropyLoss()
 
 if not saved_pretrained_model_path: # starting fresh training cycle
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
-    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
+    scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=20)
 else: # resuming from another training cycle
     printLogAndConsole(f"[{datetime.now()}] Loading checkpoint: {saved_pretrained_model_path}")
 
@@ -168,14 +168,17 @@ else: # resuming from another training cycle
     optimizer = optim.SGD(model.parameters(), momentum=0.9, weight_decay=1e-4)
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
 
-    scheduler = optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, T_max=num_epochs+1-initial_epoch, last_epoch=checkpoint['epoch']-1
+    scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(
+        optimizer, T_0=20, ##last_epoch=checkpoint['epoch']-1##
     )
     
     scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
-    printLogAndConsole(f"Resume successful - epoch={checkpoint['epoch']} | LR={optimizer.param_groups[0]['lr']}")
+    printLogAndConsole(f"""[{datetime.now()}] Resume successful!
+        epoch={checkpoint['epoch']}, 
+        LR={optimizer.param_groups[0]['lr']}, 
+        last_epoch={scheduler.last_epoch}"""
+    )
     
-
 printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
 
 if initial_epoch <= 1:

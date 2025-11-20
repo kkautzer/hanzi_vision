@@ -1,6 +1,6 @@
 import torch
-from character_classifier.dataset import get_dataloaders
-from character_classifier.model import ChineseCharacterCNN
+from model.dataset import get_dataloaders
+from model.model import ChineseCharacterCNN
 from datetime import datetime
 import json
 import argparse
@@ -9,7 +9,7 @@ def test_model(model_name, epoch=-1):
     
     # get nchars based on model_name
     try:
-        with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+        with open(f'./model/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         n_chars = metadata['nchars']
         max_epoch = metadata['epochs']
@@ -24,10 +24,10 @@ def test_model(model_name, epoch=-1):
         return
     
     if epoch < 1:
-        model_path = f'./character_classifier/models/checkpoints/best/{model_name}_best.pth'
+        model_path = f'./model/models/checkpoints/best/{model_name}_best.pth'
     else:
-        model_path = f'./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth'
-    data_dir = f"./character_classifier/data/filtered/top-{n_chars}"  # Adjust based on location
+        model_path = f'./model/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth'
+    data_dir = f"./model/data/filtered/top-{n_chars}"  # Adjust based on location
     batch_size = 64
     img_size = 64
 

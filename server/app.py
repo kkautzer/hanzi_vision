@@ -10,8 +10,8 @@ import json
 import traceback
 import torch
 from torchvision import transforms
-from character_classifier.model import ChineseCharacterCNN
-from character_classifier.scripts.crop_image import crop_image
+from model.model import ChineseCharacterCNN
+from model.scripts.crop_image import crop_image
 
 app = Flask(__name__)
 
@@ -28,10 +28,10 @@ cors(app,
 
 
 # TODO Read with csv module instead
-training_data = pd.read_csv("./character_classifier/exports/training_data.csv")
+training_data = pd.read_csv("./model/exports/training_data.csv")
 training_data = training_data.replace({np.nan: None})
 
-character_data = pd.read_csv('./character_classifier/data/hanzi_db.csv')
+character_data = pd.read_csv('./model/data/hanzi_db.csv')
 character_data = character_data.replace({np.nan: None})
 
 # -----------------------------
@@ -40,20 +40,20 @@ character_data = character_data.replace({np.nan: None})
 class HanziEvaluator:
     def __init__(self, model_name):
         try:
-            metadata_path = f"./character_classifier/exports/metadata_public/{model_name}-metadata.json"
+            metadata_path = f"./model/exports/metadata_public/{model_name}-metadata.json"
             with open(metadata_path, "r", encoding="utf-8") as f:
                 metadata = json.load(f)
             
             self.n_chars = metadata['nchars']
             self.architecture = metadata['architecture']
             self.class_names = []
-            with open(f"./character_classifier/classes/top-{self.n_chars}-classes.txt", "r", encoding="utf-8") as f:
+            with open(f"./model/classes/top-{self.n_chars}-classes.txt", "r", encoding="utf-8") as f:
                 self.class_names = [line.strip() for line in f.readlines()]
 
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             #self.device = "cpu"
             self.model = ChineseCharacterCNN(architecture=self.architecture, num_classes=self.n_chars).to(self.device)
-            state_dict = torch.load(f"./character_classifier/models/checkpoints/best/{model_name}_best.pth", map_location=self.device)
+            state_dict = torch.load(f"./model/models/checkpoints/best/{model_name}_best.pth", map_location=self.device)
             self.model.load_state_dict(state_dict["model_state_dict"] if ("model_state_dict" in state_dict) else state_dict)
             self.model.eval()
 
@@ -124,10 +124,10 @@ def evaluate_image():
 
 @app.route('/models', methods=['GET'])
 def get_models():
-    filenames = os.listdir('./character_classifier/exports/metadata_public')
+    filenames = os.listdir('./model/exports/metadata_public')
     model_data = []
     for file in filenames:
-        with open(f'./character_classifier/exports/metadata_public/{file}', 'r', encoding='utf-8') as f:
+        with open(f'./model/exports/metadata_public/{file}', 'r', encoding='utf-8') as f:
             j = json.load(f)
             model_data.append(j)
     return model_data, 200

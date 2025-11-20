@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from character_classifier.dataset import get_dataloaders
-from character_classifier.scripts.create_filtered_set import create_filtered_set
-from character_classifier.scripts.generate_whitelist import generate_whitelist
-from character_classifier.model import ChineseCharacterCNN
+from model.dataset import get_dataloaders
+from model.scripts.create_filtered_set import create_filtered_set
+from model.scripts.generate_whitelist import generate_whitelist
+from model.model import ChineseCharacterCNN
 import os
 from datetime import datetime
 import argparse
@@ -13,7 +13,7 @@ import json
 def printLogAndConsole(content):
     print(content)
     try:
-        with open(f"./character_classifier/logs/{log_file_name}.txt", 'a') as f:
+        with open(f"./model/logs/{log_file_name}.txt", 'a') as f:
             print(content, file=f)
     except Exception: ## if the `log_file_name` has not been defined, we cannot write to file
         print(f" {'\033[31m'} Failed to write previous statement to the log! {'\033[0m'}")
@@ -55,7 +55,7 @@ else: # resuming from a pretrained weights
     load_model_name = model_name
     # try-except to check if metadata file actually exists
     try:
-        with open(f'./character_classifier/models/metadata/{load_model_name}-metadata.json', 'r', encoding='utf-8') as f:
+        with open(f'./model/models/metadata/{load_model_name}-metadata.json', 'r', encoding='utf-8') as f:
             # get nchars from metadata
             metadata = json.load(f)
             num_characters = metadata['nchars']
@@ -72,9 +72,9 @@ else: # resuming from a pretrained weights
     else: # specified epoch
         initial_epoch = args.resepoch+1
     # calculate the file path to load the model
-    saved_pretrained_model_path = f'./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{initial_epoch-1}.pth'
+    saved_pretrained_model_path = f'./model/models/checkpoints/training/{load_model_name}/tr_epoch{initial_epoch-1}.pth'
 
-data_dir = f"character_classifier/data/filtered/top-{num_characters}"
+data_dir = f"model/data/filtered/top-{num_characters}"
 batch_size = 64
 img_size = 64
 
@@ -86,7 +86,7 @@ img_size = 64
 
 if (not args.resume or (args.resume and load_model_name != model_name)):
     initial_epoch = 1
-    if os.path.isfile(f'./character_classifier/models/metadata/{model_name}-metadata.json'):
+    if os.path.isfile(f'./model/models/metadata/{model_name}-metadata.json'):
         print("Cannot use a model name that is already in use - please choose another using the `--name` parameter and try again!")
         quit()
 
@@ -112,7 +112,7 @@ printLogAndConsole(f"Model Configuration: { {
 max_val_accuracy = 0
 max_val_epoch = 0
 try: # load the max validation accuracy from metadata file if it exists
-    with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+    with open(f'./model/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
         initial_metadata = json.load(f)
         max_val_accuracy = initial_metadata['max_val_accuracy']
         max_val_epoch = initial_metadata['max_val_epoch']
@@ -130,7 +130,7 @@ printLogAndConsole(f"[{datetime.now()}] Successfully initialized whitelist")
  
 # Initialize filtered directories
 printLogAndConsole(f"[{datetime.now()}] Initializing filtered directories...")
-create_filtered_set('./character_classifier/data/whitelist.txt')
+create_filtered_set('./model/data/whitelist.txt')
 printLogAndConsole(f"[{datetime.now()}] Successfully initialized filtered directories")
 
 # Detect device (GPU if available)
@@ -229,36 +229,36 @@ for epoch in range(initial_epoch, num_epochs+1):
     epoch_data_export[5] = str(val_accuracy)
     
     # Save training data after each epoch model checkpoint
-    with open("./character_classifier/exports/training_data.csv", "a") as f:
+    with open("./model/exports/training_data.csv", "a") as f:
         f.write(f"{",".join(epoch_data_export)}\n")
         
-    printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./character_classifier/exports/training_data.csv")
-    os.makedirs(f"./character_classifier/models/checkpoints/training/{model_name}", exist_ok=True)
+    printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./model/exports/training_data.csv")
+    os.makedirs(f"./model/models/checkpoints/training/{model_name}", exist_ok=True)
     torch.save({
         "epoch": epoch,
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
         "scheduler_state_dict": scheduler.state_dict()
-    }, f"./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth"
+    }, f"./model/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth"
     )
     
-    printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
+    printLogAndConsole(f"[{datetime.now()}] Model saved to ./model/models/checkpoints/training/{model_name}/tr_epoch{epoch}.pth")
     
     if (val_accuracy > max_val_accuracy):
         max_val_accuracy = val_accuracy
         max_val_epoch = epoch
-        os.makedirs(f"./character_classifier/models/checkpoints/best", exist_ok=True)
+        os.makedirs(f"./model/models/checkpoints/best", exist_ok=True)
         torch.save({
             "epoch": epoch,
             "model_state_dict": model.state_dict(),
             "optimizer_state_dict": optimizer.state_dict(),
             "scheduler_state_dict": scheduler.state_dict()
-        }, f"./character_classifier/models/checkpoints/best/{model_name}_best.pth"
+        }, f"./model/models/checkpoints/best/{model_name}_best.pth"
         )
-        printLogAndConsole(f"[{datetime.now()}] Model saved to ./character_classifier/models/checkpoints/best/{model_name}_best.pth")
+        printLogAndConsole(f"[{datetime.now()}] Model saved to ./model/models/checkpoints/best/{model_name}_best.pth")
 
     # update metadata (name, completed epochs, highest validation accuracy, highest val epoch)
-    with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'w', encoding='utf-8') as f:
+    with open(f'./model/models/metadata/{model_name}-metadata.json', 'w', encoding='utf-8') as f:
         metadata_json = {
             "model_name": model_name,
             "nchars": num_characters,
@@ -269,6 +269,6 @@ for epoch in range(initial_epoch, num_epochs+1):
         }
         
         json.dump(metadata_json, f, indent=4)
-    printLogAndConsole(f"[{datetime.now()}] Metadata updated at ./character_classifier/models/metadata/{model_name}-metadata.json")
+    printLogAndConsole(f"[{datetime.now()}] Metadata updated at ./model/models/metadata/{model_name}-metadata.json")
 
 print(f"[{datetime.now()}] Training Completed!")

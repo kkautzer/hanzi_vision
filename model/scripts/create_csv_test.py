@@ -1,5 +1,5 @@
-from character_classifier.dataset import get_dataloaders
-from character_classifier.model import ChineseCharacterCNN
+from model.dataset import get_dataloaders
+from model.model import ChineseCharacterCNN
 import torch
 from datetime import datetime
 import os
@@ -9,7 +9,7 @@ import json
 # initialization - get test images, define model class, etc.
 def initialize(architecture, nchars):
     
-    data_dir = f'./character_classifier/data/filtered/top-{nchars}'
+    data_dir = f'./model/data/filtered/top-{nchars}'
     batch_size = 64
     img_size = 64
     
@@ -22,7 +22,7 @@ def initialize(architecture, nchars):
 
 # get all paths to specified model training epochs
 def get_model_paths(model_name):
-    data_dir = f"./character_classifier/models/checkpoints/training/{model_name}"
+    data_dir = f"./model/models/checkpoints/training/{model_name}"
     files = os.listdir(data_dir)
     return [f"{data_dir}/{file}" for file in files]
 
@@ -50,7 +50,7 @@ def test_model(model, model_weight_path, loader, device):
     
 def record_to_csv(model_name):
     try:
-        with open(f'./character_classifier/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+        with open(f'./model/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         nchars = metadata['nchars']
         architecture = metadata['architecture']
@@ -72,7 +72,7 @@ def record_to_csv(model_name):
     data = []
     for path in paths:
         # get epoch from the path
-        # expected form of `./character_classifier/models/checkpointstraining/<model_name>/tr_epoch<epoch>.pth`
+        # expected form of `./model/models/checkpointstraining/<model_name>/tr_epoch<epoch>.pth`
         epoch = path.split('/tr_epoch')[-1].split('.pth')[0]
         print(f"[{datetime.now()}] -- Testing epoch {epoch} of {len(paths)} --")
         accuracy = test_model(model, path, loader, device)
@@ -80,13 +80,13 @@ def record_to_csv(model_name):
         data.append([f"\"{str(model_name)}\"", str(epoch), str(accuracy)])
         
     print(f"[{datetime.now()}] Recording data to CSV...")
-    # write test accuracy to csv (`./character_classifier/exports/test/<model_name>-test.csv`)
-    with open(f"./character_classifier/exports/test/{model_name}-test.csv", 'w', encoding='utf-8') as f:
+    # write test accuracy to csv (`./model/exports/test/<model_name>-test.csv`)
+    with open(f"./model/exports/test/{model_name}-test.csv", 'w', encoding='utf-8') as f:
         lines = ["model_name,epoch,test_accuracy\n"]
         for entry in data:
             lines.append(f"{",".join(entry)}\n")
         f.writelines(lines)
-    print(f"[{datetime.now()}] Successfully recorded data to ./character_classifier/exports/test/{model_name}-test.csv")
+    print(f"[{datetime.now()}] Successfully recorded data to ./model/exports/test/{model_name}-test.csv")
 
 if __name__ == "__main__":
     

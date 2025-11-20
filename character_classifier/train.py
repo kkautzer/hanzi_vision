@@ -32,7 +32,7 @@ parser.add_argument('--nchars', type=int, default=5, help="[Required for new mod
 
 parser.add_argument('--resume', type=bool, default=False, help='[Required for resuming] Whether this training will be a brand new model (set to False), or based on another model (set to True). Defaults to False')
 parser.add_argument('--resepoch', type=int, default=0, help='[Optional] The epoch number to resume training from. Set to -1 to resume from the epoch with the highest validation accuracy; set to 0 to resume from the most recent epoch (default).') # epoch resuming from (default to the most recent, NOT best (use 0 to resume from best))
-parser.add_argument('--resname', type=str, default="", help='[Optional] The name of the model to base training on - defaults to the model specified under "--name", but can be another model if desired.')
+# parser.add_argument('--resname', type=str, default="", help='[Optional] The name of the model to base training on - defaults to the model specified under "--name", but can be another model if desired.')
 
 args = parser.parse_args()
 
@@ -48,11 +48,11 @@ if not args.resume: # starting with a completely untrained model
 
 else: # resuming from a pretrained weights
     # optionally, scaffold weights from one model to use with another
-    if len(args.resname) > 0:
-        load_model_name = args.resname
-    else:
-        load_model_name = model_name
     
+    # if len(args.resname) > 0:
+    #     load_model_name = args.resname
+    # else:
+    load_model_name = model_name
     # try-except to check if metadata file actually exists
     try:
         with open(f'./character_classifier/models/metadata/{load_model_name}-metadata.json', 'r', encoding='utf-8') as f:
@@ -65,19 +65,14 @@ else: # resuming from a pretrained weights
         print("Error -- Cannot resume training from a model that does not exist / has no completed epochs!")
         quit()   
         
-    if args.resepoch < 0:
-        # best
+    if args.resepoch == -1: # best
         initial_epoch = metadata['max_val_epoch']+1
-        saved_pretrained_model_path = f"./character_classifier/models/checkpoints/best/{load_model_name}_best.pth"
-    elif args.resepoch == 0 or args.resepoch > metadata['epochs']:
-        # most recent
+    elif args.resepoch <= 0 or args.resepoch > metadata['epochs']: # most recent
         initial_epoch = metadata['epochs']+1
-        saved_pretrained_model_path = f"./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{metadata['epochs']}.pth"
-    else:
-        # specified epoch
+    else: # specified epoch
         initial_epoch = args.resepoch+1
-        saved_pretrained_model_path = f'./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{args.resepoch}.pth'
-
+    # calculate the file path to load the model
+    saved_pretrained_model_path = f'./character_classifier/models/checkpoints/training/{load_model_name}/tr_epoch{initial_epoch-1}.pth'
 
 data_dir = f"character_classifier/data/filtered/top-{num_characters}"
 batch_size = 64
@@ -169,22 +164,18 @@ else: # resuming from another training cycle
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
 
     scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(
-        optimizer, T_0=20, ##last_epoch=checkpoint['epoch']-1##
+        optimizer, T_0=20, last_epoch=initial_epoch-2 # minus 2 for conversion to 0-indexing
     )
     
     scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
-    printLogAndConsole(f"""[{datetime.now()}] Resume successful!
-        epoch={checkpoint['epoch']}, 
-        LR={optimizer.param_groups[0]['lr']}, 
-        last_epoch={scheduler.last_epoch}"""
-    )
+    printLogAndConsole(f"[{datetime.now()}] Resume successful!")
     
 printLogAndConsole(f"[{datetime.now()}] Finished model initialization")
 
 if initial_epoch <= 1:
     printLogAndConsole(f"[{datetime.now()}] Beginning training...")
 else:
-    printLogAndConsole(f"[{datetime.now()}] Resuming training from epoch {initial_epoch}...")
+    printLogAndConsole(f"[{datetime.now()}] Resuming training from last_epoch={initial_epoch-1}...")
 
 # Training loop
 epoch_data_export = [] # {model_name, nchars, LR, epoch, train_loss, val_acc}

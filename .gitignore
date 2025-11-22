@@ -1,3 +1,41 @@
-server/server-venv
-character_classifier/model-venv
+__pycache__
+node_modules
 .env
+model/model-venv
+server/server-venv
+
+# files to ignore from /model
+model/data/raw
+model/data/processed
+model/data/filtered
+model/data/whitelist.txt
+
+model/custom_test_images
+model/logs
+model/train-checkpoints
+
+# files to ignore from /server
+
+# file to ignore from /frontend
+frontend/logs
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+frontend/dist
+frontend/dist-ssr
+frontend/*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

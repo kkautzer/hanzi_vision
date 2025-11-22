@@ -2,13 +2,12 @@ __pycache__
 
 model-venv
 
-custom_test_images/*
-models/checkpoints/training/*
-models/metadata
+custom_test_images
+train-checkpoints
 
 data/raw
 data/processed
 data/filtered
 data/whitelist.txt
 
-logs/*
+logs

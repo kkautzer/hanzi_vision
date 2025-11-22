@@ -1,4 +1,0 @@
-model-GoogLeNet-500-1.0
-model-GoogLeNet-750-1.0
-model-500-Inception-v1-SGD
-model-750-Inception-v1-SGD

@@ -22,7 +22,7 @@ def initialize(architecture, nchars):
 
 # get all paths to specified model training epochs
 def get_model_paths(model_name):
-    data_dir = f"./model/models/checkpoints/training/{model_name}"
+    data_dir = f"./model/train-checkpoints/{model_name}"
     files = os.listdir(data_dir)
     return [f"{data_dir}/{file}" for file in files]
 
@@ -50,7 +50,7 @@ def test_model(model, model_weight_path, loader, device):
     
 def record_to_csv(model_name):
     try:
-        with open(f'./model/models/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
+        with open(f'./model/exports/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         nchars = metadata['nchars']
         architecture = metadata['architecture']
@@ -72,7 +72,7 @@ def record_to_csv(model_name):
     data = []
     for path in paths:
         # get epoch from the path
-        # expected form of `./model/models/checkpointstraining/<model_name>/tr_epoch<epoch>.pth`
+        # expected form of `./model/train-checkpoints/<model_name>/tr_epoch<epoch>.pth`
         epoch = path.split('/tr_epoch')[-1].split('.pth')[0]
         print(f"[{datetime.now()}] -- Testing epoch {epoch} of {len(paths)} --")
         accuracy = test_model(model, path, loader, device)

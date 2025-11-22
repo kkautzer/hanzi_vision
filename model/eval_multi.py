@@ -13,7 +13,7 @@ def evaluate(images, model_name):
     '''
     
     try:
-        metadata_location = f'./model/{"models/metadata" if __name__=="__main__" else "/exports/metadata_public"}/{model_name}-metadata.json'
+        metadata_location = f'./model/exports/metadata/{model_name}-metadata.json'
         with open(metadata_location, 'r', encoding='utf-8') as f:
             metadata = json.load(f)
         n_chars = metadata['nchars']
@@ -37,7 +37,7 @@ def evaluate(images, model_name):
     num_classes = len(class_names)
 
     model = ChineseCharacterCNN(architecture=architecture, num_classes=num_classes).to(device)
-    path_to_model = f"./model/models/checkpoints/best/{model_name}_best.pth"
+    path_to_model = f"./model/exports/checkpoints/{model_name}_best.pth"
     model.load_state_dict(torch.load(path_to_model, map_location=device))
 
 

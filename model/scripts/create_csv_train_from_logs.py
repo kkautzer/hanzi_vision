@@ -45,7 +45,7 @@ def create_csv():
                     ## now have all data for this epoch, so push a copy to export_data
                     export_data.append(data.copy())
                     
-        with open(f'./model/models/metadata/{data[0][1:-1]}-metadata.json', 'w', encoding='utf-8') as f:
+        with open(f'./model/exports/metadata/{data[0][1:-1]}-metadata.json', 'w', encoding='utf-8') as f:
             metadata_json = {
                 "model_name": data[0][1:-1], # remove leading/trailing quotations
                 "nchars": int(data[1]),

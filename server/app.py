@@ -40,7 +40,7 @@ character_data = character_data.replace({np.nan: None})
 class HanziEvaluator:
     def __init__(self, model_name):
         try:
-            metadata_path = f"./model/exports/metadata_public/{model_name}-metadata.json"
+            metadata_path = f"./model/exports/metadata/{model_name}-metadata.json"
             with open(metadata_path, "r", encoding="utf-8") as f:
                 metadata = json.load(f)
             
@@ -53,8 +53,11 @@ class HanziEvaluator:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             #self.device = "cpu"
             self.model = ChineseCharacterCNN(architecture=self.architecture, num_classes=self.n_chars).to(self.device)
-            state_dict = torch.load(f"./model/models/checkpoints/best/{model_name}_best.pth", map_location=self.device)
-            self.model.load_state_dict(state_dict["model_state_dict"] if ("model_state_dict" in state_dict) else state_dict)
+            
+            model_load = torch.load(f"./model/exports/checkpoints/{model_name}_best.pth", map_location=self.device)
+            model_weights = model_load.get("model_state_dict", model_load)
+            
+            self.model.load_state_dict(model_weights)
             self.model.eval()
 
             self.transform = transforms.Compose([
@@ -84,7 +87,7 @@ class HanziEvaluator:
 # Cache evaluator instances for different models
 evaluators = {}
 
-def get_evaluator(model_name): # TODO Refactor this function to check the model's architecture
+def get_evaluator(model_name):
     if model_name not in evaluators:
         evaluators[model_name] = HanziEvaluator(model_name)
     return evaluators[model_name]
@@ -124,10 +127,10 @@ def evaluate_image():
 
 @app.route('/models', methods=['GET'])
 def get_models():
-    filenames = os.listdir('./model/exports/metadata_public')
+    filenames = os.listdir('./model/exports/metadata')
     model_data = []
     for file in filenames:
-        with open(f'./model/exports/metadata_public/{file}', 'r', encoding='utf-8') as f:
+        with open(f'./model/exports/metadata/{file}', 'r', encoding='utf-8') as f:
             j = json.load(f)
             model_data.append(j)
     return model_data, 200

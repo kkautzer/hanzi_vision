@@ -183,7 +183,7 @@ for epoch in range(initial_epoch, num_epochs+1):
     epoch_data_export = [
         f"\"{str(model_name)}\"", # [0] model name
         str(num_characters), # [1] nchars
-        str(learning_rate), # [2] learning rate
+        str(str(optimizer.param_groups[0]['lr'])), # [2] learning rate
         str(epoch), # [3] epoch
         None, # [4] training loss
         None, # [5] validation accuracy
@@ -204,7 +204,6 @@ for epoch in range(initial_epoch, num_epochs+1):
         running_loss += loss.item()
         
     scheduler.step()            # Step scheduler too
-    epoch_data_export[2] = str(optimizer.param_groups[0]['lr']) # update learning rate var
     
     avg_loss = running_loss / len(train_loader)
     printLogAndConsole(f"[{datetime.now()}] Epoch [{epoch}/{num_epochs}], Loss: {avg_loss:.4f}")

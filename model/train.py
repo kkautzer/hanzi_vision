@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from model.dataset import get_dataloaders
+from model.data.dataset import get_dataloaders
 from model.scripts.create_filtered_set import create_filtered_set
 from model.scripts.generate_whitelist import generate_whitelist
 from model.model import ChineseCharacterCNN

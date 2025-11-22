@@ -1,4 +1,4 @@
-from model.dataset import get_dataloaders
+from model.data.dataset import get_dataloaders
 from model.model import ChineseCharacterCNN
 import torch
 from datetime import datetime

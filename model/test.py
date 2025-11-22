@@ -1,5 +1,5 @@
 import torch
-from model.dataset import get_dataloaders
+from model.data.dataset import get_dataloaders
 from model.model import ChineseCharacterCNN
 from datetime import datetime
 import json

@@ -13,7 +13,7 @@ model/data/whitelist.txt
 
 model/custom_test_images
 model/logs
-model/train-checkpoints
+model/checkpoints
 
 # files to ignore from /server
 

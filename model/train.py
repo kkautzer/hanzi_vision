@@ -72,7 +72,7 @@ else: # resuming from a pretrained weights
     else: # specified epoch
         initial_epoch = args.resepoch+1
     # calculate the file path to load the model
-    saved_pretrained_model_path = f'./model/train-checkpoints/{load_model_name}/tr_epoch{initial_epoch-1}.pth'
+    saved_pretrained_model_path = f'./model/checkpoints/{load_model_name}/tr_epoch{initial_epoch-1}.pth'
 
 data_dir = f"model/data/filtered/top-{num_characters}"
 batch_size = 64
@@ -232,15 +232,15 @@ for epoch in range(initial_epoch, num_epochs+1):
         f.write(f"{",".join(epoch_data_export)}\n")
         
     printLogAndConsole(f"[{datetime.now()}] Logged epoch info to ./model/exports/training_data.csv")
-    os.makedirs(f"./model/train-checkpoints/{model_name}", exist_ok=True)
+    os.makedirs(f"./model/checkpoints/{model_name}", exist_ok=True)
     torch.save({ # save info required to resume training
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
         "scheduler_state_dict": scheduler.state_dict()
-    }, f"./model/train-checkpoints/{model_name}/tr_epoch{epoch}.pth"
+    }, f"./model/checkpoints/{model_name}/tr_epoch{epoch}.pth"
     )
     
-    printLogAndConsole(f"[{datetime.now()}] Model saved to ./model/train-checkpoints/{model_name}/tr_epoch{epoch}.pth")
+    printLogAndConsole(f"[{datetime.now()}] Model saved to ./model/checkpoints/{model_name}/tr_epoch{epoch}.pth")
     
     if (val_accuracy > max_val_accuracy):
         max_val_accuracy = val_accuracy

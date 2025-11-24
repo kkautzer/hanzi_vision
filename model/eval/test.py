@@ -26,7 +26,7 @@ def test_model(model_name, epoch=-1):
     if epoch < 1:
         model_path = f'./model/exports/checkpoints/{model_name}_best.pth'
     else:
-        model_path = f'./model/train-checkpoints/{model_name}/tr_epoch{epoch}.pth'
+        model_path = f'./model/checkpoints/{model_name}/tr_epoch{epoch}.pth'
     data_dir = f"./model/data/filtered/top-{n_chars}"  # Adjust based on location
     batch_size = 64
     img_size = 64

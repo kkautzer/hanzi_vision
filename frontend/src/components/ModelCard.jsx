@@ -15,7 +15,7 @@ export default function ModelCard(props) {
 
     return <div className="card card-border bg-base-300 border border-base-200 text-base-content shadow-md text-center" >
         <div className="card-body mx-auto">
-            <h2 className="card-title">
+            <h2 className="card-title flex justify-center">
                 {props.new ? <div className="badge badge-secondary">NEW</div> : ''}
                 <strong>{model?.['model_name']}</strong>
             </h2>

@@ -10,6 +10,19 @@ export default function Models() {
 
     const [ models, setModels ] = useState([])
 
+    const newModels = [
+        "InceptionV1-1500-1",
+        "InceptionV1-2000-1" 
+    ];
+
+    const oldModels = [
+        "model-GoogLeNet-500-1.0",
+        "model-GoogLeNet-750-1.0",
+        "model-500-Inception-v1-SGD",
+        "model-750-Inception-v1-SGD"
+    ]
+
+
     useEffect(() => {
         fetch(`${serverURL}/models`, {
             method: "GET"
@@ -24,10 +37,6 @@ export default function Models() {
             }
         })
     }, [])
-
-    const newModels = [
-        "model-500-Inception-v1-SGD", 
-    ]
     
     return <div>
         <div>
@@ -37,8 +46,12 @@ export default function Models() {
             <h1 className="text-4xl text-center">Models & Data</h1>
 
             <div className="flex flex-col gap-y-2 mt-4">
-                {models ? models.map((mod) => {
-                    return <ModelCard model={mod} new={newModels.includes(mod['model_name'])} key={mod["model_name"]} />
+                {models != oldModels ? models.map((mod) => {
+                    if (!oldModels.includes(mod['model_name'])) {
+                        return <ModelCard model={mod} new={newModels.includes(mod['model_name'])} key={mod["model_name"]} />
+                    } else {
+                        return null
+                    }
                 }) : <p className="text-xl text-red">Loading Models...</p>}
             </div>
         </div>

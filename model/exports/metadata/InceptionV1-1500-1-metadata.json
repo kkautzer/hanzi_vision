@@ -1,8 +1,8 @@
 {
     "model_name": "InceptionV1-1500-1",
     "nchars": 1500,
-    "epochs": 20,
-    "max_val_accuracy": 97.26720539726934,
-    "max_val_epoch": 20,
+    "epochs": 84,
+    "max_val_accuracy": 98.97986519647239,
+    "max_val_epoch": 21,
     "architecture": "googlenet"
 }

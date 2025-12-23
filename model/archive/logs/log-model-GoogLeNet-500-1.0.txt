@@ -1,0 +1,270 @@
+------------------
+Successfully loaded configuration data!
+Model Configuration: {'batch_size': 64, 'img_size': 64, 'data_dir': 'data/filtered/top-500', 'num_characters': 500, 'learning_rate': 0.0125, 'num_epochs': 30, 'model_name': 'model-GoogLeNet-500-1.0', 'initial_epoch': 1, 'saved_pretrained_model_path': ''}
+[2025-07-15 22:59:06.348692] Initializing whitelist for the 500 most common characters...
+[2025-07-15 22:59:06.392086] Successfully initialized whitelist
+[2025-07-15 22:59:06.392086] Initializing filtered directories...
+[2025-07-15 22:59:06.399781] Successfully initialized filtered directories
+[2025-07-15 22:59:06.399781] Using device: cpu
+[2025-07-15 22:59:06.399781] Loading data loaders...
+[2025-07-15 22:59:06.960860] Finished loading data loaders
+[2025-07-15 22:59:06.960860] Initializing model...
+[2025-07-15 22:59:07.103413] Finished model initialization
+[2025-07-15 22:59:07.103413] Beginning training...
+[2025-07-15 22:59:07.103413] -- Beginning epoch 1 of 30 --
+[2025-07-15 23:27:18.615115] Epoch [1/30], Loss: 4.5025
+[2025-07-15 23:29:52.679740] Validation Accuracy: 53.26%
+[2025-07-15 23:29:52.754628] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_1.pth
+[2025-07-15 23:29:52.834353] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-15 23:29:52.834353] -- Beginning epoch 2 of 30 --
+[2025-07-15 23:58:17.343451] Epoch [2/30], Loss: 1.3818
+[2025-07-16 00:00:33.419101] Validation Accuracy: 81.99%
+[2025-07-16 00:00:33.520709] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_2.pth
+[2025-07-16 00:00:33.588432] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 00:00:33.588432] -- Beginning epoch 3 of 30 --
+[2025-07-16 00:29:20.074246] Epoch [3/30], Loss: 0.8432
+[2025-07-16 00:31:32.170036] Validation Accuracy: 87.48%
+[2025-07-16 00:31:32.253070] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_3.pth
+[2025-07-16 00:31:32.325131] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 00:31:32.325131] -- Beginning epoch 4 of 30 --
+[2025-07-16 01:00:31.827336] Epoch [4/30], Loss: 0.6496
+[2025-07-16 01:02:43.336327] Validation Accuracy: 89.86%
+[2025-07-16 01:02:43.400972] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_4.pth
+[2025-07-16 01:02:43.459879] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 01:02:43.459879] -- Beginning epoch 5 of 30 --
+[2025-07-16 01:31:55.761962] Epoch [5/30], Loss: 0.5420
+[2025-07-16 01:34:06.379662] Validation Accuracy: 91.89%
+[2025-07-16 01:34:06.442476] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_5.pth
+[2025-07-16 01:34:06.528926] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 01:34:06.528926] -- Beginning epoch 6 of 30 --
+[2025-07-16 02:05:16.664128] Epoch [6/30], Loss: 0.4670
+[2025-07-16 02:07:34.282324] Validation Accuracy: 91.87%
+[2025-07-16 02:07:34.353112] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_6.pth
+[2025-07-16 02:07:34.353112] -- Beginning epoch 7 of 30 --
+[2025-07-16 02:37:46.651806] Epoch [7/30], Loss: 0.4104
+[2025-07-16 02:39:57.341103] Validation Accuracy: 92.69%
+[2025-07-16 02:39:57.423197] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_7.pth
+[2025-07-16 02:39:57.489778] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 02:39:57.489778] -- Beginning epoch 8 of 30 --
+[2025-07-16 03:09:39.303227] Epoch [8/30], Loss: 0.3647
+[2025-07-16 03:11:48.421754] Validation Accuracy: 93.03%
+[2025-07-16 03:11:48.483045] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_8.pth
+[2025-07-16 03:11:48.555199] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 03:11:48.557830] -- Beginning epoch 9 of 30 --
+[2025-07-16 03:41:59.374866] Epoch [9/30], Loss: 0.3382
+[2025-07-16 03:44:09.752710] Validation Accuracy: 93.27%
+[2025-07-16 03:44:09.825356] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_9.pth
+[2025-07-16 03:44:09.886899] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 03:44:09.886899] -- Beginning epoch 10 of 30 --
+[2025-07-16 04:14:13.640964] Epoch [10/30], Loss: 0.3082
+[2025-07-16 04:16:21.685766] Validation Accuracy: 94.11%
+[2025-07-16 04:16:21.768197] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_10.pth
+[2025-07-16 04:16:21.828276] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 04:16:21.828276] -- Beginning epoch 11 of 30 --
+[2025-07-16 04:46:29.891549] Epoch [11/30], Loss: 0.2816
+[2025-07-16 04:48:38.646784] Validation Accuracy: 94.01%
+[2025-07-16 04:48:38.714981] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_11.pth
+[2025-07-16 04:48:38.714981] -- Beginning epoch 12 of 30 --
+[2025-07-16 05:19:02.792004] Epoch [12/30], Loss: 0.2630
+[2025-07-16 05:21:09.791777] Validation Accuracy: 94.69%
+[2025-07-16 05:21:09.863767] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_12.pth
+[2025-07-16 05:21:09.937869] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 05:21:09.937869] -- Beginning epoch 13 of 30 --
+[2025-07-16 05:51:33.683412] Epoch [13/30], Loss: 0.2493
+[2025-07-16 05:53:42.967882] Validation Accuracy: 94.66%
+[2025-07-16 05:53:43.032451] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_13.pth
+[2025-07-16 05:53:43.032451] -- Beginning epoch 14 of 30 --
+[2025-07-16 06:24:04.822297] Epoch [14/30], Loss: 0.2344
+[2025-07-16 06:26:11.703469] Validation Accuracy: 94.57%
+[2025-07-16 06:26:11.766745] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_14.pth
+[2025-07-16 06:26:11.766745] -- Beginning epoch 15 of 30 --
+[2025-07-16 06:56:27.568708] Epoch [15/30], Loss: 0.2218
+[2025-07-16 06:58:41.024470] Validation Accuracy: 94.50%
+[2025-07-16 06:58:41.108537] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_15.pth
+[2025-07-16 06:58:41.108537] -- Beginning epoch 16 of 30 --
+[2025-07-16 07:29:05.751354] Epoch [16/30], Loss: 0.2071
+[2025-07-16 07:31:13.721710] Validation Accuracy: 94.85%
+[2025-07-16 07:31:13.782858] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_16.pth
+[2025-07-16 07:31:13.876467] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 07:31:13.876467] -- Beginning epoch 17 of 30 --
+[2025-07-16 08:01:33.325557] Epoch [17/30], Loss: 0.1978
+[2025-07-16 08:03:45.835055] Validation Accuracy: 94.94%
+[2025-07-16 08:03:45.904911] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_17.pth
+[2025-07-16 08:03:45.958217] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 08:03:45.958217] -- Beginning epoch 18 of 30 --
+[2025-07-16 08:34:23.381764] Epoch [18/30], Loss: 0.1901
+[2025-07-16 08:36:33.048079] Validation Accuracy: 95.02%
+[2025-07-16 08:36:33.119265] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_18.pth
+[2025-07-16 08:36:33.200990] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 08:36:33.200990] -- Beginning epoch 19 of 30 --
+[2025-07-16 09:07:08.188819] Epoch [19/30], Loss: 0.1793
+[2025-07-16 09:09:16.609507] Validation Accuracy: 95.11%
+[2025-07-16 09:09:16.681581] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_19.pth
+[2025-07-16 09:09:16.763126] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-16 09:09:16.763126] -- Beginning epoch 20 of 30 --
+------------------
+Successfully loaded configuration data!
+Model Configuration: {'batch_size': 64, 'img_size': 64, 'data_dir': 'data/filtered/top-500', 'num_characters': 500, 'learning_rate': 0.0115, 'num_epochs': 60, 'model_name': 'model-GoogLeNet-500-1.0', 'initial_epoch': 20, 'saved_pretrained_model_path': 'checkpoints\\training\\model-GoogLeNet-500-1.0\\tr_epoch19.pth'}
+[2025-07-17 15:38:35.745278] Initializing whitelist for the 500 most common characters...
+[2025-07-17 15:38:35.764380] Successfully initialized whitelist
+[2025-07-17 15:38:35.764380] Initializing filtered directories...
+[2025-07-17 15:38:35.784982] Successfully initialized filtered directories
+[2025-07-17 15:38:35.784982] Using device: cpu
+[2025-07-17 15:38:35.784982] Loading data loaders...
+[2025-07-17 15:38:40.878736] Finished loading data loaders
+[2025-07-17 15:38:40.878736] Initializing model...
+[2025-07-17 15:38:41.155048] Finished model initialization
+[2025-07-17 15:38:41.155048] Resuming training from epoch 20...
+[2025-07-17 15:38:41.155048] -- Beginning epoch 20 of 60 --
+[2025-07-17 16:05:25.733591] Epoch [20/60], Loss: 0.1648
+[2025-07-17 16:07:52.924912] Validation Accuracy: 94.99%
+[2025-07-17 16:07:52.995234] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_20.pth
+[2025-07-17 16:07:53.056368] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-17 16:07:53.056368] -- Beginning epoch 21 of 60 --
+[2025-07-17 16:34:30.469177] Epoch [21/60], Loss: 0.1566
+[2025-07-17 16:36:37.062952] Validation Accuracy: 95.51%
+[2025-07-17 16:36:37.124599] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_21.pth
+[2025-07-17 16:36:37.195421] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-17 16:36:37.195421] -- Beginning epoch 22 of 60 --
+[2025-07-17 17:03:30.832878] Epoch [22/60], Loss: 0.1483
+[2025-07-17 17:05:38.666415] Validation Accuracy: 95.08%
+[2025-07-17 17:05:38.737487] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_22.pth
+[2025-07-17 17:05:38.738477] -- Beginning epoch 23 of 60 --
+[2025-07-17 17:32:42.650484] Epoch [23/60], Loss: 0.1437
+[2025-07-17 17:34:49.897764] Validation Accuracy: 95.31%
+[2025-07-17 17:34:49.949152] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_23.pth
+[2025-07-17 17:34:49.949152] -- Beginning epoch 24 of 60 --
+[2025-07-17 18:02:00.049248] Epoch [24/60], Loss: 0.1400
+[2025-07-17 18:04:06.776977] Validation Accuracy: 95.61%
+[2025-07-17 18:04:06.847766] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_24.pth
+[2025-07-17 18:04:06.913211] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-17 18:04:06.913211] -- Beginning epoch 25 of 60 --
+[2025-07-17 18:31:29.541578] Epoch [25/60], Loss: 0.1358
+[2025-07-17 18:33:37.679365] Validation Accuracy: 95.37%
+[2025-07-17 18:33:37.730576] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_25.pth
+[2025-07-17 18:33:37.730576] -- Beginning epoch 26 of 60 --
+[2025-07-17 19:01:07.535370] Epoch [26/60], Loss: 0.1322
+[2025-07-17 19:03:15.785306] Validation Accuracy: 95.55%
+[2025-07-17 19:03:15.836413] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_26.pth
+[2025-07-17 19:03:15.836413] -- Beginning epoch 27 of 60 --
+[2025-07-17 19:30:52.568273] Epoch [27/60], Loss: 0.1275
+[2025-07-17 19:33:32.185925] Validation Accuracy: 95.33%
+[2025-07-17 19:33:32.248082] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_27.pth
+[2025-07-17 19:33:32.248082] -- Beginning epoch 28 of 60 --
+[2025-07-17 20:01:46.158146] Epoch [28/60], Loss: 0.1209
+[2025-07-17 20:03:55.519321] Validation Accuracy: 95.39%
+[2025-07-17 20:03:55.583111] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_28.pth
+[2025-07-17 20:03:55.583111] -- Beginning epoch 29 of 60 --
+[2025-07-17 20:31:21.965551] Epoch [29/60], Loss: 0.1212
+[2025-07-17 20:33:27.584686] Validation Accuracy: 95.60%
+[2025-07-17 20:33:27.687453] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_29.pth
+[2025-07-17 20:33:27.687453] -- Beginning epoch 30 of 60 --
+[2025-07-17 21:00:58.945696] Epoch [30/60], Loss: 0.1170
+[2025-07-17 21:03:03.118403] Validation Accuracy: 95.46%
+[2025-07-17 21:03:03.168913] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_30.pth
+[2025-07-17 21:03:03.168913] -- Beginning epoch 31 of 60 --
+[2025-07-17 21:30:15.973922] Epoch [31/60], Loss: 0.1116
+[2025-07-17 21:32:22.962907] Validation Accuracy: 95.79%
+[2025-07-17 21:32:23.020211] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_31.pth
+[2025-07-17 21:32:23.077195] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-17 21:32:23.078269] -- Beginning epoch 32 of 60 --
+[2025-07-17 21:59:28.951603] Epoch [32/60], Loss: 0.1128
+[2025-07-17 22:01:34.838583] Validation Accuracy: 95.68%
+[2025-07-17 22:01:34.900180] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_32.pth
+[2025-07-17 22:01:34.900180] -- Beginning epoch 33 of 60 --
+[2025-07-17 22:29:05.411245] Epoch [33/60], Loss: 0.1097
+[2025-07-17 22:31:10.892230] Validation Accuracy: 95.59%
+[2025-07-17 22:31:10.964201] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_33.pth
+[2025-07-17 22:31:10.964201] -- Beginning epoch 34 of 60 --
+[2025-07-17 22:58:46.979205] Epoch [34/60], Loss: 0.1062
+[2025-07-17 23:00:53.266146] Validation Accuracy: 95.48%
+[2025-07-17 23:00:53.327507] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_34.pth
+[2025-07-17 23:00:53.327507] -- Beginning epoch 35 of 60 --
+[2025-07-17 23:28:31.615826] Epoch [35/60], Loss: 0.1012
+[2025-07-17 23:30:35.618807] Validation Accuracy: 95.83%
+[2025-07-17 23:30:35.724122] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_35.pth
+[2025-07-17 23:30:35.788063] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-17 23:30:35.794343] -- Beginning epoch 36 of 60 --
+------------------
+Successfully loaded configuration data!
+Model Configuration: {'batch_size': 64, 'img_size': 64, 'data_dir': 'data/filtered/top-500', 'num_characters': 500, 'learning_rate': 0.009, 'num_epochs': 75, 'model_name': 'model-GoogLeNet-500-1.0', 'initial_epoch': 36, 'saved_pretrained_model_path': 'checkpoints\\training\\model-GoogLeNet-500-1.0\\tr_epoch35.pth'}
+[2025-07-18 00:06:26.750175] Initializing whitelist for the 500 most common characters...
+[2025-07-18 00:06:26.765584] Successfully initialized whitelist
+[2025-07-18 00:06:26.765584] Initializing filtered directories...
+[2025-07-18 00:06:26.780638] Successfully initialized filtered directories
+[2025-07-18 00:06:26.781589] Using device: cpu
+[2025-07-18 00:06:26.781589] Loading data loaders...
+[2025-07-18 00:06:27.462578] Finished loading data loaders
+[2025-07-18 00:06:27.463075] Initializing model...
+[2025-07-18 00:06:27.665597] Finished model initialization
+[2025-07-18 00:06:27.665597] Resuming training from epoch 36...
+[2025-07-18 00:06:27.665597] -- Beginning epoch 36 of 75 --
+[2025-07-18 00:35:41.449046] Epoch [36/75], Loss: 0.0839
+[2025-07-18 00:38:08.103915] Validation Accuracy: 95.94%
+[2025-07-18 00:38:08.183528] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_36.pth
+[2025-07-18 00:38:08.255471] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-18 00:38:08.255471] -- Beginning epoch 37 of 75 --
+[2025-07-18 01:05:35.973932] Epoch [37/75], Loss: 0.0769
+[2025-07-18 01:07:42.939400] Validation Accuracy: 95.96%
+[2025-07-18 01:07:43.012442] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_37.pth
+[2025-07-18 01:07:43.093279] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-18 01:07:43.093279] -- Beginning epoch 38 of 75 --
+[2025-07-18 01:34:57.338343] Epoch [38/75], Loss: 0.0776
+[2025-07-18 01:37:03.604372] Validation Accuracy: 96.02%
+[2025-07-18 01:37:03.676439] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_38.pth
+[2025-07-18 01:37:03.748312] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-18 01:37:03.748312] -- Beginning epoch 39 of 75 --
+[2025-07-18 02:04:12.443973] Epoch [39/75], Loss: 0.0734
+[2025-07-18 02:06:20.264211] Validation Accuracy: 96.05%
+[2025-07-18 02:06:20.336512] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_39.pth
+[2025-07-18 02:06:20.401210] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-18 02:06:20.401210] -- Beginning epoch 40 of 75 --
+[2025-07-18 02:33:27.402321] Epoch [40/75], Loss: 0.0737
+[2025-07-18 02:35:32.427107] Validation Accuracy: 95.73%
+[2025-07-18 02:35:32.529704] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_40.pth
+[2025-07-18 02:35:32.529704] -- Beginning epoch 41 of 75 --
+[2025-07-18 03:02:36.092657] Epoch [41/75], Loss: 0.0704
+[2025-07-18 03:04:41.929216] Validation Accuracy: 96.01%
+[2025-07-18 03:04:41.990426] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_41.pth
+[2025-07-18 03:04:41.990426] -- Beginning epoch 42 of 75 --
+[2025-07-18 03:31:40.068019] Epoch [42/75], Loss: 0.0740
+[2025-07-18 03:33:46.663920] Validation Accuracy: 96.14%
+[2025-07-18 03:33:46.719241] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_42.pth
+[2025-07-18 03:33:46.787677] Model saved to ./checkpoints/best/model-GoogLeNet-500-1.0_best.pth
+[2025-07-18 03:33:46.787677] -- Beginning epoch 43 of 75 --
+[2025-07-18 04:00:56.152692] Epoch [43/75], Loss: 0.0693
+[2025-07-18 04:03:01.765135] Validation Accuracy: 95.91%
+[2025-07-18 04:03:01.819773] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_43.pth
+[2025-07-18 04:03:01.819773] -- Beginning epoch 44 of 75 --
+[2025-07-18 04:30:19.961887] Epoch [44/75], Loss: 0.0679
+[2025-07-18 04:32:25.984691] Validation Accuracy: 95.86%
+[2025-07-18 04:32:26.035428] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_44.pth
+[2025-07-18 04:32:26.035428] -- Beginning epoch 45 of 75 --
+[2025-07-18 04:59:31.467502] Epoch [45/75], Loss: 0.0687
+[2025-07-18 05:01:37.380183] Validation Accuracy: 95.92%
+[2025-07-18 05:01:37.441733] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_45.pth
+[2025-07-18 05:01:37.441733] -- Beginning epoch 46 of 75 --
+[2025-07-18 05:29:03.758936] Epoch [46/75], Loss: 0.0648
+[2025-07-18 05:31:19.084383] Validation Accuracy: 95.97%
+[2025-07-18 05:31:19.146427] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_46.pth
+[2025-07-18 05:31:19.146427] -- Beginning epoch 47 of 75 --
+[2025-07-18 05:59:17.367112] Epoch [47/75], Loss: 0.0656
+[2025-07-18 06:01:24.194101] Validation Accuracy: 96.06%
+[2025-07-18 06:01:24.255741] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_47.pth
+[2025-07-18 06:01:24.255741] -- Beginning epoch 48 of 75 --
+[2025-07-18 06:28:45.612788] Epoch [48/75], Loss: 0.0650
+[2025-07-18 06:30:52.157690] Validation Accuracy: 95.96%
+[2025-07-18 06:30:52.209299] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_48.pth
+[2025-07-18 06:30:52.209299] -- Beginning epoch 49 of 75 --
+[2025-07-18 06:58:23.392528] Epoch [49/75], Loss: 0.0637
+[2025-07-18 07:00:31.245048] Validation Accuracy: 95.90%
+[2025-07-18 07:00:31.305615] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_49.pth
+[2025-07-18 07:00:31.305615] -- Beginning epoch 50 of 75 --
+[2025-07-18 07:26:59.666905] Epoch [50/75], Loss: 0.0630
+[2025-07-18 07:29:04.829399] Validation Accuracy: 95.94%
+[2025-07-18 07:29:04.891063] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_50.pth
+[2025-07-18 07:29:04.891063] -- Beginning epoch 51 of 75 --
+[2025-07-18 07:57:10.720449] Epoch [51/75], Loss: 0.0587
+[2025-07-18 07:59:26.326910] Validation Accuracy: 95.99%
+[2025-07-18 07:59:26.378734] Model saved to ./checkpoints/training/model-GoogLeNet-500-1.0/train_epoch_51.pth
+[2025-07-18 07:59:26.378734] -- Beginning epoch 52 of 75 --

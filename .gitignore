@@ -3,6 +3,9 @@ node_modules
 .env
 model/model-venv
 server/server-venv
+analysis/analysis-venv
+
+# files to ignore from /analysis
 
 # files to ignore from /model
 model/data/raw

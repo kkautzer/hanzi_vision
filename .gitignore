@@ -14,7 +14,6 @@ model/data/filtered
 model/data/whitelist.txt
 
 model/custom_test_images
-model/logs
 model/checkpoints
 
 model/archive/checkpoints

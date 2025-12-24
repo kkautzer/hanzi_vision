@@ -62,7 +62,7 @@ def nCharsVsAccuracyTable(save_path_root=None, show_plots=True):
     plt.clf() 
 
 ## epochs vs. accuracy analysis for each character set
-def epochsVsAccuracyCurve(save_path_root=None, show_plots=True):
+def epochsVsAccuracyCurveSeparate(save_path_root=None, show_plots=True):
     if save_path_root:
         save_path = f'{save_path_root}/epoch_accuracy_curves'
     else:
@@ -84,17 +84,33 @@ def epochsVsAccuracyCurve(save_path_root=None, show_plots=True):
 
         if save_path is not None:
             os.makedirs(save_path, exist_ok=True)
-            plt.savefig(f'{save_path}/{name}.png', dpi=300)
-            print(f'Saved figure to {save_path}/{name}.png!')
+            plt.savefig(f'{save_path}/epoch_accuracy_{name}.png', dpi=300)
+            print(f'Saved figure to {save_path}/epoch_accuracy{name}.png!')
             
         if show_plots:
             plt.show()
             
         # clear plot
         plt.clf() 
-    
-    # create an aggregate graph of accuracy vs. epoch (one line per model)
-    
+  
+## a graph of accuracy vs. epoch with one line per model
+def epochVsAccuracyCurveCombined(save_path_root=None, show_plots=True):
+    if save_path_root:
+        save_path = f'{save_path_root}/epoch_accuracy_combined.png'
+    else:
+        save_path = None
+
+    pass
+
+## a graph of average accuracy per epoch (across all models)
+def epochVsAccuracyCurveAverage(save_path_root=None, show_plots=True):
+    if save_path_root:
+        save_path = f'{save_path_root}/epoch_accuracy_average.png'
+    else:
+        save_path = None
+
+    pass
+
 ## main method - include a switch to save plots or just show them
 if __name__ == "__main__":
     
@@ -107,4 +123,6 @@ if __name__ == "__main__":
         save_path_root = None
 
     nCharsVsAccuracyTable(save_path_root=save_path_root, show_plots=show_plots)
-    epochsVsAccuracyCurve(save_path_root=save_path_root, show_plots=show_plots)
+    epochsVsAccuracyCurveSeparate(save_path_root=save_path_root, show_plots=show_plots)
+    epochVsAccuracyCurveCombined(save_path_root=save_path_root, show_plots=show_plots)
+    epochVsAccuracyCurveAverage(save_path_root=save_path_root, show_plots=show_plots)

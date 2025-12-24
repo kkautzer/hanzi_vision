@@ -19,7 +19,7 @@ This is the main direcotry for all data analysis operations. The main component 
 * Number of Characters vs. Highest Accuracy
 * Epoch vs. Accuracy (Individual)
 * Epoch vs. Accuracy (Combined / Aggregate)
-* Epoch vs. Accuracy (Average)
+* Epoch vs. Average Accuracy
 
 As deemed necessary, the script may be updated to generate additional figures. Furthermore, a future update will implement necessary p-value calculations to complement the existing figures.
 

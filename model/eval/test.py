@@ -7,7 +7,7 @@ import argparse
 
 def test_model(model_name, epoch=-1):
     
-    # get nchars based on model_name
+    # get nchars based on model_name and stored metadata
     try:
         with open(f'./model/exports/metadata/{model_name}-metadata.json', 'r', encoding='utf-8') as f:
             metadata = json.load(f)

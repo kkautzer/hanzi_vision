@@ -75,7 +75,7 @@ else: # resuming from a pretrained weights
     saved_pretrained_model_path = f'./model/checkpoints/{load_model_name}/tr_epoch{initial_epoch-1}.pth'
 
 data_dir = f"model/data/filtered/top-{num_characters}"
-batch_size = 64
+batch_size = 512
 img_size = 64
 
 

@@ -1,0 +1,8 @@
+{
+    "model_name": "model-750-Inception-v1-SGD",
+    "nchars": 750,
+    "epochs": 34,
+    "max_val_accuracy": 97.12532230911842,
+    "max_val_epoch": 20,
+    "architecture": "googlenet"
+}

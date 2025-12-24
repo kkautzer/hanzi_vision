@@ -6,6 +6,7 @@ server/server-venv
 analysis/analysis-venv
 
 # files to ignore from /analysis
+analysis/figures
 
 # files to ignore from /model
 model/data/raw

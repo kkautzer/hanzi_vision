@@ -4,6 +4,10 @@ node_modules
 model/model-venv
 server/server-venv
 tests/tests-venv
+analysis/analysis-venv
+
+# files to ignore from /analysis
+analysis/figures
 
 # files to ignore from /model
 model/data/raw
@@ -12,8 +16,8 @@ model/data/filtered
 model/data/whitelist.txt
 
 model/custom_test_images
-model/logs
 model/checkpoints
+model/archive/checkpoints
 
 # files to ignore from /server
 

@@ -132,13 +132,34 @@ def epochVsAccuracyCurveAverage(save_path_root=None, show_plots=True):
     else:
         save_path = None
 
-    pass
+    # read training_data.csv to get accuracy vs. epoch data for each model
+    tdf = pd.read_csv('./model/exports/training_data.csv')
+    grouped_tdf = tdf.groupby('epoch', as_index=False, sort=False)
+    
+    avg_tdf = grouped_tdf['val_accuracy'].mean()
+    
+    plt.plot(avg_tdf['epoch'], avg_tdf['val_accuracy'])
+    plt.title(f'Epoch vs. Avg. Validation Accuracy')
+    plt.xlabel("Epoch")
+    plt.ylabel("Avg. Accuracy (%)")
+    plt.ylim([60, 100])
+    
+    plt.tight_layout()
+
+    if save_path is not None:
+        os.makedirs(save_path_root, exist_ok=True)
+        plt.savefig(save_path, dpi=300)
+        print(f'Saved figure to {save_path}!')
+    if show_plots:
+        plt.show()            
+    # clear plot
+    plt.close()
 
 ## main method - include a switch to save plots or just show them
 if __name__ == "__main__":
     
     save_plots = True
-    show_plots = False
+    show_plots = True
     
     if save_plots:
         save_path_root = './analysis/figures'
@@ -148,4 +169,4 @@ if __name__ == "__main__":
     nCharsVsAccuracyTable(save_path_root=save_path_root, show_plots=show_plots)
     epochsVsAccuracyCurveSeparate(save_path_root=save_path_root, show_plots=show_plots)
     epochVsAccuracyCurveCombined(save_path_root=save_path_root, show_plots=show_plots)
-    # epochVsAccuracyCurveAverage(save_path_root=save_path_root, show_plots=show_plots)
+    epochVsAccuracyCurveAverage(save_path_root=save_path_root, show_plots=show_plots)

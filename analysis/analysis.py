@@ -93,9 +93,9 @@ def epochsVsAccuracyCurveSeparate(save_path_root=None, show_plots=True):
         plt.close()
   
 ## a graph of accuracy vs. epoch with one line per model
-def epochVsAccuracyCurveCombined(save_path_root=None, show_plots=True):
+def epochVsAccuracyCurveAggregate(save_path_root=None, show_plots=True):
     if save_path_root:
-        save_path = f'{save_path_root}/epoch_accuracy_combined.png'
+        save_path = f'{save_path_root}/epoch_accuracy_aggregate.png'
     else:
         save_path = None
 
@@ -166,5 +166,5 @@ if __name__ == "__main__":
 
     nCharsVsAccuracyTable(save_path_root=save_path_root, show_plots=show_plots)
     epochsVsAccuracyCurveSeparate(save_path_root=save_path_root, show_plots=show_plots)
-    epochVsAccuracyCurveCombined(save_path_root=save_path_root, show_plots=show_plots)
+    epochVsAccuracyCurveAggregate(save_path_root=save_path_root, show_plots=show_plots)
     epochVsAccuracyCurveAverage(save_path_root=save_path_root, show_plots=show_plots)

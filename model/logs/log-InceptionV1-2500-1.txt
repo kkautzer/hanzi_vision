@@ -455,3 +455,9 @@ Model Configuration: {'batch_size': 512, 'img_size': 64, 'data_dir': 'model/data
 [2025-12-23 19:12:54.288295] Model saved to ./model/checkpoints/InceptionV1-2500-1/tr_epoch59.pth
 [2025-12-23 19:12:54.289282] Metadata updated at ./model/exports/metadata/InceptionV1-2500-1-metadata.json
 [2025-12-23 19:12:54.289661] -- Beginning epoch 60 of 100 --
+[2025-12-23 19:22:13.605810] Epoch [60/100], Loss: 0.0104
+[2025-12-23 19:23:09.456293] Validation Accuracy: 97.2535600807852%
+[2025-12-23 19:23:09.456847] Logged epoch info to ./model/exports/training_data.csv
+[2025-12-23 19:23:09.551496] Model saved to ./model/checkpoints/InceptionV1-2500-1/tr_epoch60.pth
+[2025-12-23 19:23:09.552561] Metadata updated at ./model/exports/metadata/InceptionV1-2500-1-metadata.json
+[2025-12-23 19:23:09.552837] -- Beginning epoch 61 of 100 --

@@ -60,6 +60,51 @@ def nCharsVsAccuracyTable(save_path_root=None, show_plots=True):
     # clear plot
     plt.close()
 
+## num. characters vs. highest accuracy analysis
+def nCharsVsAccuracyFigure(save_path_root=None, show_plots=True):
+    if save_path_root:
+        save_path = f'{save_path_root}/chars_accuracy_figure.png'
+    else:
+        save_path = None
+        
+    # read metadata files from `./models/exports/metadata` to get highest accuracy for each model
+    filenames = os.listdir('./model/exports/metadata')
+    
+    # create mapping between nchars and highest accuracy
+    char_accuracy_data = pd.DataFrame(
+        columns=['architecture', 'model_name', 'nchars', 'max_val_accuracy', 'max_val_epoch', 'epochs']
+    )
+    column_translate = {
+        'architecture': "Underlying Architecture",
+        "model_name": "Model Name",
+        "nchars": "Number of Characters",
+        "max_val_accuracy": "Highest Accuracy",
+        "max_val_epoch": "Highest Accuracy Epoch",
+        "epochs": "Epochs"
+    }
+    
+    # read metadata & build dataframe
+    for fn in filenames:
+        with open(f'./model/exports/metadata/{fn}', 'r', encoding='utf-8') as f:
+            char_accuracy_data.loc[len(char_accuracy_data)] = json.load(f)
+
+    plt.plot(char_accuracy_data['nchars'], char_accuracy_data['max_val_accuracy'])
+    plt.title("Number of Characters vs. Validation Accuracy")
+    plt.xlabel("Number of Characters")
+    plt.ylabel("Validation Accuracy (%)")
+    plt.ylim([60, 100])
+    plt.tight_layout()
+    
+    if save_path is not None:
+        plt.savefig(save_path, dpi=300)
+        print(f'Saved figure to {save_path}!')
+    
+    if show_plots:
+        plt.show()   
+    
+    # clear plot
+    plt.close()
+
 ## epochs vs. accuracy analysis for each character set
 def epochsVsAccuracyCurveSeparate(save_path_root=None, show_plots=True):
     if save_path_root:
@@ -165,6 +210,7 @@ if __name__ == "__main__":
         save_path_root = None
 
     nCharsVsAccuracyTable(save_path_root=save_path_root, show_plots=show_plots)
+    nCharsVsAccuracyFigure(save_path_root=save_path_root, show_plots=show_plots)
     epochsVsAccuracyCurveSeparate(save_path_root=save_path_root, show_plots=show_plots)
     epochVsAccuracyCurveAggregate(save_path_root=save_path_root, show_plots=show_plots)
     epochVsAccuracyCurveAverage(save_path_root=save_path_root, show_plots=show_plots)

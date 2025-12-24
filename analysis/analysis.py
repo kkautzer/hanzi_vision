@@ -51,7 +51,6 @@ def nCharsVsAccuracyTable(save_path_root=None, show_plots=True):
     plt.tight_layout()
     
     if save_path is not None:
-        os.makedirs(save_path_root, exist_ok=True)
         plt.savefig(save_path, dpi=300)
         print(f'Saved figure to {save_path}!')
     
@@ -117,7 +116,6 @@ def epochVsAccuracyCurveCombined(save_path_root=None, show_plots=True):
     plt.legend(ncol=2)
 
     if save_path is not None:
-        os.makedirs(save_path_root, exist_ok=True)
         plt.savefig(save_path, dpi=300)
         print(f'Saved figure to {save_path}!')
     if show_plots:
@@ -147,7 +145,6 @@ def epochVsAccuracyCurveAverage(save_path_root=None, show_plots=True):
     plt.tight_layout()
 
     if save_path is not None:
-        os.makedirs(save_path_root, exist_ok=True)
         plt.savefig(save_path, dpi=300)
         print(f'Saved figure to {save_path}!')
     if show_plots:
@@ -163,6 +160,7 @@ if __name__ == "__main__":
     
     if save_plots:
         save_path_root = './analysis/figures'
+        os.makedirs(save_path_root, exist_ok=True)
     else:
         save_path_root = None
 

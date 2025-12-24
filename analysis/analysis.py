@@ -3,10 +3,8 @@ import matplotlib.pyplot as plt
 import os
 import json
 
-save_path_root = None
-
 ## num. characters vs. highest accuracy analysis
-def nCharsVsAccuracyTable():
+def nCharsVsAccuracyTable(save_path_root=None, show_plots=True):
     if save_path_root:
         save_path = f'{save_path_root}/chars_accuracy_table.png'
     else:
@@ -57,32 +55,56 @@ def nCharsVsAccuracyTable():
         plt.savefig(save_path, dpi=300)
         print(f'Saved figure to {save_path}!')
     
-    plt.show()
-        
+    if show_plots:
+        plt.show()   
+    
+    # clear plot
+    plt.clf() 
 
 ## epochs vs. accuracy analysis for each character set
-def epochsVsAccuracyCurve():
-    print("--- NOT YET IMPLEMENTED ---")
-    return
-
+def epochsVsAccuracyCurve(save_path_root=None, show_plots=True):
+    if save_path_root:
+        save_path = f'{save_path_root}/epoch_accuracy_curves'
+    else:
+        save_path = None
+        
     # read training_data.csv to get accuracy vs. epoch data for each model
-    training_data = pd.read_csv('./model/exports/training_data.csv')
+    tdf = pd.read_csv('./model/exports/training_data.csv')
+    model_names = tdf['name'].unique()
     
-    # divide dataframe by model name, then sort increasing by epoch
-    
-    # for each [exported] model, create a graph of accuracy vs. epoch
+    for name in model_names:
+        mdf = tdf.loc[tdf['name'] == name]
+        plt.plot(mdf['epoch'], mdf['val_accuracy'])
+        plt.title(f'Epoch vs. Validation Accuracy ({name})')
+        plt.xlabel("Epoch")
+        plt.ylabel("Accuracy (%)")
+        plt.ylim([0, 100])
+        
+        plt.tight_layout()
 
+        if save_path is not None:
+            os.makedirs(save_path, exist_ok=True)
+            plt.savefig(f'{save_path}/{name}.png', dpi=300)
+            print(f'Saved figure to {save_path}/{name}.png!')
+            
+        if show_plots:
+            plt.show()
+            
+        # clear plot
+        plt.clf() 
+    
     # create an aggregate graph of accuracy vs. epoch (one line per model)
     
-    # show (+ save) plot
-    
-    pass
-
 ## main method - include a switch to save plots or just show them
 if __name__ == "__main__":
+    
     save_plots = True
+    show_plots = True
+    
     if save_plots:
         save_path_root = './analysis/figures'
+    else:
+        save_path_root = None
 
-    nCharsVsAccuracyTable()
-    # epochsVsAccuracyCurve()
+    nCharsVsAccuracyTable(save_path_root=save_path_root, show_plots=show_plots)
+    epochsVsAccuracyCurve(save_path_root=save_path_root, show_plots=show_plots)

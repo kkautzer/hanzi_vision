@@ -32,7 +32,7 @@ This is the main directory for behind-the-scenes connections between the fronten
 ## Current Goals
 The current core objectives for this project are as follows:
 
-1. Scale training to additional character sets (one model for roughly every 500 characters). Currently, models trained for 100 epochs use character sets consisting of the most popular {500, 750, 1000, 1500, 2000, 2500, 4000, 5000} Hanzi. The best-accuracy version of each of these models are available for testing on the frontend interface.
+1. Scale training to additional character sets (one model for roughly every 500 characters). Currently, models trained for 100 epochs use character sets consisting of the most popular {500, 750, 1000, 1500, 2000, 2500, 3000, 4000, 5000} Hanzi. The best-accuracy version of each of these models are available for testing on the frontend interface.
 2. Create a series of tests to run before commits are made to this repository, ensuring no breaking changes are incorrectly pushed.
 3. Build a mobile interface / app (very similar to web interface from `frontend`)
 

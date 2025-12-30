@@ -7,13 +7,13 @@
 > _Note: This repo will be sparsely updated throughout the academic year, as I focus primarily on my coursework_
 
 ## Overview
-This repository is home to my Hanzi OCR Project. It contains three individual subdirectories (`model`, `frontend`, and `server`) each outlined briefly below.
+This repository is home to my Hanzi OCR Project. It contains four individual subdirectories (`model`, `analysis`, `frontend`, and `server`) each outlined briefly below.
 
 ### `model`
 This is the main directory for all model-related data and information. This is where training and evaluation scripts, raw training / evaluation / test data, logs, and previous model weights are stored. The model utilizes a tweaked Inception-v1 (GoogLeNet) architecture for grayscale input and a dynamic number of output classes, as this is the best available trade-off for time and accuracy given the current project constraints. In the future, additional models may be trained using other underlying architectures.
 
 ### `analysis`
-This is the main direcotry for all data analysis operations. The main component is a script to generate various plots and tables based on model metadata and training data. Currently, figures are generated for:
+This is the main directory for all data analysis operations. The main component is a script to generate various plots and tables based on model metadata and training data. Currently, figures are generated for:
 
 * Metadata Table (Name, Architecture, Number of Characters, Highest Accuracy, Highest Accuracy Epoch, and Number of Epochs)
 * Number of Characters vs. Highest Accuracy

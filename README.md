@@ -1,7 +1,7 @@
 # Hanzi Vision OCR
 > Project started 06/26/25<br>
-> README last updated on 12/25/25<br>
-> Project last updated on 12/25/25
+> README last updated on 12/30/25<br>
+> Project last updated on 12/30/25
 
 > Authors/Contributors: Keagan Kautzer<br>
 > _Note: This repo will be sparsely updated throughout the academic year, as I focus primarily on my coursework_
@@ -32,7 +32,7 @@ This is the main directory for behind-the-scenes connections between the fronten
 ## Current Goals
 The current core objectives for this project are as follows:
 
-1. Scale training to additional character sets (one model for roughly every 500 characters). Currently, models trained for 100 epochs use character sets consisting of the most popular {500, 750, 1000, 1500, 2000, 2500, 3000, 4000, 5000} Hanzi. The best-accuracy version of each of these models are available for testing on the frontend interface.
+1. Scale training to additional character sets (one model for roughly every 500 characters). Currently, there are models using character sets consisting of the most popular {500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000} Hanzi, trained for 100 epochs each. The best-accuracy version of each of these models are available for testing on the frontend interface and weights are saved in the `/models/exports/checkpoints` directory.
 2. Create a series of tests to run before commits are made to this repository, ensuring no breaking changes are incorrectly pushed.
 3. Build a mobile interface / app (very similar to web interface from `frontend`)
 

@@ -10,7 +10,7 @@
 This repository is home to my Hanzi OCR Project. It contains four individual subdirectories (`model`, `analysis`, `frontend`, and `server`) each outlined briefly below.
 
 ### `model`
-This is the main directory for all model-related data and information. This is where training and evaluation scripts, raw training / evaluation / test data, logs, and previous model weights are stored. The model utilizes a tweaked Inception-v1 (GoogLeNet) architecture for grayscale input and a dynamic number of output classes, as this is the best available trade-off for time and accuracy given the current project constraints. In the future, additional models may be trained using other underlying architectures.
+This is the main directory for all model-related data and information. This is where training and evaluation scripts, raw training / evaluation / test data, logs, and previous model weights are stored. The model utilizes a tweaked Inception-v1 (GoogLeNet) architecture for grayscale input and a dynamic number of output classes, as this is the best available trade-off for time and accuracy given the current project constraints. Models have been trained on sets consisting of the most popular 500, 750, 1000, 1500, 2000, 2500, ..., 5000 characters, trained for 100 epochs each. In the future, additional models may be trained using other underlying architectures.
 
 ### `analysis`
 This is the main directory for all data analysis operations. The main component is a script to generate various plots and tables based on model metadata and training data. Currently, figures are generated for:
@@ -32,9 +32,8 @@ This is the main directory for behind-the-scenes connections between the fronten
 ## Current Goals
 The current core objectives for this project are as follows:
 
-1. Scale training to additional character sets (one model for roughly every 500 characters). Currently, there are models using character sets consisting of the most popular {500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000} Hanzi, trained for 100 epochs each. The best-accuracy version of each of these models are available for testing on the frontend interface and weights are saved in the `/models/exports/checkpoints` directory.
-2. Create a series of tests to run before commits are made to this repository, ensuring no breaking changes are incorrectly pushed.
-3. Build a mobile interface / app (very similar to web interface from `frontend`)
+1. Create a series of tests to run before commits are made to this repository, ensuring no breaking changes are incorrectly pushed.
+2. Build a mobile interface / app (very similar to web interface from `frontend`)
 
 ## Future Directions
 Some brief future directions for this project are as follows:

@@ -7,7 +7,7 @@
 > _Note: This repo will be sparsely updated throughout the academic year, as I focus primarily on my coursework_
 
 ## Overview
-This repository is home to my Hanzi OCR Project. It contains four individual subdirectories (`model`, `analysis`, `frontend`, and `server`) each outlined briefly below.
+This repository is home to my Hanzi OCR Project. It contains five individual subdirectories (`model`, `analysis`, `frontend`, `server`, and `tests`) each outlined briefly below.
 
 ### `model`
 This is the main directory for all model-related data and information. This is where training and evaluation scripts, raw training / evaluation / test data, logs, and previous model weights are stored. The model utilizes a tweaked Inception-v1 (GoogLeNet) architecture for grayscale input and a dynamic number of output classes, as this is the best available trade-off for time and accuracy given the current project constraints. Models have been trained on sets consisting of the most popular 500, 750, 1000, 1500, 2000, 2500, ..., 5000 characters, trained for 100 epochs each. In the future, additional models may be trained using other underlying architectures.
@@ -28,6 +28,10 @@ This is the main directory for all frontend web-interface relevant code. The fro
 
 ### `server`
 This is the main directory for behind-the-scenes connections between the frontend interface and the trained models. It is a Python Flask API, allowing for the frontend to quickly and easily communicate with and evaluate images based on trained character models.
+
+### `tests
+This directory contains comprehensive test files, which should be run (and passed) before committing / pushing / merging any changes.
+> __*This directory is still a work in progress - the full test set is coming soon!.*__
 
 ## Current Goals
 The current core objectives for this project are as follows:

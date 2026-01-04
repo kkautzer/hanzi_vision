@@ -3,7 +3,6 @@ node_modules
 .env
 model/model-venv
 server/server-venv
-tests/tests-venv
 analysis/analysis-venv
 
 # files to ignore from /analysis

@@ -29,7 +29,7 @@ This is the main directory for all frontend web-interface relevant code. The fro
 ### `server`
 This is the main directory for behind-the-scenes connections between the frontend interface and the trained models. It is a Python Flask API, allowing for the frontend to quickly and easily communicate with and evaluate images based on trained character models.
 
-### `tests
+### `tests`
 This directory contains comprehensive test files, which should be run (and passed) before committing / pushing / merging any changes.
 > __*This directory is still a work in progress - the full test set is coming soon!.*__
 

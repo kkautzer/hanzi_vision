@@ -1,88 +1,173 @@
 from datetime import datetime
-import cv2
-import numpy as np
+from pathlib import Path
+import csv
+import hashlib
+from PIL import Image
+
 import torch
+from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets
 import torchvision.transforms.v2 as transforms
-from torch.utils.data import DataLoader
 
-# Function to create data loaders for train, validation, and test sets
-def get_dataloaders(data_dir, batch_size=64, img_size=64):
+
+# -------------------------
+# Dataset
+# -------------------------
+
+class CASIATrainValDataset(Dataset):
     """
-    Returns PyTorch DataLoader objects for training, validation, and test sets.
-
-    Parameters:
-        data_dir (str): Path to the root data directory containing 'train', 'val', 'test' folders.
-        batch_size (int): Number of samples per batch to load.
-        img_size (int): Size to which each image will be resized (img_size, img_size).
-
-    Returns:
-        train_loader, val_loader, test_loader (DataLoader): Dataloaders for training, validation, and testing.
-        class_names (list): List of class (character) names.
+    Deterministic train/val split derived from CASIA TRAIN set only,
+    using casia_splits.csv as the authoritative source.
     """
 
-    # class CropTransform:
-    #     def __call__(self, img):
-    #         # convert (C, H, W) to (H, W, C)
-    #         image = np.transpose(img.numpy() * 255, (1, 2, 0))            
-    #         cropped = crop_image(image) # get cropped image
-    #         grayscale = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY) # convert to grayscale
-    #         resized = cv2.resize(grayscale, dsize=(img_size, img_size), interpolation=cv2.INTER_AREA) # shrink
-    #         _, threshold = cv2.threshold(resized, thresh=40, maxval=255, type=cv2.THRESH_BINARY) # threshold
-                       
-    #         # Convert NumPy -> Tensor, reshape (H, W) -> (C, H, W)
-    #         threshold = torch.from_numpy(threshold).unsqueeze(0).float()
-    #         return threshold
+    def __init__(
+        self,
+        root,
+        splits_csv,
+        split,                 # "train" or "val"
+        class_to_idx,
+        transform=None,
+        val_ratio=0.1
+    ):
+        assert split in {"train", "val"}
+        self.samples = []
+        self.transform = transform
 
-    class NoneTransform:
-        def __call__(self, image):
-            return image
-        
-    # Transformations for TRAINING SET ONLY (includes brightness / contrast augmentation)
+        root = Path(root)
+        splits_csv = Path(splits_csv)
+
+        # Load CASIA splits
+        casia_split = {}
+        with open(splits_csv, newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader: ## match sample IDs to splits
+                sid = row["sample_id"].split("-")[0]
+                casia_split[sid] = row["split"]
+
+        for cls, cls_idx in class_to_idx.items():
+            class_dir = root / cls
+            if not class_dir.exists():
+                continue
+
+            for img_path in sorted(class_dir.glob("*.png")):
+                sample_id = img_path.stem  # must match your saved naming scheme
+                if casia_split.get(sample_id) != "train":
+                    continue
+
+                h = int(hashlib.md5(sample_id.encode()).hexdigest(), 16)
+                is_val = (h % 100) < int(val_ratio * 100)
+
+                if split == "val" and is_val:
+                    self.samples.append((img_path, cls_idx))
+                elif split == "train" and not is_val:
+                    self.samples.append((img_path, cls_idx))
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        path, label = self.samples[idx]
+        img = Image.open(path).convert("L")
+        if self.transform:
+            img = self.transform(img)
+        return img, label
+
+
+# -------------------------
+# Dataloaders
+# -------------------------
+
+def get_dataloaders(
+    data_dir,
+    batch_size=64,
+    img_size=64,
+    val_ratio=0.1,
+    num_workers=0
+):
+    data_dir = Path(data_dir)
+    splits_csv = Path("model/data/casia_splits.csv")
+
+    # Transforms
     train_transform = transforms.Compose([
-            
-        transforms.Grayscale(num_output_channels=1),  # Ensure single channel (grayscale)
-        transforms.Resize((img_size, img_size)),      # Resize to a consistent size
-        transforms.RandomApply([ # only apply brightness / contrast on half the time
-            transforms.ColorJitter( # Brightness / contrast manipulations
-                brightness=[0.8,1.1], contrast=[0.85,1.05], saturation=None, hue=None
-            ),
+        transforms.Grayscale(num_output_channels=1),
+        transforms.Resize((img_size, img_size)),
+        transforms.RandomApply([
+            transforms.ColorJitter(brightness=[0.8, 1.1], contrast=[0.85, 1.05])
         ], p=0.5),
-        transforms.RandomApply([ # only apply these about 65% of samples
-            transforms.RandomAffine(
-                degrees=5, scale=(0.90, 1.05), shear=0, translate=(0.035, 0.035)
-            ), # Translation manipulations
+        transforms.RandomApply([
+            transforms.RandomAffine(degrees=5, scale=(0.90, 1.05),
+                                    translate=(0.035, 0.035))
         ], p=0.65),
-        transforms.ToTensor(),                        # Convert image to PyTorch tensor
-        transforms.Normalize((0.5,), (0.5,))          # Normalize pixel values to mean=0.5, std=0.5
-    ]) 
-       
-    # Standard transformations for all images (no augmentations)
-    transform = transforms.Compose([
-        transforms.Grayscale(),
-        transforms.Resize((img_size,img_size)),      
-        transforms.ToTensor(), # Convert to Tensor
-        transforms.Normalize((0.5,), (0.5,)) # Normalize pixel values
+        transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,))
     ])
-    
 
-    print(f"[{datetime.now()}] Loading TRAIN set...")
-    # Load the training dataset using ImageFolder
-    train_set = datasets.ImageFolder(root=f"{data_dir}/train", transform=train_transform)
-    print(f"[{datetime.now()}] Successfully loaded TRAIN set. Now loading EVAL set...")
-    val_set = datasets.ImageFolder(root=f"{data_dir}/val", transform=transform)
-    print(f"[{datetime.now()}] Successfully loaded EVAL set. Now loading TEST set...")
-    test_set = datasets.ImageFolder(root=f"{data_dir}/test", transform=transform)
-    print(f"[{datetime.now()}] Successfully loaded TEST set")
-    
-    print(f"[{datetime.now()}] Wrapping loaders in DataLoader objects...")
-    # Wrap datasets in DataLoader objects for batch processing and shuffling
-    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=False)
-    test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False)
-    print(f"[{datetime.now()}] Successfully wrapped all sets.")
-    
-    # Extract the list of class names from the training dataset
-    class_names = train_set.classes
-    
+    eval_transform = transforms.Compose([
+        transforms.Grayscale(),
+        transforms.Resize((img_size, img_size)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,))
+    ])
+
+    print(f"[{datetime.now()}] Loading TRAIN/VAL from CASIA train split...")
+
+    # Use ImageFolder only to define class structure
+    base_train = datasets.ImageFolder(root=data_dir / "train")
+    class_names = base_train.classes
+    class_to_idx = base_train.class_to_idx
+
+    train_set = CASIATrainValDataset(
+        root=data_dir / "train",
+        splits_csv=splits_csv,
+        split="train",
+        class_to_idx=class_to_idx,
+        transform=train_transform,
+        val_ratio=val_ratio
+    )
+
+    val_set = CASIATrainValDataset(
+        root=data_dir / "train",
+        splits_csv=splits_csv,
+        split="val",
+        class_to_idx=class_to_idx,
+        transform=eval_transform,
+        val_ratio=val_ratio
+    )
+
+    print(f"[{datetime.now()}] Loading TEST set...")
+
+    test_set = datasets.ImageFolder(
+        root=data_dir / "test",
+        transform=eval_transform
+    )
+    test_set.class_to_idx = class_to_idx
+    test_set.classes = class_names
+
+    train_loader = DataLoader(
+        train_set,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=True,
+        persistent_workers=(num_workers > 0),
+    )
+
+    val_loader = DataLoader(
+        val_set,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True,
+        persistent_workers=(num_workers > 0),
+    )
+
+    test_loader = DataLoader(
+        test_set,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True,
+        persistent_workers=(num_workers > 0),
+    )
+
     return train_loader, val_loader, test_loader, class_names

@@ -1,6 +1,7 @@
 from datetime import datetime
-import csv
 from pathlib import Path
+import csv
+import hashlib
 from PIL import Image
 
 import torch
@@ -9,44 +10,57 @@ from torchvision import datasets
 import torchvision.transforms.v2 as transforms
 
 
-# ============================================================
-# Dataset that obeys casia_splits.csv (NO implicit re-splitting)
-# ============================================================
+# -------------------------
+# Dataset
+# -------------------------
 
-class CASIASplitDataset(Dataset):
+class CASIATrainValDataset(Dataset):
     """
-    Dataset that loads samples strictly according to casia_splits.csv.
+    Deterministic train/val split derived from CASIA TRAIN set only,
+    using casia_splits.csv as the authoritative source.
     """
 
-    def __init__(self, data_dir, split, class_to_idx, transform=None):
-        assert split in {"train", "val", "test"}
+    def __init__(
+        self,
+        root,
+        splits_csv,
+        split,                 # "train" or "val"
+        class_to_idx,
+        transform=None,
+        val_ratio=0.1
+    ):
+        assert split in {"train", "val"}
         self.samples = []
         self.transform = transform
 
-        data_dir = Path(data_dir)
-        processed_dir = data_dir / split
-        splits_csv = "model/data/casia_splits.csv"
+        root = Path(root)
+        splits_csv = Path(splits_csv)
 
-        if not Path(splits_csv).exists():
-            raise FileNotFoundError(f"Missing split file: {splits_csv}")
-
-        # Load split assignments
+        # Load CASIA splits
+        casia_split = {}
         with open(splits_csv, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
-            
-            for row in reader:
-                if row["split"] != split:
+            for row in reader: ## match sample IDs to splits
+                sid = row["sample_id"].split("-")[0]
+                casia_split[sid] = row["split"]
+
+        for cls, cls_idx in class_to_idx.items():
+            class_dir = root / cls
+            if not class_dir.exists():
+                continue
+
+            for img_path in sorted(class_dir.glob("*.png")):
+                sample_id = img_path.stem  # must match your saved naming scheme
+                if casia_split.get(sample_id) != "train":
                     continue
 
-                sample_id = row["sample_id"]
-                filename, char, idx = sample_id.split(":")
-                filenum = int(filename.split("-")[0])  # use gnt filename without extension
-                img_path = data_dir / split / char / f"{filenum:04d}.png"
+                h = int(hashlib.md5(sample_id.encode()).hexdigest(), 16)
+                is_val = (h % 100) < int(val_ratio * 100)
 
-                if not img_path.exists():
-                    continue
-
-                self.samples.append((img_path, class_to_idx[char]))
+                if split == "val" and is_val:
+                    self.samples.append((img_path, cls_idx))
+                elif split == "train" and not is_val:
+                    self.samples.append((img_path, cls_idx))
 
     def __len__(self):
         return len(self.samples)
@@ -54,127 +68,106 @@ class CASIASplitDataset(Dataset):
     def __getitem__(self, idx):
         path, label = self.samples[idx]
         img = Image.open(path).convert("L")
-
         if self.transform:
             img = self.transform(img)
-
         return img, label
 
 
-# ============================================================
-# DataLoader factory (keeps your API unchanged)
-# ============================================================
+# -------------------------
+# Dataloaders
+# -------------------------
 
-def get_dataloaders(data_dir, batch_size=64, img_size=64):
-    """
-    Returns PyTorch DataLoader objects for training, validation, and test sets.
-    """
-
+def get_dataloaders(
+    data_dir,
+    batch_size=64,
+    img_size=64,
+    val_ratio=0.1,
+    num_workers=0
+):
     data_dir = Path(data_dir)
+    splits_csv = Path("model/data/casia_splits.csv")
 
-    # --------------------------------------------------------
-    # Transforms (UNCHANGED from your original version)
-    # --------------------------------------------------------
-
+    # Transforms
     train_transform = transforms.Compose([
         transforms.Grayscale(num_output_channels=1),
         transforms.Resize((img_size, img_size)),
         transforms.RandomApply([
-            transforms.ColorJitter(
-                brightness=[0.8, 1.1],
-                contrast=[0.85, 1.05],
-            ),
+            transforms.ColorJitter(brightness=[0.8, 1.1], contrast=[0.85, 1.05])
         ], p=0.5),
         transforms.RandomApply([
-            transforms.RandomAffine(
-                degrees=5,
-                scale=(0.90, 1.05),
-                translate=(0.035, 0.035),
-            ),
+            transforms.RandomAffine(degrees=5, scale=(0.90, 1.05),
+                                    translate=(0.035, 0.035))
         ], p=0.65),
         transforms.ToTensor(),
         transforms.Normalize((0.5,), (0.5,))
     ])
 
     eval_transform = transforms.Compose([
-        transforms.Grayscale(num_output_channels=1),
+        transforms.Grayscale(),
         transforms.Resize((img_size, img_size)),
         transforms.ToTensor(),
         transforms.Normalize((0.5,), (0.5,))
     ])
 
-    # --------------------------------------------------------
-    # Class index construction (authoritative)
-    # --------------------------------------------------------
+    print(f"[{datetime.now()}] Loading TRAIN/VAL from CASIA train split...")
 
-    print(f"[{datetime.now()}] Reading class list from processed/train...")
+    # Use ImageFolder only to define class structure
+    base_train = datasets.ImageFolder(root=data_dir / "train")
+    class_names = base_train.classes
+    class_to_idx = base_train.class_to_idx
 
-    train_root = data_dir / "train"
-    class_names = sorted(d.name for d in train_root.iterdir() if d.is_dir())
-    class_to_idx = {cls: i for i, cls in enumerate(class_names)}
-
-    # --------------------------------------------------------
-    # Dataset construction (CSV-driven)
-    # --------------------------------------------------------
-
-    print(f"[{datetime.now()}] Loading TRAIN dataset...")
-
-    train_set = CASIASplitDataset(
-        data_dir=data_dir,
+    train_set = CASIATrainValDataset(
+        root=data_dir / "train",
+        splits_csv=splits_csv,
         split="train",
         class_to_idx=class_to_idx,
-        transform=train_transform
+        transform=train_transform,
+        val_ratio=val_ratio
     )
 
-    print(f"[{datetime.now()}] Loading VAL dataset...")
-    val_set = CASIASplitDataset(
-        data_dir=data_dir,
+    val_set = CASIATrainValDataset(
+        root=data_dir / "train",
+        splits_csv=splits_csv,
         split="val",
         class_to_idx=class_to_idx,
-        transform=eval_transform
-    )
-    print(f"[{datetime.now()}] Loading TEST dataset...")
-
-    test_set = CASIASplitDataset(
-        data_dir=data_dir,
-        split="test",
-        class_to_idx=class_to_idx,
-        transform=eval_transform
+        transform=eval_transform,
+        val_ratio=val_ratio
     )
 
-    # --------------------------------------------------------
-    # DataLoaders
-    # --------------------------------------------------------
+    print(f"[{datetime.now()}] Loading TEST set...")
 
-    print(f"[{datetime.now()}] Wrapping DataLoader...")
+    test_set = datasets.ImageFolder(
+        root=data_dir / "test",
+        transform=eval_transform
+    )
+    test_set.class_to_idx = class_to_idx
+    test_set.classes = class_names
 
     train_loader = DataLoader(
         train_set,
         batch_size=batch_size,
         shuffle=True,
-        num_workers=4,
+        num_workers=num_workers,
         pin_memory=True,
+        persistent_workers=(num_workers > 0),
     )
 
     val_loader = DataLoader(
         val_set,
         batch_size=batch_size,
         shuffle=False,
-        num_workers=4,
+        num_workers=num_workers,
         pin_memory=True,
+        persistent_workers=(num_workers > 0),
     )
 
     test_loader = DataLoader(
         test_set,
         batch_size=batch_size,
         shuffle=False,
-        num_workers=4,
+        num_workers=num_workers,
         pin_memory=True,
+        persistent_workers=(num_workers > 0),
     )
-
-    print(f"[{datetime.now()}] Successfully loaded all datasets.")
-    print(f"  Train samples: {len(train_set)}")
-    print(f"  Val samples  : {len(val_set)}")
-    print(f"  Test samples : {len(test_set)}")
 
     return train_loader, val_loader, test_loader, class_names

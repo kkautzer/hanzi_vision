@@ -74,8 +74,7 @@ else: # resuming from a pretrained weights
     # calculate the file path to load the model
     saved_pretrained_model_path = f'./model/checkpoints/{load_model_name}/tr_epoch{initial_epoch-1}.pth'
 
-# # data_dir = f"model/data/filtered/top-{num_characters}"
-data_dir = "model/data/processed"
+data_dir = f"model/data/filtered/top-{num_characters}"
 batch_size = 512
 img_size = 64
 
@@ -129,10 +128,10 @@ generate_whitelist(num_characters)
 printLogAndConsole(f"[{datetime.now()}] Successfully initialized whitelist")
 
  
-# # # # Initialize filtered directories
-# # # printLogAndConsole(f"[{datetime.now()}] Initializing filtered directories...")
-# # # create_filtered_set('./model/data/whitelist.txt')
-# # # printLogAndConsole(f"[{datetime.now()}] Successfully initialized filtered directories")
+# Initialize filtered directories
+printLogAndConsole(f"[{datetime.now()}] Initializing filtered directories...")
+create_filtered_set('./model/data/whitelist.txt')
+printLogAndConsole(f"[{datetime.now()}] Successfully initialized filtered directories")
 
 # Detect device (GPU if available)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

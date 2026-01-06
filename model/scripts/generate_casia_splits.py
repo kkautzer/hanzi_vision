@@ -87,9 +87,9 @@ def process_all_gnt(gnt_folder):
 
         # CASIA-defined split (authoritative)
         if filename.endswith("-t.gnt"):
-            default_split = "train"
-        elif filename.endswith("-f.gnt"):
             default_split = "test"
+        elif filename.endswith("-f.gnt"):
+            default_split = "train"
         else:
             raise ValueError(f"Unrecognized CASIA split in filename: {filename}")
 

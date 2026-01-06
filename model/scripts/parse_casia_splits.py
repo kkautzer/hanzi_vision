@@ -74,7 +74,8 @@ def apply_splits():
             counters[(split, char)] += 1
             img_resized = img.resize(IMAGE_SIZE)
 
-            out_path = out_dir / f"{counters[(split, char)]:04d}.png"
+            filenum = int(filename.split("-")[0])  # use gnt filename without extension
+            out_path = out_dir / f"{filenum:04d}.png"
             img_resized.save(out_path)
 
             saved += 1

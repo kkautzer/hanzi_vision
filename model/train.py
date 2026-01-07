@@ -91,6 +91,8 @@ if (not args.resume or (args.resume and load_model_name != model_name)):
         quit()
 
 log_file_name = f"log-{model_name}" # save log files by name of the model
+os.makedirs("./model/logs", exist_ok=True)
+
 printLogAndConsole("------------------")
 printLogAndConsole("Successfully loaded configuration data!")
 # printLogAndConsole(f"Defaults: {defaults}")
@@ -252,6 +254,7 @@ for epoch in range(initial_epoch, num_epochs+1):
         printLogAndConsole(f"[{datetime.now()}] Model saved to ./model/exports/checkpoints/{model_name}_best.pth")
 
     # update metadata (name, completed epochs, highest validation accuracy, highest val epoch)
+    os.makedirs('./model/exports/metadata', exist_ok=True)
     with open(f'./model/exports/metadata/{model_name}-metadata.json', 'w', encoding='utf-8') as f:
         metadata_json = {
             "model_name": model_name,

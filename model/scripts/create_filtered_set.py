@@ -31,6 +31,7 @@ def create_class_list(whitelist):
     classes = whitelist[:]
     classes.sort()
     # classes = [ name+"\n" for name in classes]
+    os.makedirs("model/classes", exist_ok=True)
     with open(f"model/classes/top-{len(whitelist)}-classes.txt", 'w', encoding='utf-8') as f:
         print(classes)
         f.writelines(f"{c}\n" for c in classes)

@@ -1,0 +1,645 @@
+------------------
+Successfully loaded configuration data!
+Model Configuration: {'batch_size': 512, 'img_size': 64, 'data_dir': 'model/data/filtered/top-5000', 'architecture': 'googlenet', 'model_name': 'InceptionV1-5000', 'num_characters': 5000, 'learning_rate': 0.02, 'num_epochs': 100, 'initial_epoch': 1, 'saved_pretrained_model_path': ''}
+[2026-01-07 15:36:09.213258] Initializing whitelist for the 5000 most common characters...
+[2026-01-07 15:36:09.218295] Successfully initialized whitelist
+[2026-01-07 15:36:09.218677] Initializing filtered directories...
+[2026-01-07 15:52:17.206969] Successfully initialized filtered directories
+[2026-01-07 15:52:17.269351] Using device: cuda
+[2026-01-07 15:52:17.269705] Loading data loaders...
+[2026-01-07 15:53:07.179143] Finished loading data loaders
+[2026-01-07 15:53:07.179596] Initializing model...
+[2026-01-07 15:53:08.572116] Finished model initialization
+[2026-01-07 15:53:08.572545] Beginning training...
+[2026-01-07 15:53:08.572763] -- Beginning epoch 1 of 100 --
+[2026-01-07 16:18:50.445074] Epoch [1/100], Loss: 4.3718
+[2026-01-07 16:20:34.313113] Validation Accuracy: 84.43521813628576%
+[2026-01-07 16:20:34.314664] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 16:20:34.494303] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch1.pth
+[2026-01-07 16:20:34.596465] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 16:20:34.598161] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 16:20:34.598482] -- Beginning epoch 2 of 100 --
+[2026-01-07 16:43:43.416821] Epoch [2/100], Loss: 0.4588
+[2026-01-07 16:45:25.470735] Validation Accuracy: 92.5477790958218%
+[2026-01-07 16:45:25.472132] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 16:45:25.620416] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch2.pth
+[2026-01-07 16:45:25.729715] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 16:45:25.731249] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 16:45:25.731609] -- Beginning epoch 3 of 100 --
+[2026-01-07 17:09:25.257333] Epoch [3/100], Loss: 0.2677
+[2026-01-07 17:11:07.095661] Validation Accuracy: 93.84934756820878%
+[2026-01-07 17:11:07.097269] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 17:11:07.251796] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch3.pth
+[2026-01-07 17:11:07.331262] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 17:11:07.332766] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 17:11:07.333329] -- Beginning epoch 4 of 100 --
+[2026-01-07 17:34:16.548774] Epoch [4/100], Loss: 0.2059
+[2026-01-07 17:35:58.101276] Validation Accuracy: 94.36140767101621%
+[2026-01-07 17:35:58.102877] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 17:35:58.228981] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch4.pth
+[2026-01-07 17:35:58.313664] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 17:35:58.315473] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 17:35:58.316179] -- Beginning epoch 5 of 100 --
+[2026-01-07 17:59:42.552371] Epoch [5/100], Loss: 0.1708
+[2026-01-07 18:01:27.135755] Validation Accuracy: 94.99472782390932%
+[2026-01-07 18:01:27.137031] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 18:01:27.281343] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch5.pth
+[2026-01-07 18:01:27.359503] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 18:01:27.361627] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 18:01:27.362068] -- Beginning epoch 6 of 100 --
+[2026-01-07 18:25:53.262335] Epoch [6/100], Loss: 0.1477
+[2026-01-07 18:27:35.896091] Validation Accuracy: 95.30908132331619%
+[2026-01-07 18:27:35.897571] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 18:27:36.050962] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch6.pth
+[2026-01-07 18:27:36.135291] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 18:27:36.136699] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 18:27:36.137061] -- Beginning epoch 7 of 100 --
+[2026-01-07 18:51:25.484395] Epoch [7/100], Loss: 0.1288
+[2026-01-07 18:53:07.401572] Validation Accuracy: 95.68670093581126%
+[2026-01-07 18:53:07.402897] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 18:53:07.535841] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch7.pth
+[2026-01-07 18:53:07.638995] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 18:53:07.641207] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 18:53:07.642287] -- Beginning epoch 8 of 100 --
+[2026-01-07 19:18:17.501292] Epoch [8/100], Loss: 0.1143
+[2026-01-07 19:20:04.235950] Validation Accuracy: 95.81652827204428%
+[2026-01-07 19:20:04.237298] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 19:20:04.409175] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch8.pth
+[2026-01-07 19:20:04.492394] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 19:20:04.493184] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 19:20:04.493374] -- Beginning epoch 9 of 100 --
+[2026-01-07 19:47:11.159253] Epoch [9/100], Loss: 0.1013
+[2026-01-07 19:49:03.217752] Validation Accuracy: 95.95953604850402%
+[2026-01-07 19:49:03.219151] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 19:49:03.395682] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch9.pth
+[2026-01-07 19:49:03.498533] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 19:49:03.500276] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 19:49:03.500675] -- Beginning epoch 10 of 100 --
+[2026-01-07 20:15:29.786635] Epoch [10/100], Loss: 0.0898
+[2026-01-07 20:17:18.611566] Validation Accuracy: 96.17371820218796%
+[2026-01-07 20:17:18.612538] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 20:17:18.783002] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch10.pth
+[2026-01-07 20:17:18.885065] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 20:17:18.887674] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 20:17:18.888275] -- Beginning epoch 11 of 100 --
+[2026-01-07 20:43:30.873126] Epoch [11/100], Loss: 0.0799
+[2026-01-07 20:45:19.772585] Validation Accuracy: 96.16317385000659%
+[2026-01-07 20:45:19.773717] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 20:45:19.938196] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch11.pth
+[2026-01-07 20:45:19.940281] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 20:45:19.940784] -- Beginning epoch 12 of 100 --
+[2026-01-07 21:11:38.858329] Epoch [12/100], Loss: 0.0702
+[2026-01-07 21:13:28.943384] Validation Accuracy: 96.36285751944115%
+[2026-01-07 21:13:28.944654] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 21:13:29.124310] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch12.pth
+[2026-01-07 21:13:29.233958] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 21:13:29.235372] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 21:13:29.235783] -- Beginning epoch 13 of 100 --
+[2026-01-07 21:39:33.087865] Epoch [13/100], Loss: 0.0625
+[2026-01-07 21:41:20.182398] Validation Accuracy: 96.42941874258601%
+[2026-01-07 21:41:20.183662] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 21:41:20.342678] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch13.pth
+[2026-01-07 21:41:20.448943] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 21:41:20.451038] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 21:41:20.451781] -- Beginning epoch 14 of 100 --
+[2026-01-07 22:07:41.186904] Epoch [14/100], Loss: 0.0554
+[2026-01-07 22:09:29.319035] Validation Accuracy: 96.50981942796889%
+[2026-01-07 22:09:29.320455] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 22:09:29.489144] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch14.pth
+[2026-01-07 22:09:29.595295] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 22:09:29.596808] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 22:09:29.597396] -- Beginning epoch 15 of 100 --
+[2026-01-07 22:35:52.149127] Epoch [15/100], Loss: 0.0496
+[2026-01-07 22:37:45.030943] Validation Accuracy: 96.55595096876236%
+[2026-01-07 22:37:45.032497] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 22:37:45.200120] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch15.pth
+[2026-01-07 22:37:45.306760] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 22:37:45.308587] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 22:37:45.308988] -- Beginning epoch 16 of 100 --
+[2026-01-07 23:03:23.417202] Epoch [16/100], Loss: 0.0450
+[2026-01-07 23:05:19.548241] Validation Accuracy: 96.58626598128377%
+[2026-01-07 23:05:19.549555] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 23:05:19.721730] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch16.pth
+[2026-01-07 23:05:19.838261] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 23:05:19.841362] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 23:05:19.841602] -- Beginning epoch 17 of 100 --
+[2026-01-07 23:35:16.514681] Epoch [17/100], Loss: 0.0416
+[2026-01-07 23:37:09.256265] Validation Accuracy: 96.6521681824173%
+[2026-01-07 23:37:09.257310] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-07 23:37:09.393414] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch17.pth
+[2026-01-07 23:37:09.490258] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-07 23:37:09.491479] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-07 23:37:09.491895] -- Beginning epoch 18 of 100 --
+[2026-01-08 00:01:12.684109] Epoch [18/100], Loss: 0.0394
+[2026-01-08 00:02:54.342570] Validation Accuracy: 96.67523395281403%
+[2026-01-08 00:02:54.343722] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 00:02:54.463828] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch18.pth
+[2026-01-08 00:02:54.575593] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 00:02:54.577121] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 00:02:54.577506] -- Beginning epoch 19 of 100 --
+[2026-01-08 00:25:23.608798] Epoch [19/100], Loss: 0.0377
+[2026-01-08 00:27:04.255326] Validation Accuracy: 96.6897324370634%
+[2026-01-08 00:27:04.256818] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 00:27:04.395664] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch19.pth
+[2026-01-08 00:27:04.482164] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 00:27:04.484284] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 00:27:04.484984] -- Beginning epoch 20 of 100 --
+[2026-01-08 00:49:41.073633] Epoch [20/100], Loss: 0.0370
+[2026-01-08 00:51:23.694722] Validation Accuracy: 96.67589297482536%
+[2026-01-08 00:51:23.695695] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 00:51:23.830215] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch20.pth
+[2026-01-08 00:51:23.832390] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 00:51:23.833008] -- Beginning epoch 21 of 100 --
+[2026-01-08 01:13:47.035554] Epoch [21/100], Loss: 0.1284
+[2026-01-08 01:15:29.324486] Validation Accuracy: 95.30117305918017%
+[2026-01-08 01:15:29.325827] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 01:15:29.561048] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch21.pth
+[2026-01-08 01:15:29.563997] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 01:15:29.564254] -- Beginning epoch 22 of 100 --
+[2026-01-08 01:38:23.277194] Epoch [22/100], Loss: 0.1203
+[2026-01-08 01:40:04.427678] Validation Accuracy: 95.54567022538552%
+[2026-01-08 01:40:04.428722] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 01:40:04.637981] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch22.pth
+[2026-01-08 01:40:04.639813] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 01:40:04.640358] -- Beginning epoch 23 of 100 --
+[2026-01-08 02:02:24.273680] Epoch [23/100], Loss: 0.1097
+[2026-01-08 02:04:07.148906] Validation Accuracy: 95.65968103334652%
+[2026-01-08 02:04:07.150253] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 02:04:07.294407] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch23.pth
+[2026-01-08 02:04:07.296143] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 02:04:07.296831] -- Beginning epoch 24 of 100 --
+[2026-01-08 02:26:46.655195] Epoch [24/100], Loss: 0.0997
+[2026-01-08 02:28:29.181715] Validation Accuracy: 95.88967971530249%
+[2026-01-08 02:28:29.182486] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 02:28:29.303765] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch24.pth
+[2026-01-08 02:28:29.305008] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 02:28:29.305365] -- Beginning epoch 25 of 100 --
+[2026-01-08 02:50:48.882386] Epoch [25/100], Loss: 0.0921
+[2026-01-08 02:52:30.483706] Validation Accuracy: 95.79543956768156%
+[2026-01-08 02:52:30.484854] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 02:52:30.636769] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch25.pth
+[2026-01-08 02:52:30.638273] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 02:52:30.638634] -- Beginning epoch 26 of 100 --
+[2026-01-08 03:14:51.454270] Epoch [26/100], Loss: 0.0842
+[2026-01-08 03:16:32.919678] Validation Accuracy: 95.82311849215763%
+[2026-01-08 03:16:32.920928] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 03:16:33.193218] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch26.pth
+[2026-01-08 03:16:33.195658] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 03:16:33.197448] -- Beginning epoch 27 of 100 --
+[2026-01-08 03:39:15.279847] Epoch [27/100], Loss: 0.0772
+[2026-01-08 03:40:57.693982] Validation Accuracy: 96.11111111111111%
+[2026-01-08 03:40:57.695047] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 03:40:57.818606] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch27.pth
+[2026-01-08 03:40:57.820546] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 03:40:57.820882] -- Beginning epoch 28 of 100 --
+[2026-01-08 04:03:05.974074] Epoch [28/100], Loss: 0.0698
+[2026-01-08 04:04:46.620683] Validation Accuracy: 96.25807301963886%
+[2026-01-08 04:04:46.621745] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 04:04:46.756244] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch28.pth
+[2026-01-08 04:04:46.757747] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 04:04:46.758131] -- Beginning epoch 29 of 100 --
+[2026-01-08 04:27:35.150253] Epoch [29/100], Loss: 0.0626
+[2026-01-08 04:29:17.125864] Validation Accuracy: 96.15131145380256%
+[2026-01-08 04:29:17.127318] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 04:29:17.302452] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch29.pth
+[2026-01-08 04:29:17.304590] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 04:29:17.305065] -- Beginning epoch 30 of 100 --
+[2026-01-08 04:51:36.027569] Epoch [30/100], Loss: 0.0559
+[2026-01-08 04:53:19.587102] Validation Accuracy: 96.36417556346382%
+[2026-01-08 04:53:19.588179] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 04:53:19.760572] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch30.pth
+[2026-01-08 04:53:19.762685] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 04:53:19.763166] -- Beginning epoch 31 of 100 --
+[2026-01-08 05:15:49.956268] Epoch [31/100], Loss: 0.0498
+[2026-01-08 05:17:30.365219] Validation Accuracy: 96.52827204428628%
+[2026-01-08 05:17:30.366360] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 05:17:30.531044] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch31.pth
+[2026-01-08 05:17:30.533376] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 05:17:30.533828] -- Beginning epoch 32 of 100 --
+[2026-01-08 05:40:32.023548] Epoch [32/100], Loss: 0.0439
+[2026-01-08 05:42:14.069921] Validation Accuracy: 96.64821405034928%
+[2026-01-08 05:42:14.070897] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 05:42:14.216598] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch32.pth
+[2026-01-08 05:42:14.218611] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 05:42:14.218982] -- Beginning epoch 33 of 100 --
+[2026-01-08 06:04:27.459090] Epoch [33/100], Loss: 0.0388
+[2026-01-08 06:06:10.396091] Validation Accuracy: 96.61328588374852%
+[2026-01-08 06:06:10.397238] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 06:06:10.584887] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch33.pth
+[2026-01-08 06:06:10.586755] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 06:06:10.587557] -- Beginning epoch 34 of 100 --
+[2026-01-08 06:29:06.486429] Epoch [34/100], Loss: 0.0344
+[2026-01-08 06:30:46.740395] Validation Accuracy: 96.74574930802689%
+[2026-01-08 06:30:46.741658] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 06:30:46.929232] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch34.pth
+[2026-01-08 06:30:47.035359] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 06:30:47.036699] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 06:30:47.037016] -- Beginning epoch 35 of 100 --
+[2026-01-08 06:53:10.961117] Epoch [35/100], Loss: 0.0311
+[2026-01-08 06:54:53.456078] Validation Accuracy: 96.83010412547779%
+[2026-01-08 06:54:53.457411] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 06:54:53.639437] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch35.pth
+[2026-01-08 06:54:53.739801] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 06:54:53.740768] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 06:54:53.740974] -- Beginning epoch 36 of 100 --
+[2026-01-08 07:17:12.407028] Epoch [36/100], Loss: 0.0288
+[2026-01-08 07:18:53.908354] Validation Accuracy: 96.83537630156847%
+[2026-01-08 07:18:53.909550] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 07:18:54.064262] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch36.pth
+[2026-01-08 07:18:54.184720] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 07:18:54.186553] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 07:18:54.186922] -- Beginning epoch 37 of 100 --
+[2026-01-08 07:41:29.136149] Epoch [37/100], Loss: 0.0268
+[2026-01-08 07:43:09.779367] Validation Accuracy: 96.8735995782259%
+[2026-01-08 07:43:09.780996] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 07:43:09.962043] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch37.pth
+[2026-01-08 07:43:10.061659] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 07:43:10.063151] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 07:43:10.063457] -- Beginning epoch 38 of 100 --
+[2026-01-08 08:05:30.366283] Epoch [38/100], Loss: 0.0255
+[2026-01-08 08:07:12.683738] Validation Accuracy: 96.86635033610122%
+[2026-01-08 08:07:12.685194] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 08:07:12.846610] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch38.pth
+[2026-01-08 08:07:12.849175] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 08:07:12.849846] -- Beginning epoch 39 of 100 --
+[2026-01-08 08:29:56.900547] Epoch [39/100], Loss: 0.0247
+[2026-01-08 08:31:41.425381] Validation Accuracy: 96.89666534862265%
+[2026-01-08 08:31:41.426618] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 08:31:41.839312] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch39.pth
+[2026-01-08 08:31:41.939220] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 08:31:41.940681] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 08:31:41.941091] -- Beginning epoch 40 of 100 --
+[2026-01-08 08:53:10.522296] Epoch [40/100], Loss: 0.0244
+[2026-01-08 08:54:46.067931] Validation Accuracy: 96.8880980624753%
+[2026-01-08 08:54:46.069683] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 08:54:46.226832] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch40.pth
+[2026-01-08 08:54:46.228504] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 08:54:46.229030] -- Beginning epoch 41 of 100 --
+[2026-01-08 09:15:08.750273] Epoch [41/100], Loss: 0.1142
+[2026-01-08 09:16:45.884164] Validation Accuracy: 95.35916699617768%
+[2026-01-08 09:16:45.885544] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 09:16:46.037626] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch41.pth
+[2026-01-08 09:16:46.039719] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 09:16:46.040229] -- Beginning epoch 42 of 100 --
+[2026-01-08 09:40:22.232461] Epoch [42/100], Loss: 0.1080
+[2026-01-08 09:42:14.024227] Validation Accuracy: 95.4553842098326%
+[2026-01-08 09:42:14.026088] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 09:42:14.206461] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch42.pth
+[2026-01-08 09:42:14.208794] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 09:42:14.209128] -- Beginning epoch 43 of 100 --
+[2026-01-08 10:07:55.311297] Epoch [43/100], Loss: 0.0967
+[2026-01-08 10:09:44.326198] Validation Accuracy: 95.81718729405563%
+[2026-01-08 10:09:44.327464] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 10:09:44.495925] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch43.pth
+[2026-01-08 10:09:44.497567] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 10:09:44.497989] -- Beginning epoch 44 of 100 --
+[2026-01-08 10:35:31.877976] Epoch [44/100], Loss: 0.0870
+[2026-01-08 10:37:24.578143] Validation Accuracy: 95.74271780677475%
+[2026-01-08 10:37:24.579415] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 10:37:24.851587] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch44.pth
+[2026-01-08 10:37:24.853914] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 10:37:24.854196] -- Beginning epoch 45 of 100 --
+[2026-01-08 11:03:08.572640] Epoch [45/100], Loss: 0.0796
+[2026-01-08 11:04:59.455872] Validation Accuracy: 95.96942137867404%
+[2026-01-08 11:04:59.457536] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 11:04:59.632378] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch45.pth
+[2026-01-08 11:04:59.635670] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 11:04:59.636276] -- Beginning epoch 46 of 100 --
+[2026-01-08 11:30:54.814103] Epoch [46/100], Loss: 0.0730
+[2026-01-08 11:32:44.110654] Validation Accuracy: 96.0603664162383%
+[2026-01-08 11:32:44.111911] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 11:32:44.281844] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch46.pth
+[2026-01-08 11:32:44.283388] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 11:32:44.283774] -- Beginning epoch 47 of 100 --
+[2026-01-08 11:58:18.649935] Epoch [47/100], Loss: 0.0660
+[2026-01-08 12:00:07.898806] Validation Accuracy: 96.19217081850533%
+[2026-01-08 12:00:07.900358] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 12:00:08.077730] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch47.pth
+[2026-01-08 12:00:08.079795] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 12:00:08.080243] -- Beginning epoch 48 of 100 --
+[2026-01-08 12:25:59.389414] Epoch [48/100], Loss: 0.0607
+[2026-01-08 12:27:50.440283] Validation Accuracy: 96.24818768946882%
+[2026-01-08 12:27:50.441477] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 12:27:50.618978] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch48.pth
+[2026-01-08 12:27:50.621209] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 12:27:50.621678] -- Beginning epoch 49 of 100 --
+[2026-01-08 12:53:31.547113] Epoch [49/100], Loss: 0.0544
+[2026-01-08 12:55:19.726294] Validation Accuracy: 96.39712666403058%
+[2026-01-08 12:55:19.727994] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 12:55:19.894201] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch49.pth
+[2026-01-08 12:55:19.897059] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 12:55:19.897731] -- Beginning epoch 50 of 100 --
+[2026-01-08 13:20:59.044496] Epoch [50/100], Loss: 0.0473
+[2026-01-08 13:22:49.556678] Validation Accuracy: 96.42941874258601%
+[2026-01-08 13:22:49.558123] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 13:22:49.779761] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch50.pth
+[2026-01-08 13:22:49.781289] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 13:22:49.781700] -- Beginning epoch 51 of 100 --
+[2026-01-08 13:49:08.037965] Epoch [51/100], Loss: 0.0419
+[2026-01-08 13:51:05.373914] Validation Accuracy: 96.58824304731777%
+[2026-01-08 13:51:05.375189] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 13:51:05.538330] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch51.pth
+[2026-01-08 13:51:05.540721] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 13:51:05.541413] -- Beginning epoch 52 of 100 --
+[2026-01-08 14:17:57.994035] Epoch [52/100], Loss: 0.0363
+[2026-01-08 14:19:50.482434] Validation Accuracy: 96.6429418742586%
+[2026-01-08 14:19:50.484212] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 14:19:50.663746] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch52.pth
+[2026-01-08 14:19:50.665813] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 14:19:50.666270] -- Beginning epoch 53 of 100 --
+[2026-01-08 14:46:03.197494] Epoch [53/100], Loss: 0.0321
+[2026-01-08 14:47:56.873350] Validation Accuracy: 96.7609068142876%
+[2026-01-08 14:47:56.874707] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 14:47:57.124844] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch53.pth
+[2026-01-08 14:47:57.125947] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 14:47:57.126156] -- Beginning epoch 54 of 100 --
+[2026-01-08 15:14:23.237138] Epoch [54/100], Loss: 0.0286
+[2026-01-08 15:16:17.470602] Validation Accuracy: 96.79385791485436%
+[2026-01-08 15:16:17.474573] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 15:16:17.816139] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch54.pth
+[2026-01-08 15:16:17.818403] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 15:16:17.818642] -- Beginning epoch 55 of 100 --
+[2026-01-08 15:42:31.846669] Epoch [55/100], Loss: 0.0261
+[2026-01-08 15:44:21.522399] Validation Accuracy: 96.81955977329643%
+[2026-01-08 15:44:21.523559] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 15:44:21.720123] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch55.pth
+[2026-01-08 15:44:21.722369] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 15:44:21.722865] -- Beginning epoch 56 of 100 --
+[2026-01-08 16:10:06.366315] Epoch [56/100], Loss: 0.0242
+[2026-01-08 16:11:57.440058] Validation Accuracy: 96.90061948069065%
+[2026-01-08 16:11:57.441413] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 16:11:57.652988] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch56.pth
+[2026-01-08 16:11:57.753562] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 16:11:57.756192] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 16:11:57.756777] -- Beginning epoch 57 of 100 --
+[2026-01-08 16:37:56.220133] Epoch [57/100], Loss: 0.0227
+[2026-01-08 16:39:48.272143] Validation Accuracy: 96.85712402794253%
+[2026-01-08 16:39:48.273651] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 16:39:48.463352] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch57.pth
+[2026-01-08 16:39:48.466016] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 16:39:48.466696] -- Beginning epoch 58 of 100 --
+[2026-01-08 17:05:48.904939] Epoch [58/100], Loss: 0.0217
+[2026-01-08 17:07:38.183880] Validation Accuracy: 96.90655067879267%
+[2026-01-08 17:07:38.185547] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 17:07:38.407997] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch58.pth
+[2026-01-08 17:07:38.520413] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 17:07:38.521746] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 17:07:38.522237] -- Beginning epoch 59 of 100 --
+[2026-01-08 17:33:56.771335] Epoch [59/100], Loss: 0.0211
+[2026-01-08 17:35:48.473195] Validation Accuracy: 96.91973111901937%
+[2026-01-08 17:35:48.474823] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 17:35:48.631308] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch59.pth
+[2026-01-08 17:35:48.743082] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 17:35:48.745641] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 17:35:48.746350] -- Beginning epoch 60 of 100 --
+[2026-01-08 18:02:06.414572] Epoch [60/100], Loss: 0.0209
+[2026-01-08 18:03:57.833378] Validation Accuracy: 96.92104916304204%
+[2026-01-08 18:03:57.834482] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 18:03:58.015600] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch60.pth
+[2026-01-08 18:03:58.126281] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-08 18:03:58.130029] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 18:03:58.131091] -- Beginning epoch 61 of 100 --
+[2026-01-08 18:30:04.749885] Epoch [61/100], Loss: 0.1089
+[2026-01-08 18:31:54.630164] Validation Accuracy: 95.47910900224068%
+[2026-01-08 18:31:54.631367] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 18:31:54.834935] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch61.pth
+[2026-01-08 18:31:54.839191] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 18:31:54.839822] -- Beginning epoch 62 of 100 --
+[2026-01-08 18:54:29.670683] Epoch [62/100], Loss: 0.1026
+[2026-01-08 18:56:08.800215] Validation Accuracy: 95.7341505206274%
+[2026-01-08 18:56:08.801858] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 18:56:08.963657] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch62.pth
+[2026-01-08 18:56:08.965682] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 18:56:08.966223] -- Beginning epoch 63 of 100 --
+[2026-01-08 19:17:39.897679] Epoch [63/100], Loss: 0.0910
+[2026-01-08 19:19:20.253904] Validation Accuracy: 95.72690127850271%
+[2026-01-08 19:19:20.255319] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 19:19:20.405043] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch63.pth
+[2026-01-08 19:19:20.407024] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 19:19:20.407438] -- Beginning epoch 64 of 100 --
+[2026-01-08 19:40:50.377837] Epoch [64/100], Loss: 0.0823
+[2026-01-08 19:42:33.627338] Validation Accuracy: 95.92065374983524%
+[2026-01-08 19:42:33.628653] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 19:42:33.787999] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch64.pth
+[2026-01-08 19:42:33.789454] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 19:42:33.789911] -- Beginning epoch 65 of 100 --
+[2026-01-08 20:04:09.966019] Epoch [65/100], Loss: 0.0750
+[2026-01-08 20:05:49.429846] Validation Accuracy: 95.95426387241334%
+[2026-01-08 20:05:49.431250] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 20:05:49.577877] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch65.pth
+[2026-01-08 20:05:49.579648] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 20:05:49.580150] -- Beginning epoch 66 of 100 --
+[2026-01-08 20:27:27.421169] Epoch [66/100], Loss: 0.0680
+[2026-01-08 20:29:08.126053] Validation Accuracy: 96.26466323975221%
+[2026-01-08 20:29:08.127121] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 20:29:08.283347] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch66.pth
+[2026-01-08 20:29:08.285417] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 20:29:08.285972] -- Beginning epoch 67 of 100 --
+[2026-01-08 20:50:20.078594] Epoch [67/100], Loss: 0.0619
+[2026-01-08 20:51:59.004204] Validation Accuracy: 96.26070910768419%
+[2026-01-08 20:51:59.005446] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 20:51:59.155903] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch67.pth
+[2026-01-08 20:51:59.157739] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 20:51:59.158217] -- Beginning epoch 68 of 100 --
+[2026-01-08 21:13:46.256602] Epoch [68/100], Loss: 0.0549
+[2026-01-08 21:15:38.497294] Validation Accuracy: 96.35033610122578%
+[2026-01-08 21:15:38.498533] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 21:15:38.643816] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch68.pth
+[2026-01-08 21:15:38.645466] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 21:15:38.645865] -- Beginning epoch 69 of 100 --
+[2026-01-08 21:40:28.537280] Epoch [69/100], Loss: 0.0487
+[2026-01-08 21:42:13.929447] Validation Accuracy: 96.44918940292605%
+[2026-01-08 21:42:13.930697] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 21:42:14.108877] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch69.pth
+[2026-01-08 21:42:14.110299] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 21:42:14.111118] -- Beginning epoch 70 of 100 --
+[2026-01-08 22:06:49.105568] Epoch [70/100], Loss: 0.0429
+[2026-01-08 22:08:40.840585] Validation Accuracy: 96.5566099907737%
+[2026-01-08 22:08:40.841972] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 22:08:41.023803] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch70.pth
+[2026-01-08 22:08:41.025748] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 22:08:41.026239] -- Beginning epoch 71 of 100 --
+[2026-01-08 22:33:30.284159] Epoch [71/100], Loss: 0.0376
+[2026-01-08 22:35:20.847004] Validation Accuracy: 96.74113615394754%
+[2026-01-08 22:35:20.848609] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 22:35:21.032769] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch71.pth
+[2026-01-08 22:35:21.035232] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 22:35:21.035705] -- Beginning epoch 72 of 100 --
+[2026-01-08 23:00:41.083042] Epoch [72/100], Loss: 0.0328
+[2026-01-08 23:02:32.899199] Validation Accuracy: 96.73520495584553%
+[2026-01-08 23:02:32.900662] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 23:02:33.051964] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch72.pth
+[2026-01-08 23:02:33.053273] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 23:02:33.053655] -- Beginning epoch 73 of 100 --
+[2026-01-08 23:27:16.174883] Epoch [73/100], Loss: 0.0290
+[2026-01-08 23:29:04.663725] Validation Accuracy: 96.78067747462765%
+[2026-01-08 23:29:04.665048] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 23:29:04.828665] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch73.pth
+[2026-01-08 23:29:04.829976] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 23:29:04.830341] -- Beginning epoch 74 of 100 --
+[2026-01-08 23:55:07.176014] Epoch [74/100], Loss: 0.0260
+[2026-01-08 23:57:01.778003] Validation Accuracy: 96.8735995782259%
+[2026-01-08 23:57:01.779294] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-08 23:57:01.957861] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch74.pth
+[2026-01-08 23:57:01.960520] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-08 23:57:01.961105] -- Beginning epoch 75 of 100 --
+[2026-01-09 00:24:54.585961] Epoch [75/100], Loss: 0.0235
+[2026-01-09 00:26:50.050111] Validation Accuracy: 96.8584420719652%
+[2026-01-09 00:26:50.051536] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 00:26:50.225655] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch75.pth
+[2026-01-09 00:26:50.227250] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 00:26:50.227738] -- Beginning epoch 76 of 100 --
+[2026-01-09 00:53:46.787071] Epoch [76/100], Loss: 0.0219
+[2026-01-09 00:55:41.195491] Validation Accuracy: 96.90457361275867%
+[2026-01-09 00:55:41.197010] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 00:55:41.514200] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch76.pth
+[2026-01-09 00:55:41.516450] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 00:55:41.516647] -- Beginning epoch 77 of 100 --
+[2026-01-09 01:20:54.460697] Epoch [77/100], Loss: 0.0207
+[2026-01-09 01:22:45.189675] Validation Accuracy: 96.96520363780151%
+[2026-01-09 01:22:45.191458] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 01:22:45.376905] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch77.pth
+[2026-01-09 01:22:45.484172] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-09 01:22:45.486066] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 01:22:45.486575] -- Beginning epoch 78 of 100 --
+[2026-01-09 01:50:17.438676] Epoch [78/100], Loss: 0.0199
+[2026-01-09 01:52:13.691429] Validation Accuracy: 96.96454461579017%
+[2026-01-09 01:52:13.692998] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 01:52:13.874987] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch78.pth
+[2026-01-09 01:52:13.877383] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 01:52:13.878020] -- Beginning epoch 79 of 100 --
+[2026-01-09 02:19:26.949440] Epoch [79/100], Loss: 0.0194
+[2026-01-09 02:21:20.114586] Validation Accuracy: 96.9764070119942%
+[2026-01-09 02:21:20.116282] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 02:21:20.287569] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch79.pth
+[2026-01-09 02:21:20.395211] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-09 02:21:20.396977] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 02:21:20.397294] -- Beginning epoch 80 of 100 --
+[2026-01-09 02:47:59.339326] Epoch [80/100], Loss: 0.0191
+[2026-01-09 02:49:51.168497] Validation Accuracy: 96.97904310003955%
+[2026-01-09 02:49:51.169970] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 02:49:51.356278] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch80.pth
+[2026-01-09 02:49:51.542357] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-09 02:49:51.544287] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 02:49:51.544755] -- Beginning epoch 81 of 100 --
+[2026-01-09 03:16:43.606443] Epoch [81/100], Loss: 0.1038
+[2026-01-09 03:18:36.305115] Validation Accuracy: 95.20166073546856%
+[2026-01-09 03:18:36.306637] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 03:18:36.475156] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch81.pth
+[2026-01-09 03:18:36.476780] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 03:18:36.477164] -- Beginning epoch 82 of 100 --
+[2026-01-09 03:44:53.846595] Epoch [82/100], Loss: 0.0989
+[2026-01-09 03:46:43.320440] Validation Accuracy: 95.51996836694346%
+[2026-01-09 03:46:43.630629] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 03:46:43.785148] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch82.pth
+[2026-01-09 03:46:43.787380] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 03:46:43.787921] -- Beginning epoch 83 of 100 --
+[2026-01-09 04:23:01.095531] Epoch [83/100], Loss: 0.0871
+[2026-01-09 04:24:48.395941] Validation Accuracy: 95.74535389482008%
+[2026-01-09 04:24:48.397601] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 04:24:48.557292] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch83.pth
+[2026-01-09 04:24:48.559478] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 04:24:48.560076] -- Beginning epoch 84 of 100 --
+[2026-01-09 04:49:20.943391] Epoch [84/100], Loss: 0.0785
+[2026-01-09 04:51:07.906133] Validation Accuracy: 96.04520890997759%
+[2026-01-09 04:51:07.907715] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 04:51:08.063789] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch84.pth
+[2026-01-09 04:51:08.065677] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 04:51:08.066149] -- Beginning epoch 85 of 100 --
+[2026-01-09 05:14:39.465548] Epoch [85/100], Loss: 0.0713
+[2026-01-09 05:16:16.753367] Validation Accuracy: 96.19942006063002%
+[2026-01-09 05:16:16.754686] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 05:16:16.890984] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch85.pth
+[2026-01-09 05:16:16.893770] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 05:16:16.894585] -- Beginning epoch 86 of 100 --
+[2026-01-09 05:37:17.917592] Epoch [86/100], Loss: 0.0641
+[2026-01-09 05:38:59.210318] Validation Accuracy: 96.25807301963886%
+[2026-01-09 05:38:59.211524] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 05:38:59.358321] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch86.pth
+[2026-01-09 05:38:59.360360] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 05:38:59.360902] -- Beginning epoch 87 of 100 --
+[2026-01-09 05:59:28.699244] Epoch [87/100], Loss: 0.0574
+[2026-01-09 06:01:07.404492] Validation Accuracy: 96.21919072097008%
+[2026-01-09 06:01:07.405578] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 06:01:07.549821] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch87.pth
+[2026-01-09 06:01:07.551743] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 06:01:07.552306] -- Beginning epoch 88 of 100 --
+[2026-01-09 06:21:56.273893] Epoch [88/100], Loss: 0.0512
+[2026-01-09 06:23:34.332105] Validation Accuracy: 96.4742322393568%
+[2026-01-09 06:23:34.333774] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 06:23:34.879569] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch88.pth
+[2026-01-09 06:23:34.881174] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 06:23:34.881457] -- Beginning epoch 89 of 100 --
+[2026-01-09 06:44:34.285213] Epoch [89/100], Loss: 0.0457
+[2026-01-09 06:46:16.405444] Validation Accuracy: 96.53947541847897%
+[2026-01-09 06:46:16.406377] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 06:46:16.589620] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch89.pth
+[2026-01-09 06:46:16.591483] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 06:46:16.591939] -- Beginning epoch 90 of 100 --
+[2026-01-09 07:06:58.382613] Epoch [90/100], Loss: 0.0404
+[2026-01-09 07:08:36.906178] Validation Accuracy: 96.62712534598656%
+[2026-01-09 07:08:36.907518] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 07:08:37.069123] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch90.pth
+[2026-01-09 07:08:37.071341] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 07:08:37.072031] -- Beginning epoch 91 of 100 --
+[2026-01-09 07:29:41.785416] Epoch [91/100], Loss: 0.0349
+[2026-01-09 07:31:18.907301] Validation Accuracy: 96.70752603136945%
+[2026-01-09 07:31:18.908432] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 07:31:19.061106] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch91.pth
+[2026-01-09 07:31:19.062287] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 07:31:19.062701] -- Beginning epoch 92 of 100 --
+[2026-01-09 07:51:54.381470] Epoch [92/100], Loss: 0.0302
+[2026-01-09 07:53:35.139751] Validation Accuracy: 96.75233952814024%
+[2026-01-09 07:53:35.140899] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 07:53:35.290280] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch92.pth
+[2026-01-09 07:53:35.291977] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 07:53:35.292496] -- Beginning epoch 93 of 100 --
+[2026-01-09 08:14:17.005031] Epoch [93/100], Loss: 0.0265
+[2026-01-09 08:15:55.515716] Validation Accuracy: 96.85053380782918%
+[2026-01-09 08:15:55.517107] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 08:15:55.726771] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch93.pth
+[2026-01-09 08:15:55.728450] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 08:15:55.728817] -- Beginning epoch 94 of 100 --
+[2026-01-09 08:36:53.706382] Epoch [94/100], Loss: 0.0238
+[2026-01-09 08:38:31.675263] Validation Accuracy: 96.91511796494002%
+[2026-01-09 08:38:31.676186] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 08:38:31.836741] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch94.pth
+[2026-01-09 08:38:31.838692] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 08:38:31.839296] -- Beginning epoch 95 of 100 --
+[2026-01-09 08:59:08.082826] Epoch [95/100], Loss: 0.0217
+[2026-01-09 09:00:48.692553] Validation Accuracy: 96.96059048372216%
+[2026-01-09 09:00:48.693407] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 09:00:48.832685] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch95.pth
+[2026-01-09 09:00:48.834339] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 09:00:48.834792] -- Beginning epoch 96 of 100 --
+[2026-01-09 09:21:43.512013] Epoch [96/100], Loss: 0.0202
+[2026-01-09 09:23:21.110835] Validation Accuracy: 96.9559773296428%
+[2026-01-09 09:23:21.112276] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 09:23:21.254287] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch96.pth
+[2026-01-09 09:23:21.256271] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 09:23:21.256792] -- Beginning epoch 97 of 100 --
+[2026-01-09 09:44:15.516943] Epoch [97/100], Loss: 0.0193
+[2026-01-09 09:45:53.289835] Validation Accuracy: 96.96190852774482%
+[2026-01-09 09:45:53.290964] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 09:45:53.435325] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch97.pth
+[2026-01-09 09:45:53.437247] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 09:45:53.437719] -- Beginning epoch 98 of 100 --
+[2026-01-09 10:06:27.119150] Epoch [98/100], Loss: 0.0186
+[2026-01-09 10:08:08.425329] Validation Accuracy: 97.00869909054963%
+[2026-01-09 10:08:08.426580] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 10:08:08.568154] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch98.pth
+[2026-01-09 10:08:08.659747] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-09 10:08:08.661420] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 10:08:08.661975] -- Beginning epoch 99 of 100 --
+[2026-01-09 10:29:22.199375] Epoch [99/100], Loss: 0.0182
+[2026-01-09 10:31:05.206186] Validation Accuracy: 97.02451561882167%
+[2026-01-09 10:31:05.207393] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 10:31:05.361314] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch99.pth
+[2026-01-09 10:31:05.441624] Model saved to ./model/exports/checkpoints/InceptionV1-5000_best.pth
+[2026-01-09 10:31:05.442588] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json
+[2026-01-09 10:31:05.442819] -- Beginning epoch 100 of 100 --
+[2026-01-09 10:51:33.645853] Epoch [100/100], Loss: 0.0179
+[2026-01-09 10:53:11.855011] Validation Accuracy: 97.00408593647028%
+[2026-01-09 10:53:11.855978] Logged epoch info to ./model/exports/training_data.csv
+[2026-01-09 10:53:11.998190] Model saved to ./model/checkpoints/InceptionV1-5000/tr_epoch100.pth
+[2026-01-09 10:53:11.999835] Metadata updated at ./model/exports/metadata/InceptionV1-5000-metadata.json

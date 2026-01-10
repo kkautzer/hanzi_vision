@@ -1,5 +1,5 @@
 {
-    "model_name": "InceptionV1-750",
+    "model_name": "InceptionV1-0750",
     "nchars": 750,
     "epochs": 100,
     "max_val_accuracy": 97.42634463857486,

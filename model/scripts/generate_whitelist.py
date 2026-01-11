@@ -8,4 +8,4 @@ def generate_whitelist(characters):
 
     
 if __name__=="__main__":
-    whitelist = generate_whitelist(750) # generate the 25 most common characters
+    whitelist = generate_whitelist(5) # generate the 25 most common characters

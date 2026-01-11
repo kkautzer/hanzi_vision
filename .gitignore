@@ -21,7 +21,7 @@ model/archive/checkpoints
 
 # files to ignore from /server
 
-# file to ignore from /frontend
+# files to ignore from /frontend
 frontend/logs
 frontend/*.log
 frontend/npm-debug.log*
@@ -33,6 +33,10 @@ frontend/lerna-debug.log*
 frontend/dist
 frontend/dist-ssr
 frontend/*.local
+
+# files to ignore from /tests
+tests/output
+tests/data
 
 # Editor directories and files
 .vscode/*

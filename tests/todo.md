@@ -1,7 +1,7 @@
 <!-- # TODO - Commit Tests -->
 
 ## Tests for `model/data/**`
-- [ ] Compilation/Clean Exit: `dataset.py`
+- [x] Compilation/Clean Exit: `dataset.py`
 
 ## Tests for `model/train.py` and `model/model.py`
 - [ ] Compilation/Clean Exit: `model.py`

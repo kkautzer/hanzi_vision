@@ -1,4 +1,5 @@
 from tests.tests.model.test_dataset import main as model_dataset_tests
+from tests.tests.model.test_model import main as model_creation_tests
 
 # call all python test files from here
 # 
@@ -6,11 +7,13 @@ from tests.tests.model.test_dataset import main as model_dataset_tests
 # so, the run command should be `python -m tests.tests.run`
 
 tests = [
-    model_dataset_tests
+    model_dataset_tests,
+    model_creation_tests
 ]
 
 test_descriptions = [
-    "model/data/dataset.py"
+    "model/data/dataset.py",
+    "model/model.py"
 ]
 
 tp = 0

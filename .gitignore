@@ -10,6 +10,7 @@ analysis/analysis-venv
 analysis/figures
 
 # files to ignore from /model
+model/archive
 model/data/processed
 model/data/filtered
 model/data/whitelist.txt

@@ -35,8 +35,6 @@ class GoogLeNet(nn.Module):
 
 
 
-
-
 AVAILABLE_MODELS = {
     "googlenet": GoogLeNet
 }
@@ -45,6 +43,9 @@ AVAILABLE_MODELS = {
 class ChineseCharacterCNN():
     def __new__(cls, architecture="googlenet", num_classes=3928):
         model_class = AVAILABLE_MODELS.get(architecture.lower())
+        
+        if num_classes <= 0:
+            raise ValueError(f"\033[31mInvalid num_classes: {num_classes} is less than the minimum value of one.")
         if not model_class:
             raise ValueError(f"\033[31mUnknown model '{architecture}'. Available: {list(AVAILABLE_MODELS.keys())}\033[0m")
         

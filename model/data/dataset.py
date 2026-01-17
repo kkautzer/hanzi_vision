@@ -3,6 +3,8 @@ from pathlib import Path
 import csv
 import hashlib
 from PIL import Image
+import sys
+import os
 
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -84,7 +86,13 @@ def get_dataloaders(
     val_ratio=0.1,
     num_workers=0
 ):
+    
+    if not os.path.isdir(data_dir):
+        print("The given data_dir does not exist or is not a directory!", file=sys.stderr)
+        return None, None, None, None
+    
     data_dir = Path(data_dir)
+    
     splits_csv = Path("model/data/casia_splits.csv")
 
     # Transforms

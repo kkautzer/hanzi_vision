@@ -10,7 +10,6 @@ analysis/analysis-venv
 analysis/figures
 
 # files to ignore from /model
-model/archive
 model/data/processed
 model/data/filtered
 model/data/whitelist.txt
@@ -22,7 +21,7 @@ model/archive/checkpoints
 
 # files to ignore from /server
 
-# file to ignore from /frontend
+# files to ignore from /frontend
 frontend/logs
 frontend/*.log
 frontend/npm-debug.log*

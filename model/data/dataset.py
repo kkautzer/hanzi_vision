@@ -140,8 +140,18 @@ def get_dataloaders(
         root=data_dir / "test",
         transform=eval_transform
     )
+
+    test_samples = []
+    for path, _ in test_set.samples:
+        cls = Path(path).parent.name
+        if cls in class_to_idx:
+            test_samples.append((path, class_to_idx[cls]))
+    
+    test_set.samples = test_samples
+    test_set.targets = [label for _, label in test_samples]
     test_set.class_to_idx = class_to_idx
     test_set.classes = class_names
+
 
     train_loader = DataLoader(
         train_set,

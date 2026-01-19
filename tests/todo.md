@@ -1,10 +1,10 @@
 <!-- # TODO - Commit Tests -->
 
 ## Tests for `model/data/**`
-- [ ] Compilation/Clean Exit: `dataset.py`
+- [x] Compilation/Clean Exit: `dataset.py`
 
 ## Tests for `model/train.py` and `model/model.py`
-- [ ] Compilation/Clean Exit: `model.py`
+- [x] Compilation/Clean Exit: `model.py`
 - [ ] Compilation/Clean Exit: `train.py`
 - [ ] Create model w/ default parameters: `train.py`
 - [ ] Create model w/ non-default parameters: `train.py`
